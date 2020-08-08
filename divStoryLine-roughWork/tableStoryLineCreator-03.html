@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Table Creator & Modifier</title>
+
+	<style>
+		body {
+			margin-left: 0;
+			margin-right: 0;
+			/*			background-color: #343458;*/
+			font-size: 85%;
+		}
+
+		table table {
+			border-top: 0.5px solid #ead9dc;
+			border-bottom: 0.5px solid #ead9dc;
+			border-radius: 2px;
+		}
+
+		#masterTable {}
+
+		#masterTable>td {
+			background-color: transparent;
+		}
+
+		#storyLineTable,
+		#legendTable {
+			position: relative;
+			border-spacing: 3px;
+			/*  border-collapse: collapse;*/
+		}
+
+		#divTableContainer {
+			position: absolute;
+			width: 85vw;
+			height: 90vh;
+			overflow: auto;
+			left: 10px;
+
+			border: 0.5px solid #900f0f;
+			border-radius: 2px;
+			/*			z-index: 99;*/
+		}
+
+		#legendTable td,
+		#legendTable th,
+		#storyLineTable td,
+		#storyLineTable th {
+			min-width: 100px;
+			height: 50px;
+			border: 0.5px solid #ead9dc;
+			background-color: beige;
+			border-radius: 2px;
+		}
+
+		#storyLineTable th,
+		#storyLineTable thead td {
+			background-color: #ffe7c1;
+			border-radius: 2px;
+		}
+
+		#tableBuilder {
+			position: fixed;
+			top: 5px;
+			right: 5px;
+			height: 100vh;
+			width: 145px;
+			z-index: 10;
+			background-color: white;
+			overflow-y: auto;
+		}
+
+		#tableBuilder>div {
+			padding-left: 5px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+			background-color: #f8f8f8;
+		}
+
+		#tableBuilder>div>div h3 {
+			padding-bottom: 0;
+			margin-bottom: 0;
+			text-align: justify-all;
+			color: black;
+			border-bottom: 2px solid black;
+		}
+
+		#tableBuilder>div>div h3:hover {
+			color: #5f0000;
+			border-bottom: 2px solid brown;
+			background-color: #d8ffc0
+		}
+
+		#tableBuilder>div button {
+			width: 100%;
+			display: inline-block;
+			cursor: pointer;
+			font-family: Arial;
+			font-size: 11px;
+			font-weight: bold;
+			padding: 6px 24px;
+			text-decoration: none;
+		}
+
+		button.create {
+			box-shadow: inset 0px 1px 0px 0px #ffffff;
+			background: linear-gradient(to bottom, #f7f7f7 50%, #f6f6f6 100%);
+			background-color: #ffffff;
+			border: 1px solid #dcdcdc;
+			color: #4b0000;
+			text-shadow: 0px 1px 0px #ffffff;
+		}
+
+		#tableBuilder>div button.create:hover {
+			background: linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+			background-color: #f6f6f6;
+		}
+
+		#tableBuilder>div button.delete:hover {
+			background: linear-gradient(to bottom, #e4685d 5%, #fc8d83 100%);
+			background-color: #e4685d;
+		}
+
+		button.delete {
+			box-shadow: inset 0px 1px 0px 0px #f7c5c0;
+			background: linear-gradient(to bottom, #fc8d83 5%, #e4685d 100%);
+			background-color: #fc8d83;
+			border: 1px solid #d83526;
+			color: #ffffff;
+			text-shadow: 0px 1px 0px #b23e35;
+		}
+
+		button:last-child {
+			border-bottom: 0.5px solid grey;
+		}
+
+		button:first-child {
+			border-top: 0.5px solid grey;
+		}
+
+		input {
+			min-height: auto;
+			width: 112px;
+		}
+
+		.btnactivecolor {
+			background-color: aquamarine;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div id="divTableContainer">
+		<table id="masterTable">
+			<tr>
+				<td valign="top">
+					<table id="legendTable">
+						<thead>
+							<tr>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+							</tr>
+						</tbody>
+
+					</table>
+				</td>
+
+				<td valign="top">
+					<table id="storyLineTable">
+						<thead>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr title="User Experience">
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td colspan="2"></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+
+				</td>
+			</tr>
+		</table>
+
+	</div>
+
+	<div id="tableBuilder">
+		<div>
+			<div>
+				<h3>Create Table Cell</h3>
+				<span style="font-style: italic">Cell Name:</span> <input type="text" id="myText" value="">
+
+				<button class="create" onclick="createCellBefore()">CELL BEFORE</button>
+				<button class="create" onclick="createCellAfter()">CELL AFTER</button>
+			</div>
+			<div>
+				<h3>Edit Table Cell</h3>
+				<span style="font-style: italic">Cell Heading:</span> <input type="text" id="cellHeading" value="">
+
+				<button id="applyHeadingBtn" class="create" onclick="insertHeading()">APPLY HEADING</button>
+				<button class="create" onclick="increaseCellColspan()" title="increase colspan">WIDEN CELL</button>
+				<button class="create" onclick="decreaseCellColspan()" title="decrease colspan">CONTRACT CELL</button>
+			</div>
+			<div>
+				<h3>Create Table Rows</h3>
+				<button class="create" onclick="createRowAbove()">NEW ROW ABOVE</button>
+				<button class="create" onclick="createRowBelow()">NEW ROW BELOW</button>
+				<button class="create" onclick="cloneRowBelow()">CLONE ROW ABOVE</button>
+				<button class="create" onclick="cloneRowAbove()">CLONE ROW BELOW</button>
+			</div>
+			<div>
+				<h3>Edit Table Row</h3>
+				<span style="font-style: italic">Row Group:</span> <input type="text" id="rowGroup" value="">
+				<span style="font-style: italic">Row Name:</span> <input type="text" id="rowName" value="">
+
+				<button id="applyRowEditBtn" class="create" onclick="rowEdit()">APPLY ROW EDIT</button>
+			</div>
+			<div>
+				<h3>Create Column</h3>
+				<button class="create" onclick="createColumnBefore()">COLUMN BEFORE</button>
+				<button class="create" onclick="createColumnAfter()">COLUMN AFTER</button>
+			</div>
+			<div>
+				<h3>Merge/Split Cells</h3>
+				<button class="create" onclick="selectCells(this)">SELECT CELLS</button>
+				<button class="create" onclick="mergeContents(this)">MERGE CONTENTS</button>
+				<button class="create" onclick="mergeCells()">MERGE CELLS</button>
+				<button class="create" onclick="splitCell()">SPLIT CELL</button>
+			</div>
+			<div>
+				<h3>Delete</h3>
+				<button class="delete" onclick="deleteCell()">DELETE CELL</button>
+				<button class="delete" onclick="hideCell()">HIDE CELL</button>
+				<button class="delete" onclick="deleteRow()">DELETE ROW</button>
+				<button class="delete" onclick="hideRow()">HIDE ROW</button>
+				<button class="delete" onclick="deleteColumn()">DELETE COLUMN</button>
+				<button class="delete" onclick="hideColumn()">HIDE COLUMN</button>
+			</div>
+			<div>
+				<h3>Show All</h3>
+				<button class="create" onclick="showAll()">SHOW All ROWS & CELLS</button>
+			</div>
+			<div style="font-style: italic">
+				<h3 style="color: red; background-color: #fff7f4">Destroy!</h3>
+				<button class="delete" onclick="destroyCell()" style="font-style: italic">DESTROY CELL</button>
+				<button class="delete" onclick="destroyRow()" style="font-style: italic">DESTROY ROW</button>
+			</div>
+		</div>
+	</div>
+
+</body>
+<script type="text/javascript" src="tableColumnClasses.js"></script>
+<script type="text/javascript" src="tableCreator-Y.js"></script></html>

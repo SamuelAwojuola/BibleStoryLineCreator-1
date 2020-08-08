@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Table Creator & Modifier</title>
+
+	<style>
+		* {
+			font-family: Arial, Helvetica, sans-serif;
+			font-family: Impact, Charcoal, sans-serif;
+			font-family: "Times New Roman", Times, serif;
+			font-family: "Lucida Console", Courier, monospace;
+			font-family: Georgia, serif;
+			word-spacing: 2px;
+			font-size: 92%;
+		}
+
+		body {
+			margin-left: 0;
+			margin-right: 0;
+			background-color: rgba(0, 0, 0, 0.87);
+			background-color: rgba(129, 98, 131, 0.87);
+			background-color: rgba(131, 128, 98, 0.87);
+		}
+
+		table table {
+			border-top: 0.5px solid #ead9dc;
+			border-bottom: 0.5px solid #ead9dc;
+			border-radius: 2px;
+		}
+
+		table>h1,
+		table>h2,
+		table>h4,
+		table>h4,
+		table>h5,
+		table>h6 {
+			color: blue;
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+
+		#masterTable {}
+
+		#masterTable>td {
+			background-color: transparent;
+		}
+
+		#storyLineTable,
+		#legendTable {
+			position: relative;
+			border-spacing: 3px;
+			/*			  border-collapse: collapse;*/
+			box-shadow: 0px 3px 6px -3px black;
+		}
+
+		#divTableContainer {
+			position: absolute;
+			/*			width: 85vw;*/
+			height: 90vh;
+			overflow: auto;
+			left: 10px;
+			right: 10px;
+
+			border: 0.5px solid #847e7f;
+			border-radius: 2.5px;
+			box-shadow: 0px 3px 6px -3px black;
+			/*			z-index: 99;*/
+		}
+
+		#legendTable td,
+		#legendTable th,
+		#storyLineTable td,
+		#storyLineTable th {
+			min-width: 100px;
+			height: 55px;
+			border: 0.5px solid #847e7f;
+			background-color: beige;
+			border-radius: 2px;
+			/*			box-shadow: 0 8px 7.5px -8px black;*/
+			box-shadow: 0 4px 5px -6px black;
+		}
+
+		#legendTable td:hover,
+		#legendTable th:hover,
+		#storyLineTable td:hover,
+		#storyLineTable th:hover {
+			box-shadow: 0 8px 7.5px -8px black;
+		}
+
+		#legendTable th,
+		#legendTable thead td,
+		#storyLineTable th,
+		#storyLineTable thead td {
+			background-color: #ffe7c1;
+			border-radius: 2px;
+			box-shadow: 0 4px 5px -6px black;
+		}
+
+		#tableBuilder {
+			position: absolute;
+			top: 12px;
+			right: 13px;
+			border-radius: 6px;
+			width: 165px;
+			z-index: 10;
+			/*			overflow-y: auto;*/
+			background-color: white;
+			background-color: rgba(0, 0, 0, 0.61);
+		}
+
+		#tableBuilderheader:hover {
+			background-color: aqua;
+		}
+
+		#tableBuilder h3 {
+			padding-bottom: 0;
+			margin-bottom: 0;
+			padding-top: 0;
+			color: black;
+			border-bottom: 3px solid grey;
+		}
+
+		#tableBuilder>div {
+			padding-left: 5px;
+			padding-bottom: 10px;
+			background-color: #f8f8f8;
+			border: 0.5px solid #847e7f;
+			box-shadow: 0 8px 6px -8px black;
+		}
+
+		#tableBuilder>div:not(#tableBuilderheader) {
+			border-bottom-left-radius: 6px;
+			border-bottom-right-radius: 6px;
+		}
+
+		#tableBuilderheader {
+			border-top-left-radius: 6px;
+			border-top-right-radius: 6px;
+		}
+
+		#tableBuilder>div>div h4 {
+			padding-bottom: 0;
+			margin-bottom: 0;
+			margin-top: 7px;
+			text-align: justify-all;
+			color: black;
+			border-bottom: 1px solid grey;
+		}
+
+		#tableBuilder>div>div h4:hover {
+			color: #0014ff;
+		}
+
+		#tableBuilder>div button {
+			width: 100%;
+			display: inline-block;
+			cursor: pointer;
+			/*			font-size: 11px;*/
+			font-weight: 900;
+			padding: 6px 24px;
+			text-decoration: none;
+		}
+
+		button.create {
+			box-shadow: inset 0px 1px 0px 0px #ffffff;
+			background-color: #ffefac;
+			border: 1px solid #dcdcdc;
+			color: #4b0000;
+			text-shadow: 0px 1px 0px #ffffff;
+		}
+
+		#tableBuilder>div button.create:hover {
+			background-color: #ffdd4c;
+		}
+
+		#tableBuilder>div button.delete:hover {
+			background: linear-gradient(to bottom, #e4685d 5%, #fc8d83 100%);
+			background-color: #e4685d;
+		}
+
+		button.delete {
+			box-shadow: inset 0px 1px 0px 0px #f7c5c0;
+			background-color: #fc8d83;
+			border: 1px solid #d83526;
+			color: black;
+			text-shadow: 0px 0px 0px white;
+		}
+
+		button:last-child {
+			border-bottom: 0.5px solid grey;
+		}
+
+		button:first-child {
+			border-top: 0.5px solid grey;
+		}
+
+		input {
+			display: block;
+			width: 93%;
+		}
+
+		select {
+			display: block;
+			width: 98%;
+		}
+
+		.btnactivecolor {
+			background-color: aquamarine;
+		}
+
+		td>div {
+			min-height: 25px;
+			border: 0.5px solid black;
+			padding-top: 7px;
+			border-radius: 5px;
+			margin: 4px;
+			text-align: center;
+			box-shadow: 0 4px 5px -6px black;
+		}
+
+		td>div:hover {
+			border: 0.5px solid #140f0f;
+			color: #140f0f;
+		}
+
+		td {
+			border-left: 40px solid transparent;
+		}
+
+	</style>
+	<style type="text/css">
+		/* container properties */
+		.scrollbar {
+			max-height: 510px;
+			overflow-y: auto;
+		}
+
+		/* customize scrollbar css */
+		.scrollbar-custom::-webkit-scrollbar {
+			width: 8px;
+			background-color: #cccccc;
+		}
+
+		.scrollbar-custom::-webkit-scrollbar:horizontal {
+			height: 12px;
+		}
+
+		.scrollbar-custom::-webkit-scrollbar-track {
+			background-color: #e0e0e0;
+			border: 1px #ffffff solid;
+			border-radius: 5px;
+			-webkit-box-shadow: 0 0 6px #c8c8c8 inset;
+		}
+
+		.scrollbar-custom::-webkit-scrollbar-thumb {
+			background-color: #f8f8f8;
+			border: 1px solid #a5a5a5;
+			border-radius: 5px;
+		}
+
+		.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+			background-color: white;
+			border: 1px solid #333333;
+		}
+
+		.scrollbar-custom::-webkit-scrollbar-thumb:active {
+			background-color: white;
+			border: 1px solid #333333;
+		}
+
+	</style>
+</head>
+
+<body>
+
+	<div id="divTableContainer">
+		<table id="masterTable">
+			<tr>
+				<td valign="top">
+					<table id="legendTable">
+						<thead>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</td>
+
+				<td valign="top">
+					<table id="storyLineTable">
+						<thead>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+
+				</td>
+			</tr>
+		</table>
+
+	</div>
+
+	<div id="tableBuilder">
+		<div id="tableBuilderheader" style="background-color:#ffd35c; color: black; font-weight: bolder; padding-top: 0; padding-bottom: 0;" title="Double Click to Open. Drag to move">TABLE EDITOR</div>
+		<div class=" scrollbar scrollbar-custom" style="display: none;">
+
+			<!--DIVS-->
+			<h3 class='tableBuilderSections'>Divs</h3>
+			<div>
+				<h4>Create Div</h4>
+				<span style="font-style: italic">Div Name:</span> <input type="text" id="divName" value="" draggable="false">
+				<select id="divNameSelect">
+				</select><br>
+				<span style="font-style: italic">Div Class:</span> <input type="text" id="divClass" value="" draggable="false">
+				<select id="divClassSelect">
+				</select><br>
+				<button class="create" onclick="createDIV()">Create Div</button>
+			</div>
+			<div>
+				<h4>Delete Div</h4>
+				<button class="create" onclick="deleteDIV()">Delete Div</button>
+			</div>
+
+			<!--CELLS-->
+			<h3 class='tableBuilderSections'>Cells</h3>
+			<div>
+				<h4>Create Cell</h4>
+				<span style="font-style: italic">Cell Name:</span> <input type="text" id="myText" value="">
+
+				<button class="create" onclick="createCellBefore()">Cell Before</button>
+				<button class="create" onclick="createCellAfter()">Cell After</button>
+			</div>
+			<div>
+				<h4>Edit Cell</h4>
+				<span style="font-style: italic">Cell Heading:</span> <input type="text" id="cellHeading" value="">
+
+				<button id="applyHeadingBtn" class="create" onclick="insertHeading()">Apply Heading</button>
+				<button class="create" onclick="increaseCellColspan()" title="increase colspan">Widen Cell</button>
+				<button class="create" onclick="decreaseCellColspan()" title="decrease colspan">Contract Cell</button>
+			</div>
+			<div>
+				<h4>Merge/Split Cells</h4>
+				<button class="create" onclick="selectCells(this)">Select Cells</button>
+				<button class="create" onclick="mergeContents(this)">Merge Contents</button>
+				<button class="create" onclick="mergeCells()">Merge Cells</button>
+				<button class="create" onclick="splitCell()">Split Cells</button>
+			</div>
+			<div>
+				<h4>Cell Display</h4>
+				<button class="delete" onclick="deleteCell()">Cell None Display</button>
+				<button class="delete" onclick="hideCell()">Cell Hidden Visibility</button><button class="delete" onclick="destroyCell()" style="font-style: italic">Destroy Cell</button>
+			</div>
+
+			<!--ROWS-->
+			<h3 class='tableBuilderSections'>Rows</h3>
+			<div>
+				<h4>Create Row</h4>
+				<button class="create" onclick="createRowAbove()">New Row Above</button>
+				<button class="create" onclick="createRowBelow()">New Row Below</button>
+				<button class="create" onclick="cloneRowAbove()">Clone Row Above</button>
+				<button class="create" onclick="cloneRowBelow()">Clone Row Below</button>
+			</div>
+			<div>
+				<h4>Edit Row</h4>
+				<span style="font-style: italic">Row Group:</span> <input type="text" id="rowGroup" value="">
+				<span style="font-style: italic">Row Name:</span> <input type="text" id="rowName" value="">
+
+				<button id="applyRowEditBtn" class="create" onclick="rowEdit()">Apply Row Edit</button>
+			</div>
+			<div>
+				<h4>Delete Row</h4>
+				<button class="delete" onclick="deleteRow()">Row Display-None</button>
+				<button class="delete" onclick="hideRow()">Row Hidden-Visibility</button>
+				<button class="delete" onclick="destroyRow()" style="font-style: italic">Destroy Row</button>
+			</div>
+
+			<!--COLUMNS-->
+			<h3 class='tableBuilderSections'>Column</h3>
+			<div>
+				<h4>Create Column</h4>
+				<button class="create" onclick="createColumnBefore()">Column Before</button>
+				<button class="create" onclick="createColumnAfter()">Column After</button>
+			</div>
+			<div>
+				<h4>Delete Column</h4>
+				<button class="delete" onclick="deleteColumn()">Delete Column</button>
+				<button class="delete" onclick="hideColumn()">Hide Column</button>
+			</div>
+
+			<h3 class='tableBuilderSections'>Show All</h3>
+			<button class="create" onclick="showAll()">Show All Rows & Cells</button>
+
+			<h3 class='tableBuilderSections'>Build Table</h3>
+			<button class="create" onclick="btn_buildLegendTable()">Build Legend Table</button>
+		</div>
+
+	</div>
+
+</body>
+
+<script type="text/javascript" src="javascript/tableColumnClasses.js"></script>
+<script type="text/javascript" src="javascript/tableCreator-Y.js"></script>
+<script type="text/javascript" src="javascript/dragdCloneDivs.js"></script>
+
+<script type="text/javascript" src="javascript/draggableHtmlElement.js"></script>
+
+</html>

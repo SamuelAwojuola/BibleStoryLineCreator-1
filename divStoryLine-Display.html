@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>StoryLine-FORM</title>
+
+	<style>
+		main {
+			display: table;
+			table-layout: fixed;
+			border-collapse: separate;
+			border-spacing: 5px;
+		}
+
+		main div {
+			min-width: 100px;
+		}
+
+		main > div {
+			display: table-row;
+			vertical-align: middle;
+			text-align: center;
+		}
+
+		main > div > div {
+			background-color: aliceblue;
+			/*			border-left: 1px solid;*/
+			/*			max-width: 100px;*/
+			/*			position: absolute;*/
+		}
+
+		main > div > div > div div {
+			background-color: pink;
+		}
+		
+		main > div > div > div {
+			display: table-row;
+		}
+	</style>
+</head>
+
+<body>
+	<main>
+		<div>
+			<div style="display: table-cell;" id="before_creation">Before Creation</div>
+			<div style="display: table-cell;" id="temple_of_eden">Temple of Eden
+				<div style="display: table-row; border: 1px solid black; bottom: 0;">
+					<div style="display: table-cell;" parent="">Unknown</div>
+					<div style="display: table-cell;" parent="">Christ Chosen</div>
+					<div style="display: table-cell;" parent="">Creation</div>
+				</div>
+			</div>
+			<div style="display: table-cell;" id="no_temple">No Temple</div>
+			<div style="display: table-cell;" id="old_covenant">The Old Covenant</div>
+			<div style="display: table-cell;" id="old_and_new_covenants">The Old & New Covenants</div>
+			<div style="display: table-cell;" id="new_covenant">The New Covenant</div>
+		</div>
+		<div>
+			<div style="display: table-cell;" parent="">Unknown</div>
+			<div style="display: table-cell;" parent="">Christ Chosen</div>
+			<div style="display: table-cell;" parent="">Creation</div>
+			<div style="display: table-cell;" parent="">Transgression</div>
+			<div style="display: table-cell;" parent="">Flood</div>
+			<div style="display: table-cell;" parent="">Babel</div>
+			<div style="display: table-cell;" parent="">The Law</div>
+			<div style="display: table-cell;" parent="">Crucifixion</div>
+			<div style="display: table-cell;" parent="">Christ in Heaven</div>
+			<div style="display: table-cell;" parent="">1,000 Year Reign</div>
+			<div style="display: table-cell;" parent="">Intermediate</div>
+			<div style="display: table-cell;" parent="">Last Resurrection</div>
+			<div style="display: table-cell;" parent="">New Jerusalem on Earth</div>
+		</div>
+	</main>
+</body></html>

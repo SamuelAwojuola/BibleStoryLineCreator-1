@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Table Creator & Modifier</title>
+
+	<style>
+		body {
+			margin-left: 0;
+			margin-right: 0;
+			/*			background-color:#000000;*/
+			font-size: 85%;
+		}
+
+		#tableContainer {
+			position: absolute;
+			width: 85vw;
+			height: 90vh;
+			overflow: auto;
+			left: 10px;
+
+			border: 1px solid #d00e0e;
+			/*			z-index: 99;*/
+		}
+
+		table {
+			position: absolute;
+			/*			border-collapse: collapse;*/
+			border-spacing: 5px;
+		}
+
+		td {
+			min-width: 100px;
+			height: 50px;
+			border: 1px solid;
+			background-color: beige;
+			border-radius: 5px;
+		}
+
+		tr {
+			border-top: 5px;
+		}
+
+		#tableBuilder {
+			position: fixed;
+			top: 5px;
+			right: 5px;
+			height: 100vh;
+			width: 145px;
+			z-index: 10;
+			background-color: white;
+			overflow-y: auto;
+		}
+
+		#tableBuilder>div>div h3 {
+			padding-bottom: 0;
+			margin-bottom: 0;
+			text-align: justify-all;
+			color: black;
+			border-bottom: 2px solid black;
+		}
+
+		#tableBuilder>div>div h3:hover {
+			color: red;
+			border-bottom: 2px solid brown;
+		}
+
+		#tableBuilder>div button {
+			width: 100%;
+			display: inline-block;
+			cursor: pointer;
+			font-family: Arial;
+			font-size: 11px;
+			font-weight: bold;
+			padding: 6px 24px;
+			text-decoration: none;
+		}
+
+		button.create {
+			box-shadow: inset 0px 1px 0px 0px #ffffff;
+			background: linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
+			background-color: #ffffff;
+			border: 1px solid #dcdcdc;
+			color: #666666;
+			text-shadow: 0px 1px 0px #ffffff;
+		}
+
+		#tableBuilder>div button.create:hover {
+			background: linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+			background-color: #f6f6f6;
+		}
+
+		#tableBuilder>div button.delete:hover {
+			background: linear-gradient(to bottom, #e4685d 5%, #fc8d83 100%);
+			background-color: #e4685d;
+		}
+
+		button.delete {
+			box-shadow: inset 0px 1px 0px 0px #f7c5c0;
+			background: linear-gradient(to bottom, #fc8d83 5%, #e4685d 100%);
+			background-color: #fc8d83;
+			border: 1px solid #d83526;
+			color: #ffffff;
+			text-shadow: 0px 1px 0px #b23e35;
+		}
+
+		button:last-child {
+			border-bottom: 0.5px solid grey;
+		}
+
+		button:first-child {
+			border-top: 0.5px solid grey;
+		}
+
+		input {
+			min-height: auto;
+			width: 112px;
+		}
+
+	</style>
+</head>
+
+<body>
+
+	<div id="tableContainer">
+		<table id="storyLineTable">
+			<tbody>
+				<tr>
+					<td>a1</td>
+					<td>a2</td>
+					<td>a3</td>
+				</tr>
+				<tr>
+					<td colspan="2">b1,b2</td>
+					<td>b3</td>
+				</tr>
+				<tr>
+					<td>c1</td>
+					<td>c2</td>
+					<td>c3</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div id="tableBuilder">
+		<div>
+			<div>
+				<h3>Create Table Cell</h3>
+				<span style="font-style: italic">Cell Name:</span> <input type="text" id="myText" value="">
+
+				<button class="create" onclick="createCellBefore()">CELL LEFT</button>
+				<button class="create" onclick="createCellAfter()">CELL RIGHT</button>
+				<button class="create" onclick="increaseCellColspan()">WIDEN CELL</button>
+				<button class="create" onclick="decreaseCellColspan()">CONTRACT CELL</button>
+			</div>
+			<div>
+				<h3>Create Table Rows</h3>
+				<button class="create" onclick="createRowAbove()">ROW ABOVE</button>
+				<button class="create" onclick="createRowBelow()">ROW BELOW</button>
+				<button class="create" onclick="cloneRowBelow()">CLONE ROW ABOVE</button>
+				<button class="create" onclick="cloneRowAbove()">CLONE ROW BELOW</button>
+				<button class="create" onclick="">SPLIT CELL</button>
+			</div>
+			<div>
+				<h3>Create Column</h3>
+				<button class="create" onclick="createColumnBefore()">COLUMN BEFORE</button>
+				<button class="create" onclick="createColumnAfter()">COLUMN AFTER</button>
+			</div>
+			<div>
+				<h3>Delete</h3>
+				<button class="delete" onclick="deleteCell()">DELETE CELL</button>
+				<button class="delete" onclick="hideCell()">HIDE CELL</button>
+				<button class="delete" onclick="deleteRow()">DELETE ROW</button>
+				<button class="delete" onclick="hideRow()">HIDE ROW</button>
+				<button class="delete" onclick="deleteColumn()">DELETE COLUMN</button>
+				<button class="delete" onclick="hideColumn()">HIDE COLUMN</button>
+			</div>
+			<div>
+				<h3>Show All</h3>
+				<button class="create" onclick="showAll()">SHOW All ROWS & CELLS</button>
+			</div>
+			<div style="font-style: italic">
+				<h3 style="color: red; background-color: #fff7f4">Destroy!</h3>
+				<button class="delete" onclick="destroyCell()" style="font-style: italic">DESTROY CELL</button>
+				<button class="delete" onclick="destroyRow()" style="font-style: italic">DESTROY ROW</button>
+			</div>
+		</div>
+	</div>
+
+</body>
+<script type="text/javascript" src="tableColumnClasses.js"></script>
+<script type="text/javascript" src="tableCreator-Y.js"></script>
+
+</html>

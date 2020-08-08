@@ -1,0 +1,169 @@
+body {
+	margin-left: 0;
+	margin-right: 0;
+	background-color: rgba(228, 230, 157, 0.15);
+	font-size: 85%;
+}
+
+table table {
+	border-top: 0.5px solid #ead9dc;
+	border-bottom: 0.5px solid #ead9dc;
+	border-radius: 2px;
+}
+
+table > h1,
+table > h2,
+table > h3,
+table > h4,
+table > h5,
+table > h6 {
+	color: blue;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+#masterTable {}
+
+#masterTable > td {
+	background-color: transparent;
+}
+
+#storyLineTable,
+#legendTable {
+	position: relative;
+	border-spacing: 10px;
+	/*			  border-collapse: collapse;*/
+	box-shadow: 0px 3px 6px -3px black;
+}
+
+#divTableContainer {
+	position: absolute;
+	width: 85vw;
+	height: 90vh;
+	overflow: auto;
+	left: 10px;
+
+	border: 0.5px solid #900f0f;
+	border-radius: 2.5px;
+	/*			z-index: 99;*/
+}
+
+#legendTable td,
+#legendTable th,
+#storyLineTable td,
+#storyLineTable th {
+	min-width: 100px;
+	height: 55px;
+	border: 0.5px solid #ead9dc;
+	background-color: beige;
+	border-radius: 2px;
+	/*			box-shadow: 0 8px 7.5px -8px black;*/
+	box-shadow: 0 4px 5px -6px black;
+}
+
+#legendTable td:hover,
+#legendTable th:hover,
+#storyLineTable td:hover,
+#storyLineTable th:hover {
+	box-shadow: 0 8px 7.5px -8px black;
+}
+
+#legendTable th,
+#legendTable thead td,
+#storyLineTable th,
+#storyLineTable thead td {
+	background-color: #ffe7c1;
+	border-radius: 2px;
+	box-shadow: 0 4px 5px -6px black;
+}
+
+#tableBuilder {
+	position: fixed;
+	top: 5px;
+	right: 5px;
+	height: 100vh;
+	width: 145px;
+	z-index: 10;
+	background-color: white;
+	overflow-y: auto;
+}
+
+#tableBuilder > div {
+	padding-left: 5px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background-color: #f8f8f8;
+	border: 0.5px solid #8e6565;
+
+	box-shadow: 0 8px 6px -8px black;
+}
+
+#tableBuilder > div > div h3 {
+	padding-bottom: 0;
+	margin-bottom: 0;
+	text-align: justify-all;
+	color: black;
+	border-bottom: 2px solid black;
+}
+
+#tableBuilder > div > div h3:hover {
+	color: #5f0000;
+	border-bottom: 2px solid brown;
+	background-color: #d8ffc0
+}
+
+#tableBuilder > div button {
+	width: 100%;
+	display: inline-block;
+	cursor: pointer;
+	font-family: Arial;
+	font-size: 11px;
+	font-weight: bold;
+	padding: 6px 24px;
+	text-decoration: none;
+}
+
+button.create {
+	box-shadow: inset 0px 1px 0px 0px #ffffff;
+	background: linear-gradient(to bottom, #f7f7f7 50%, #f6f6f6 100%);
+	background-color: #ffffff;
+	border: 1px solid #dcdcdc;
+	color: #4b0000;
+	text-shadow: 0px 1px 0px #ffffff;
+}
+
+#tableBuilder > div button.create:hover {
+	background: linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+	background-color: #f6f6f6;
+}
+
+#tableBuilder > div button.delete:hover {
+	background: linear-gradient(to bottom, #e4685d 5%, #fc8d83 100%);
+	background-color: #e4685d;
+}
+
+button.delete {
+	box-shadow: inset 0px 1px 0px 0px #f7c5c0;
+	background: linear-gradient(to bottom, #fc8d83 5%, #e4685d 100%);
+	background-color: #fc8d83;
+	border: 1px solid #d83526;
+	color: #ffffff;
+	text-shadow: 0px 1px 0px #b23e35;
+}
+
+button:last-child {
+	border-bottom: 0.5px solid grey;
+}
+
+button:first-child {
+	border-top: 0.5px solid grey;
+}
+
+input {
+	min-height: auto;
+	width: 112px;
+}
+
+.btnactivecolor {
+	background-color: aquamarine;
+}
