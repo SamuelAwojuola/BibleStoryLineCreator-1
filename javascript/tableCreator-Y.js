@@ -171,8 +171,11 @@ function divListeners() {
 		allDivs = cells[i].querySelectorAll('div');
 
 		for (j = 0; j < allDivs.length; j++) {
+			var divClickCounter = 0;
 
 			allDivs[j].onclick = function () {
+//				var divHasBeenClicked;
+//				console.log(divHasBeenClicked);
 				clickedDIV = this;
 				var initialColor = this.style.backgroundColor;
 				this.style.backgroundColor = "lightgrey";
@@ -901,12 +904,15 @@ function buildLegendTable() {
 /* SET HEIGHT OF LEGEND CELLS ************************************************************/
 
 function btn_buildLegendTable() {
-	//	deselectEmptyCell();
-	//	rowListeners();
-	//	cellListeners();
-	//	resetClasses();
-	buildLegendTable();
 	dragDiv2TD();
+	divListeners();
+	if (clickedCell) {
+		deselectEmptyCell();
+	}
+	buildLegendTable();
+	//		rowListeners();
+	//		cellListeners();
+	//		resetClasses();
 }
 /****************************************************************************************/
 /****************************************************************************************/
