@@ -8,7 +8,10 @@
 //To restore a column, the col-x-hidden will be restored to col-x
 //The colspan value of a cell with colspan will be made equal to the number of  class-x'es it has.
 
+var arrayOfAllColClasses = [];
+
 function generateColumnClasses() {
+
 	var ArrayOfAllTds = document.getElementsByTagName("td");
 	var customIndex = 0;
 	customIndex = customIndex++;
@@ -67,6 +70,10 @@ function generateColumnClasses() {
 				}
 			}
 		}
+
+	if (arrayOfAllColClasses.indexOf(colClass) == -1) {
+		arrayOfAllColClasses.push(colClass)
+	}
 	}
 }
 

@@ -347,7 +347,9 @@
 							<tr>
 								<td></td>
 								<td></td>
-								<td><!--<div style="position: relative; z-index: 1;">X</div>--></td>
+								<td>
+								<!--<div style="position: relative; z-index: 1;">X</div>-->
+								</td>
 								<td></td>
 							</tr>
 							<tr>
@@ -472,42 +474,4 @@
 <script type="text/javascript" src="javascript/draggableHtmlElement.js"></script>
 <script type="text/javascript" src="javascript/dragdCloneDivs.js"></script>
 <script type="text/javascript" src="javascript/svgCurvedLinesConnectors.js"></script>
-
-<script>
-	//ANSEKI LEADERLINE
-	//use the divClassAttributeArray to link all divs of the same className
-	/*	function btn_leaderLines() {
-			if (document.querySelectorAll('.leader-line')) {
-				var allLeaderLines = document.querySelectorAll('.leader-line');
-				// Remove all existing lines.
-				for (k = 0; k < allLeaderLines.length; k++) {
-					allLeaderLines[k].remove();
-				}
-			}
-			var startElement, endElement;
-			for (i = 0; i < divClassAttributeArray.length; i++) {
-				var divsOfDivClassName = storyLineTable.querySelectorAll('[divClassName=' + divClassAttributeArray[i] + ']');
-				for (j = 0; j < divsOfDivClassName.length; j++) {
-					if (j == 0) {
-						startElement = divsOfDivClassName[j]
-					} else {
-						endElement = divsOfDivClassName[j]
-
-						var line = new LeaderLine(startElement, endElement, {
-							//						startLabel: 'John 3:16',
-							//						middleLabel: 'MIDDLE',
-							//						endLabel: 'END',
-							startSocket: 'right',
-							endSocket: 'left',
-							size: 20,
-							//						outlineSize: 0.08,
-							endPlug: 'behind',
-							path: 'grid',
-						});
-						startElement = divsOfDivClassName[j]
-					}
-				}
-			}
-
-		}*/
-</script></html>
+</html>

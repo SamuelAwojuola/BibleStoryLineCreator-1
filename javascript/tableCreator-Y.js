@@ -23,6 +23,7 @@ function onloadAnalysis() {
 	rowListeners();
 	cellListeners();
 	buildLegendTable();
+	generateColumnClasses();
 }
 
 function analyzeTable() {
@@ -915,7 +916,7 @@ function btn_buildLegendTable() {
 	buildLegendTable();
 	//		rowListeners();
 	//		cellListeners();
-	//		resetClasses();
+	resetClasses();
 
 	/*FOR ANSWEKI LEADERLINE*****************************************************************/
 	//	var listOfAllDivs = storyLineTable.querySelectorAll('');
