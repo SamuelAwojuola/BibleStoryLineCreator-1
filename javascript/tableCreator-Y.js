@@ -6,6 +6,8 @@ var selectedCell;
 var clickedDIV;
 var divNameArray = [];
 var divClassArray = [];
+var divClassAttributeArray = [];
+
 
 //FUNCTION FOR REMOVING CLASSES
 function removeClassByPrefix(node, prefix) {
@@ -174,8 +176,8 @@ function divListeners() {
 			var divClickCounter = 0;
 
 			allDivs[j].onclick = function () {
-//				var divHasBeenClicked;
-//				console.log(divHasBeenClicked);
+				//				var divHasBeenClicked;
+				//				console.log(divHasBeenClicked);
 				clickedDIV = this;
 				var initialColor = this.style.backgroundColor;
 				this.style.backgroundColor = "lightgrey";
@@ -899,6 +901,7 @@ function buildLegendTable() {
 	headerClear = 1;
 	bodyClear = 1;
 	clear = 1;
+
 }
 
 /* SET HEIGHT OF LEGEND CELLS ************************************************************/
@@ -913,12 +916,21 @@ function btn_buildLegendTable() {
 	//		rowListeners();
 	//		cellListeners();
 	//		resetClasses();
+
+	/*FOR ANSWEKI LEADERLINE*****************************************************************/
+	//	var listOfAllDivs = storyLineTable.querySelectorAll('');
+	//	for(i=0; i<classLength; i++){
+	//		line.start = document.getElementById('start');
+	//		line.end = document.getElementById('end')
+	//	}
+	/****************************************************************************************/
+
 }
 /****************************************************************************************/
 /****************************************************************************************/
 
 /****************************************************************************************/
-/*ISERT DIV******************************************************************************/
+/*ISERT DIV* *****************************************************************************/
 /****************************************************************************************/
 
 var input4divName = document.getElementById('divName'); //GETS INPUT BOX
@@ -931,6 +943,7 @@ function createDIV() {
 	var dIVwtLabel = document.createElement('DIV');
 	dIVwtLabel.classList.add('opt_' + dClass);
 	dIVwtLabel.classList.add('draggableDiv');
+	dIVwtLabel.setAttribute('divClassName', dClass);
 	dIVwtLabel.innerHTML = dName;
 	dIVwtLabel.style.backgroundColor = 'pink';
 	dIVwtLabel.setAttribute('draggable', 'true');
@@ -945,12 +958,17 @@ function createDIV() {
 	deselectEmptyCell();
 	buildLegendTable();
 
+	//ARRAY FOR DIV'S & THEIR CLASSES
+	divClassArray.push(dClass)
+	divNameArray.push(dName);
+
+	//ADD THE CLASS TO THE ARRAY IF IT DOESN'T ALREADY EXIST IN IT
+	if (divClassAttributeArray.indexOf(dClass) == -1) {
+		divClassAttributeArray.push(dClass)
+	}
+	
 	divListeners();
 	dragDiv2TD();
-
-	//ARRAY FOR DIV'S & THEIR CLASSES
-	divClassArray.push(dClass);
-	divNameArray.push(dName);
 
 	/*CREATING THE OPTIONS FOR THE SELECT ELEMENTS*********************************************/
 	/******************************************************************************************/
