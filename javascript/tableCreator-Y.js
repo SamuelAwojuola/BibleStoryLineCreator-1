@@ -444,6 +444,9 @@ function createRowAbove() {
 	newIrow = (newIrow || aboveRow) + 1;
 
 	analyzeTable();
+	generateColumnClasses();
+	dragDiv2TD();
+	divListeners();
 }
 
 //CREATE ROW BELOW CLICKED ROW
@@ -452,6 +455,9 @@ function createRowBelow() {
 	var cell1 = row.insertCell(0);
 
 	analyzeTable();
+	generateColumnClasses();
+	dragDiv2TD();
+	divListeners();
 }
 
 //CLONE ROW ABOVE CLICKED ROW
@@ -459,7 +465,20 @@ function cloneRowAbove() {
 	var itm = storyLineTable.querySelectorAll('tr')[newIrow || aboveRow];
 	var cln = itm.cloneNode(true);
 	var clonedRow = itm.before(cln);
-
+	/*TO REMOVE THE DRAGOVER CLASSES USED TO PREVENT ADDITION OF DTAGOVER RELATED EVENT-LISTNERS SO THAT THOSE EVENT-LISTNERS CAN BE ADDED TO THEM****************************************/
+	var clonedRowTds = cln.querySelectorAll('.dragOverELAdded');
+	if (clonedRowTds) {
+		for (i = 0; i < clonedRowTds.length; i++) {
+			clonedRowTds[i].classList.remove('dragOverELAdded');
+		}
+	}
+	var divsInClonedRow = cln.querySelectorAll('.dragEventListnerAdded');
+	if (divsInClonedRow) {
+		for (i = 0; i < divsInClonedRow.length; i++) {
+			divsInClonedRow[i].classList.remove('dragEventListnerAdded')
+		}
+	}
+	/*****************************************/
 	newIrow = (newIrow || aboveRow) + 1;
 
 	var cellZ2deselect = storyLineTable.querySelectorAll('.clicked');
@@ -482,7 +501,9 @@ function cloneRowAbove() {
 	cellListeners();
 	resetClasses();
 	buildLegendTable();
-
+	//	generateColumnClasses();
+	dragDiv2TD();
+	divListeners();
 
 
 }
@@ -493,6 +514,20 @@ function cloneRowBelow() {
 	var itm = storyLineTable.querySelectorAll('tr')[aboveRow];
 	var cln = itm.cloneNode(true);
 	var clonedRow = itm.after(cln);
+	/*TO REMOVE THE DRAGOVER CLASSES USED TO PREVENT ADDITION OF DTAGOVER RELATED EVENT-LISTNERS SO THAT THOSE EVENT-LISTNERS CAN BE ADDED TO THEM****************************************/
+	var clonedRowTds = cln.querySelectorAll('.dragOverELAdded');
+	if (clonedRowTds) {
+		for (i = 0; i < clonedRowTds.length; i++) {
+			clonedRowTds[i].classList.remove('dragOverELAdded');
+		}
+	}
+	var divsInClonedRow = cln.querySelectorAll('.dragEventListnerAdded');
+	if (divsInClonedRow) {
+		for (i = 0; i < divsInClonedRow.length; i++) {
+			divsInClonedRow[i].classList.remove('dragEventListnerAdded')
+		}
+	}
+	/*****************************************/
 	var cellZ2deselect = storyLineTable.querySelectorAll('.clicked');
 
 	for (i = 0; i < cellZ2deselect.length; i++) {
@@ -515,7 +550,9 @@ function cloneRowBelow() {
 	cellListeners();
 	resetClasses();
 	buildLegendTable();
-
+	//	generateColumnClasses();
+	dragDiv2TD();
+	divListeners();
 
 }
 
@@ -547,17 +584,20 @@ function destroyRow() {
 
 /*COLUMNS***********************************************************************************************/
 //CREATE COLUMN BEFORE CLICKED COLUMN
-var z = 1;
+//var z = 1;
 
 function createColumnBefore() {
 	var row = storyLineTable.querySelectorAll('tr');
 	for (j = 0; j < row.length; j++) {
 		var cell = row[j].insertCell(newIcell || beforeCell);
-		cell.innerHTML = 'columnBefore ' + z;
+		//		cell.innerHTML = 'columnBefore ' + z;
 	}
-	++z;
+	//	++z;
 	newIcell = (newIcell || beforeCell) + 1;
 	analyzeTable();
+	generateColumnClasses();
+	dragDiv2TD();
+	divListeners();
 }
 
 //CREATE COLUMN AFTER CLICKED COLUMN
@@ -565,11 +605,14 @@ function createColumnAfter() {
 	var row = storyLineTable.querySelectorAll('tr');
 	for (j = 0; j < row.length; j++) {
 		var cell = row[j].insertCell(afterCell);
-		cell.innerHTML = 'columnAfter ' + z;
+		//		cell.innerHTML = 'columnAfter ' + z;
 	}
-	++z;
+	//	++z;
 	newIcell = (newIcell || afterCell) + 1;
 	analyzeTable();
+	generateColumnClasses();
+	dragDiv2TD();
+	divListeners();
 }
 
 //DELETE COLUMN
@@ -967,9 +1010,10 @@ function createDIV() {
 	if (divClassAttributeArray.indexOf(dClass) == -1) {
 		divClassAttributeArray.push(dClass)
 	}
-	
+
 	divListeners();
 	dragDiv2TD();
+	btn_leaderLines();
 
 	/*CREATING THE OPTIONS FOR THE SELECT ELEMENTS*********************************************/
 	/******************************************************************************************/

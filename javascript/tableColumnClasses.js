@@ -71,9 +71,9 @@ function generateColumnClasses() {
 			}
 		}
 
-	if (arrayOfAllColClasses.indexOf(colClass) == -1) {
-		arrayOfAllColClasses.push(colClass)
-	}
+		if (arrayOfAllColClasses.indexOf(colClass) == -1) {
+			arrayOfAllColClasses.push(colClass)
+		}
 	}
 }
 
