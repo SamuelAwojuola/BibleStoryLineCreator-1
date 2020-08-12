@@ -1,16 +1,17 @@
 //SVG PATH
-function nodesconnector(pathXYcord) {
+function nodesconnector(pathXYcord, divClassLineConnects) {
 
 	var path1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
 	document.getElementById("svg").appendChild(path1);
 
 	//	path1.setAttributeNS(null, pathXYcord);
 	path1.setAttributeNS(null, "d", pathXYcord);
-	path1.setAttributeNS(null, "stroke", "pink");
+//	path1.setAttributeNS(null, "stroke", "pink");
 	path1.setAttributeNS(null, "stroke-width", 20);
 	path1.setAttributeNS(null, "opacity", 0.7);
 	path1.setAttributeNS(null, "fill", "none");
 	path1.classList.add("svg-connectors");
+	path1.classList.add(divClassLineConnects);
 }
 
 
@@ -19,7 +20,7 @@ var startElement = document.querySelector("#a");
 var endElement = document.querySelector("#b");
 // var connector = document.querySelector("#connector");
 
-function drawConnector(X, Y) {
+function drawConnector(X, Y, divClassforColor) {
 	var A = getCoordinates(X);
 	var B = getCoordinates(Y);
 	var posnA = {
@@ -38,17 +39,17 @@ function drawConnector(X, Y) {
 		(posnB.x - 100) + "," + (posnB.y) + " " +
 		(posnB.x) + "," + (posnB.y);
 	//	connector.setAttribute("d", dStr);
-	nodesconnector("M" +
+	nodesconnector(("M" +
 		(posnA.x) + "," + (posnA.y) + " " +
 		"C" +
 		(posnA.x + 100) + "," + (posnA.y) + " " +
 		(posnB.x - 100) + "," + (posnB.y) + " " +
-		(posnB.x) + "," + (posnB.y));
+		(posnB.x) + "," + (posnB.y)), 'opt_' + divClassforColor);
 }
 
 //drawConnector(startElement, endElement);
 //use the divClassAttributeArray to link all divs of the same className
-var btn_leaderLines = function () {
+var connectAllDraggableDivsWithSVGLines = function () {
 	if (document.querySelectorAll('.svg-connectors')) {
 		var allLeaderLines = document.querySelectorAll('.svg-connectors');
 		// Remove all existing lines.
@@ -98,7 +99,7 @@ var btn_leaderLines = function () {
 				} else if ((firstDivofClassFound == 1) && (divWithCurrentDivClassNameinColumn)) {
 					endElement = divWithCurrentDivClassNameinColumn
 					////////////////////////////////////////
-					drawConnector(startElement, endElement);
+					drawConnector(startElement, endElement, divClassAttributeArray[i]);
 					////////////////////////////////////////
 					startElement = divWithCurrentDivClassNameinColumn
 				}
@@ -110,6 +111,6 @@ var btn_leaderLines = function () {
 
 
 //REDRAW THE LINES EVERYTIME THE WINDOW IS RESIZED
-window.addEventListener("resize", btn_leaderLines);
-//window.addEventListener("wheel", btn_leaderLines);
+window.addEventListener("resize", connectAllDraggableDivsWithSVGLines);
+//window.addEventListener("wheel", connectAllDraggableDivsWithSVGLines);
 //window.addEventListener("resize", drawConnector(startElement, endElement));

@@ -22,8 +22,41 @@ onload = onloadAnalysis();
 function onloadAnalysis() {
 	rowListeners();
 	cellListeners();
+	/*TO REMOVE THE DRAGOVER CLASSES USED TO PREVENT ADDITION OF DTAGOVER RELATED EVENT-LISTNERS SO THAT THOSE EVENT-LISTNERS CAN BE ADDED****************************************/
+	var tdsWithDragOverELAddedClass = storyLineTable.querySelectorAll('.dragOverELAdded');
+	if (tdsWithDragOverELAddedClass) {
+		for (i = 0; i < tdsWithDragOverELAddedClass.length; i++) {
+			tdsWithDragOverELAddedClass[i].classList.remove('dragOverELAdded');
+		}
+	}
+	var divsWithdragEventListnerAddedClass = storyLineTable.querySelectorAll('.dragEventListnerAdded');
+	if (divsWithdragEventListnerAddedClass.length != 0) {
+		for (i = 0; i < divsWithdragEventListnerAddedClass.length; i++) {
+			divsWithdragEventListnerAddedClass[i].classList.remove('dragEventListnerAdded');
+
+			/*TO REBUILD THE divClassAttributeArray**********************/
+			var divClassNameAttrValue = divsWithdragEventListnerAddedClass[i].getAttribute('divClassName');
+			//ADD THE CLASS TO THE ARRAY IF IT DOESN'T ALREADY EXIST IN IT
+			if (divClassAttributeArray.indexOf(divClassNameAttrValue) == -1) {
+				divClassAttributeArray.push(divClassNameAttrValue)
+			}
+			/************************************************************/
+		}
+
+		connectAllDraggableDivsWithSVGLines();
+		//		dragDiv2TD();
+		divListeners();
+		if (clickedCell) {
+			deselectEmptyCell();
+		}
+		buildLegendTable();
+		resetClasses();
+	}
+	/*****************************************/
+	else {
+		generateColumnClasses();
+	}
 	buildLegendTable();
-	generateColumnClasses();
 }
 
 function analyzeTable() {
@@ -51,7 +84,7 @@ function emptyCellDeselect(v) {
 	celldeselect.style.backgroundColor = '';
 	celldeselect.classList.remove('clicked');
 }
-/***********/
+/***********************************************************************/
 
 /*RESET CLASSES***************************************************************************/
 
@@ -465,7 +498,7 @@ function cloneRowAbove() {
 	var itm = storyLineTable.querySelectorAll('tr')[newIrow || aboveRow];
 	var cln = itm.cloneNode(true);
 	var clonedRow = itm.before(cln);
-	/*TO REMOVE THE DRAGOVER CLASSES USED TO PREVENT ADDITION OF DTAGOVER RELATED EVENT-LISTNERS SO THAT THOSE EVENT-LISTNERS CAN BE ADDED TO THEM****************************************/
+	/*TO REMOVE THE DRAGOVER CLASSES USED TO PREVENT ADDITION OF DTAGOVER RELATED EVENT-LISTNERS SO THAT THOSE EVENT-LISTNERS CAN BE ADDED****************************************/
 	var clonedRowTds = cln.querySelectorAll('.dragOverELAdded');
 	if (clonedRowTds) {
 		for (i = 0; i < clonedRowTds.length; i++) {
@@ -643,19 +676,23 @@ function showAll() {
 }
 
 
-
-//CONTROL BUTTONS ACCORDION
+/************************************************************/
+/* CONTROL BUTTONS ACCORDION ********************************/
+/************************************************************/
 var accordionCancel = document.getElementById('tableBuilderheaderHandle');
 
+var minMaxAccordion = document.getElementById('max-min');
 var draggable = document.getElementById('tableBuilderheader');
 var draggableParent = draggable.parentNode;
 draggable.style.cursor = 'pointer';
 
-draggable.onclick = function () {
+minMaxAccordion.onclick = function () {
 	if (draggable.nextElementSibling.style.display == 'none') {
-		draggable.nextElementSibling.style.display = ''
+		draggable.nextElementSibling.style.display = '';
+		minMaxAccordion.innerHTML = '&#9866;';
 	} else {
-		draggable.nextElementSibling.style.display = 'none'
+		draggable.nextElementSibling.style.display = 'none';
+		minMaxAccordion.innerHTML = '&#10010;';
 	}
 }
 
@@ -716,8 +753,13 @@ for (i = 0; i < h3.length; i++) {
 		}
 	}
 }
+/************************************************************/
+/************************************************************/
 
-/*ADD HEADING TO CLICKED CELL***************************************************************************/
+
+/************************************************************/
+/* ADD HEADING TO CLICKED CELL ******************************/
+/************************************************************/
 //THIS IS SO THAT ENTER KEY WILL WORK ON THE INPUT
 function inputEnter(inpt, inptBtn) {
 	inpt.addEventListener('keyup', function (event) {
@@ -734,7 +776,7 @@ function inputEnter(inpt, inptBtn) {
 		}
 	})
 }
-/************************************/
+/************************************************************/
 
 
 var input4heading = document.getElementById('cellHeading'); //GETS VALUE FROM INPUT BOX
@@ -785,9 +827,9 @@ function rowEdit() {
 var arrayOfRowNames = [];
 
 
-/****************************************************************************************/
-/*LEGEND TABLE SCRIPT********************************************************************/
-/****************************************************************************************/
+/************************************************************/
+/* LEGEND TABLE SCRIPT **************************************/
+/************************************************************/
 
 var headerClear;
 var bodyClear;
@@ -961,14 +1003,6 @@ function btn_buildLegendTable() {
 	//		cellListeners();
 	resetClasses();
 
-	/*FOR ANSWEKI LEADERLINE*****************************************************************/
-	//	var listOfAllDivs = storyLineTable.querySelectorAll('');
-	//	for(i=0; i<classLength; i++){
-	//		line.start = document.getElementById('start');
-	//		line.end = document.getElementById('end')
-	//	}
-	/****************************************************************************************/
-
 }
 /****************************************************************************************/
 /****************************************************************************************/
@@ -987,9 +1021,10 @@ function createDIV() {
 	var dIVwtLabel = document.createElement('DIV');
 	dIVwtLabel.classList.add('opt_' + dClass);
 	dIVwtLabel.classList.add('draggableDiv');
+	dIVwtLabel.classList.add('namLabelDiv');
 	dIVwtLabel.setAttribute('divClassName', dClass);
 	dIVwtLabel.innerHTML = dName;
-	dIVwtLabel.style.backgroundColor = 'pink';
+	//	dIVwtLabel.style.backgroundColor = 'pink';
 	dIVwtLabel.setAttribute('draggable', 'true');
 	//	dIVwtLabel.onclick = dragDiv2TD;
 
@@ -1006,14 +1041,46 @@ function createDIV() {
 	divClassArray.push(dClass)
 	divNameArray.push(dName);
 
+	var colorFromArray = cssColorNamesArray[Math.floor(Math.random() * cssColorNamesArray.length)];
+
 	//ADD THE CLASS TO THE ARRAY IF IT DOESN'T ALREADY EXIST IN IT
 	if (divClassAttributeArray.indexOf(dClass) == -1) {
-		divClassAttributeArray.push(dClass)
+		divClassAttributeArray.push(dClass);
+		/****************************************/
+		/* ASSIGN COLOR TO DIV CLASS ************/
+		var headerStyles = document.getElementById('divColorStyles');
+		var styles = `.opt_` + dClass + `{ background-color: ` + colorFromArray + `;
+        stroke: ` + colorFromArray + ` }`;
+		headerStyles.appendChild(document.createTextNode(styles));
+		/****************************************/
+
+		/*CREATE DIV MANIPULATOR*****************/
+		var divNavSectionOL = document.querySelector('#divList');
+		//CREATE LI ELEMENT
+		var liToHolddivListName = document.createElement('LI');
+		
+		//CREATE DIV ELEMENT
+		var divListName = document.createElement('DIV');
+		divListName.innerHTML = dName;
+		//APPEND DIV ELEMENT TO LIST
+		liToHolddivListName.appendChild(divClass);
+		
+		//APPEND INPUT ELEMENT TO LIST
+		var divListNameCheckBox = document.createElement('INPUT');
+		divListNameCheckBox.setAttribute('type', 'checkbox');
+		divListNameCheckBox.setAttribute('value', 'opt_' + dClass);
+		
+		//APPEND INPUT ELEMENT TO LIST
+		liToHolddivListName.appendChild(divListNameCheckBox);
+		
+		//APPEND LIST ELEMENT TO OL
+		divNavSectionOL.appendChild(liToHolddivListName);
+		/****************************************/
 	}
 
 	divListeners();
 	dragDiv2TD();
-	btn_leaderLines();
+	connectAllDraggableDivsWithSVGLines();
 
 	/*CREATING THE OPTIONS FOR THE SELECT ELEMENTS*********************************************/
 	/******************************************************************************************/

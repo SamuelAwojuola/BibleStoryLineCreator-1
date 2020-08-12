@@ -10,7 +10,7 @@ function dragDiv2TD() {
 
 
 	function dStart(e) {
-			btn_leaderLines();
+			connectAllDraggableDivsWithSVGLines();
 		if (e.ctrlKey) {
 			currentDraggedItem = this.cloneNode(true);
 			currentDraggedItem.classList.remove('dragEventListnerAdded');
@@ -25,7 +25,7 @@ function dragDiv2TD() {
 	}
 
 	function dEnd() {
-		btn_leaderLines();
+		connectAllDraggableDivsWithSVGLines();
 		currentDraggedItem.style.display = '';
 		setTimeout(function () {
 			currentDraggedItem = null;
