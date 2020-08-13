@@ -8,4 +8,5 @@ var preferredColors = [
 	"Gainsboro",
 	"Peru",
 	"CadeBlue",
+	"MediumTurquoise",
 ]

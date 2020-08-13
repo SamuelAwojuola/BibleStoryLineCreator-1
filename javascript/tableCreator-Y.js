@@ -1055,26 +1055,28 @@ function createDIV() {
 		/****************************************/
 
 		/*CREATE DIV MANIPULATOR*****************/
-		var divNavSectionOL = document.querySelector('#divList');
+		var labelNavSectionOL = document.querySelector('#labelList');
 		//CREATE LI ELEMENT
-		var liToHolddivListName = document.createElement('LI');
+		var liToHoldLabelListName = document.createElement('LI');
 		
-		//CREATE DIV ELEMENT
-		var divListName = document.createElement('DIV');
-		divListName.innerHTML = dName;
-		//APPEND DIV ELEMENT TO LIST
-		liToHolddivListName.appendChild(divClass);
-		
-		//APPEND INPUT ELEMENT TO LIST
-		var divListNameCheckBox = document.createElement('INPUT');
-		divListNameCheckBox.setAttribute('type', 'checkbox');
-		divListNameCheckBox.setAttribute('value', 'opt_' + dClass);
+		//CREATE LABEL ELEMENT
+		var labelListName = document.createElement('LABEL');
+		labelListName.innerHTML = dClass;
+		labelListName.setAttribute('for', 'opt_' + dClass);
+		//APPEND LABEL ELEMENT TO LIST
+		liToHoldLabelListName.appendChild(labelListName);
 		
 		//APPEND INPUT ELEMENT TO LIST
-		liToHolddivListName.appendChild(divListNameCheckBox);
+		var labelListNameCheckBox = document.createElement('INPUT');
+		labelListNameCheckBox.setAttribute('type', 'checkbox');
+		labelListNameCheckBox.setAttribute('value', 'opt_' + dClass);
+		labelListNameCheckBox.setAttribute('id', 'opt_' + dClass);
+		
+		//APPEND INPUT ELEMENT TO LIST
+		liToHoldLabelListName.appendChild(labelListNameCheckBox);
 		
 		//APPEND LIST ELEMENT TO OL
-		divNavSectionOL.appendChild(liToHolddivListName);
+		labelNavSectionOL.appendChild(liToHoldLabelListName);
 		/****************************************/
 	}
 

@@ -373,7 +373,7 @@
 			border: 1px solid grey;
 			border-radius: 2px;
 			width: 20px;
-			height: 16.5px;
+			height: 17px;
 			font-size: 12px;
 			text-align: center;
 		}
@@ -397,23 +397,21 @@
 		}
 		
 		#navDivButtonHolder {
-			display: block;
-			width: 120px;
+			margin-top:5px;
+			display: flex;
+			justify-content: space-evenly;
+			width: 100%;
+			border-spacing: 10px;
 		}
 
 		nav div>button {
+			flex-grow:1;
 			background-color: antiquewhite;
 			border: 1px solid grey;
 			border-radius: 2px;
-			margin-top: 5px;
-			width: 40%;
-/*			float: left;*/
-			margin-left: 10px;
-			
 		}
 
 		nav div>button:first-of-type {
-			margin-left: 3px;
 		}
 	</style>
 </head>
@@ -426,9 +424,10 @@
 		<button>Hide</button>
 		<button>Solo</button>
 		</div>
-		<ol id="divList" style="margin-top: 25px; padding-left: 20px">
+		<ol id="labelList" style="margin-top: 25px; padding-left: 20px">
 		</ol>
 	</nav>
+	
 	<div id="divTableContainer">
 
 		<table id="masterTable">
