@@ -1,4 +1,5 @@
 var storyLineTable = document.getElementById('storyLineTable');
+var masterTable = document.getElementById('masterTable');
 var TypeOfHtmlHeader = 'H4';
 var celldeselect;
 var tblReady;
@@ -692,7 +693,7 @@ minMaxAccordion.onclick = function () {
 		minMaxAccordion.innerHTML = '&#9866;';
 	} else {
 		draggable.nextElementSibling.style.display = 'none';
-		minMaxAccordion.innerHTML = '&#10010;';
+		minMaxAccordion.innerHTML = '&#9776;';
 	}
 }
 
@@ -1058,23 +1059,43 @@ function createDIV() {
 		var labelNavSectionOL = document.querySelector('#labelList');
 		//CREATE LI ELEMENT
 		var liToHoldLabelListName = document.createElement('LI');
-		
+
 		//CREATE LABEL ELEMENT
 		var labelListName = document.createElement('LABEL');
 		labelListName.innerHTML = dClass;
 		labelListName.setAttribute('for', 'opt_' + dClass);
 		//APPEND LABEL ELEMENT TO LIST
 		liToHoldLabelListName.appendChild(labelListName);
-		
+
 		//APPEND INPUT ELEMENT TO LIST
 		var labelListNameCheckBox = document.createElement('INPUT');
 		labelListNameCheckBox.setAttribute('type', 'checkbox');
 		labelListNameCheckBox.setAttribute('value', 'opt_' + dClass);
 		labelListNameCheckBox.setAttribute('id', 'opt_' + dClass);
-		
+
+		//ADD EVENTLISTNER TO INPUT ELEMENT
+		labelListNameCheckBox.addEventListener('click', function () {
+			if (this.checked) {
+				var classToHide = this.value;
+				var allDivsofClassToHide = masterTable.getElementsByClassName(classToHide);
+				for (i = 0; i < allDivsofClassToHide.length; i++) {
+					allDivsofClassToHide[i].style.display = "none";
+				}
+			} else if (!this.checked) {
+				var classToShow = this.value;
+				var allDivsofClassToHide = masterTable.getElementsByClassName(classToShow);
+
+				for (i = 0; i < allDivsofClassToHide.length; i++) {
+					allDivsofClassToHide[i].style.display = "";
+					console.log(i);
+				}
+				connectAllDraggableDivsWithSVGLines();
+			}
+		});
+
 		//APPEND INPUT ELEMENT TO LIST
 		liToHoldLabelListName.appendChild(labelListNameCheckBox);
-		
+
 		//APPEND LIST ELEMENT TO OL
 		labelNavSectionOL.appendChild(liToHoldLabelListName);
 		/****************************************/
@@ -1195,4 +1216,18 @@ function deleteDIV() {
 	buildLegendTable();
 
 }
-/****************************************************************************************/
+/******************************************************/
+/*FOR LABEL CONSOLE************************************/
+var navSection = document.querySelector('nav');
+var btn2ShowHideNav = document.getElementById('showLabelMenu');
+btn2ShowHideNav.addEventListener('click', function () {
+	if (navSection.style.display == 'none') {
+		navSection.style.display = '';
+		btn2ShowHideNav.innerHTML = '&#9866';
+	} else {
+		navSection.style.display = 'none'
+		btn2ShowHideNav.innerHTML = '&#9776;';
+	}
+})
+/******************************************************/
+/******************************************************/

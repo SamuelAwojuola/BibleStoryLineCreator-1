@@ -13,26 +13,26 @@
 
 	<style>
 		* {
+			font-family: 'Abril Fatface', serif;
+			font-family: 'Open Sans', sans-serif;
+			font-family: Arial, Helvetica, sans-serif;
+			font-family: Georgia, serif;
 			font-family: "Lucida Console", Courier, monospace;
 			font-family: 'Helvetica Neue', sans-serif;
-			font-family: Impact, Charcoal, sans-serif;
-			font-family: Georgia, serif;
 			font-family: "Times New Roman", Times, serif;
-			/*			font-family: Arial, Helvetica, sans-serif;*/
-			/*			font-family: 'Open Sans', sans-serif;*/
 			word-spacing: 2px;
-			/*			font-size: 95%;*/
+/*						font-size: 95%;*/
 		}
 
 		body {
 			margin-left: 0;
 			margin-right: 0;
-			background-color: rgba(255, 129, 62, 0.87);
-			background-color: rgba(129, 98, 131, 0.87);
-			background-color: rgba(0, 0, 0, 0.87);
 			background-color: rgba(255, 237, 62, 0.87);
 			background-color: rgba(131, 128, 98, 0.87);
+			background-color: rgba(129, 98, 131, 0.87);
 			background-color: rgb(253, 255, 238);
+			background-color: rgba(0, 0, 0, 0.87);
+			background-color: rgba(255, 255, 255, 0.87);
 		}
 
 		#svg {
@@ -352,52 +352,51 @@
 		}
 	</style>
 	<style>
+		#showLabelMenu {
+			position: absolute;
+			top:2px;
+			left:2px;
+			background-color: floralwhite;
+			box-shadow: 2px 3px 2px -1px grey;
+			border: 1px solid grey;
+			border-radius: 2px;			height: 20px;
+			font-size: 12px;
+			text-align: center;
+			z-index: 11;
+		}
+
 		nav * {
 			font-size: 98%;
 		}
+
 		nav {
 			position: absolute;
 			left: 0;
 			top: 0;
-			background-color: rgba(255, 255, 255, 0.88);
+			background-color: rgba(219, 219, 219, 0.88);
+			background-color: rgba(254, 255, 251, 0.9);
 			width: 150px;
 			height: 100%;
-			border: 2px solid grey;
+			border-right: 10px solid grey;
 			z-index: 10;
 		}
 
-		nav span:first-child {
-			position: relative;
-			float: left;
-			background-color: #e0ff98;
-			border: 1px solid grey;
-			border-radius: 2px;
-			width: 20px;
-			height: 17px;
-			font-size: 12px;
-			text-align: center;
-		}
-
 		nav h3 {
-			display: inline;
-			margin-left: 5px;
+			width: 100%;
+			display: block;
+			margin-top: 5px;
+			margin-bottom: 0;
+			text-align: center;
+			box-shadow: 2px 3px 2px -1px grey;
 		}
 
-		nav li > div {
+		nav li>div {
 			float: left;
 			vertical-align: middle;
 		}
 
-		nav input {
-			position: relative;
-			float: right;
-			display: inline;
-			width: 50px;
-			padding: 0;
-		}
-		
 		#navDivButtonHolder {
-			margin-top:5px;
+			margin-top: 5px;
 			display: flex;
 			justify-content: space-evenly;
 			width: 100%;
@@ -405,29 +404,59 @@
 		}
 
 		nav div>button {
-			flex-grow:1;
+			flex-grow: 1;
 			background-color: antiquewhite;
 			border: 1px solid grey;
 			border-radius: 2px;
 		}
 
-		nav div>button:first-of-type {
+		nav div>button:first-of-type {}
+
+		nav ol {
+			list-style: none;
+			counter-reset: any-name;
+		}
+
+		nav li {
+			display: flex;
+			background-color: antiquewhite;
+			border: 1px solid grey;
+			border-radius: 2px;
+			list-style-type: none;
+			margin-left: -20px;
+			padding-left: 5px;
+			counter-increment: any-name;
+		}
+
+		nav li::before {
+			content: counter(any-name);
+			margin-right: 0.5rem;
+		}
+
+		nav li>label {
+			flex-grow: 2;
+			border-right: 2px solid black;
+		}
+
+		nav li>input {
+			width: 20px;
+			padding: 0;
 		}
 	</style>
 </head>
 
 <body>
+		<button id="showLabelMenu">&#9866;</button>
 	<nav>
-		<span>&#9776;</span>
 		<h3>Labels</h3>
 		<div id="navDivButtonHolder">
-		<button>Hide</button>
-		<button>Solo</button>
+			<button>Hide</button>
+			<button>Solo</button>
 		</div>
 		<ol id="labelList" style="margin-top: 25px; padding-left: 20px">
 		</ol>
 	</nav>
-	
+
 	<div id="divTableContainer">
 
 		<table id="masterTable">
@@ -465,7 +494,7 @@
 								<td></td>
 								<td></td>
 								<td></td>
-								<td></td>
+								<td class="hover"></td>
 							</tr>
 						</tbody>
 					</table>
