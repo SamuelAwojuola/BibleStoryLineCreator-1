@@ -21,7 +21,7 @@
 			font-family: 'Helvetica Neue', sans-serif;
 			font-family: "Times New Roman", Times, serif;
 			word-spacing: 2px;
-/*						font-size: 95%;*/
+			/*						font-size: 95%;*/
 		}
 
 		body {
@@ -354,12 +354,13 @@
 	<style>
 		#showLabelMenu {
 			position: absolute;
-			top:2px;
-			left:2px;
+			top: 2px;
+			left: 2px;
 			background-color: floralwhite;
 			box-shadow: 2px 3px 2px -1px grey;
 			border: 1px solid grey;
-			border-radius: 2px;			height: 20px;
+			border-radius: 2px;
+			height: 20px;
 			font-size: 12px;
 			text-align: center;
 			z-index: 11;
@@ -370,14 +371,20 @@
 		}
 
 		nav {
-			position: absolute;
+			position: fixed;
 			left: 0;
 			top: 0;
+			bottom: 50px;
 			background-color: rgba(219, 219, 219, 0.88);
 			background-color: rgba(254, 255, 251, 0.9);
 			width: 150px;
-			height: 100%;
+			/*			height: 100%;*/
 			border-right: 10px solid grey;
+			border-top: 30px solid grey;
+			border-bottom: 10px solid grey;
+			border-radius: 5px;
+			padding-left: 5px;
+			padding-right: 5px;
 			z-index: 10;
 		}
 
@@ -387,7 +394,10 @@
 			margin-top: 5px;
 			margin-bottom: 0;
 			text-align: center;
-			box-shadow: 2px 3px 2px -1px grey;
+		}
+
+		nav hr {
+			margin: 0px 0;
 		}
 
 		nav li>div {
@@ -398,6 +408,7 @@
 		#navDivButtonHolder {
 			margin-top: 5px;
 			display: flex;
+			flex-wrap: wrap;
 			justify-content: space-evenly;
 			width: 100%;
 			border-spacing: 10px;
@@ -442,16 +453,22 @@
 			width: 20px;
 			padding: 0;
 		}
+
+		.opacityClass {
+			opacity: 0.2;
+		}
 	</style>
 </head>
 
 <body>
-		<button id="showLabelMenu">&#9866;</button>
+	<button id="showLabelMenu">&#9866;</button>
 	<nav>
 		<h3>Labels</h3>
+		<hr>
 		<div id="navDivButtonHolder">
-			<button>Hide</button>
-			<button>Solo</button>
+			<button id='soloDivsOfCheckedClass' onclick="hideAllOtherExcept4DivsOfClass(this)" title="Show only labels belonging to the checked list item">Show&#10004;</button>
+			<button id='hideDivsOfCheckedClass' onclick="hideDivsOfClass(this)" title="Hide just the labels belonging to the checked list items">Hide&#10004;</button>
+			<button id='uncheckAll' onclick="uncheckAll()">&#10006;</button>
 		</div>
 		<ol id="labelList" style="margin-top: 25px; padding-left: 20px">
 		</ol>
@@ -463,7 +480,7 @@
 			<tr>
 				<td valign="top">
 					<svg id="svg"></svg>
-					<!--I POSITION THE SVG HERE SO THAT IT CAN SCROLL WITH THE TABLE WITHOUT HAVING TO BE WITHDRAWN-->
+					<!--I POSITION THE SVG HERE SO THAT IT CAN SCROLL WITH THE TABLE WITHOUT HAVING TO BE REDRAWN-->
 					<table id="legendTable">
 						<thead>
 						</thead>
@@ -476,8 +493,8 @@
 					<table id="storyLineTable">
 						<thead>
 							<tr>
-								<td>
-								</td>
+								<td></td>
+								<td></td>
 								<td></td>
 								<td></td>
 								<td></td>
@@ -489,12 +506,14 @@
 								<td></td>
 								<td></td>
 								<td></td>
+								<td></td>
 							</tr>
 							<tr>
 								<td></td>
 								<td></td>
 								<td></td>
-								<td class="hover"></td>
+								<td></td>
+								<td></td>
 							</tr>
 						</tbody>
 					</table>
@@ -514,10 +533,10 @@
 			<div>
 				<h4>Create Div</h4>
 				<span style="font-style: italic">Div Name:</span> <input type="text" id="divName" value="" draggable="false">
-				<select id="divNameSelect">
+				<select id="divNameOptionsDropdown">
 				</select><br>
 				<span style="font-style: italic">Div Class:</span> <input type="text" id="divClass" value="" draggable="false">
-				<select id="divClassSelect">
+				<select id="divClassOptionsDropdown">
 				</select><br>
 				<button class="create" onclick="createDIV()">Create Div</button>
 			</div>
@@ -605,9 +624,10 @@
 
 <script type="text/javascript" src="javascript/GetElement-XY-Coordinates.js"></script>
 <script type="text/javascript" src="javascript/tableColumnClasses.js"></script>
-<script type="text/javascript" src="javascript/tableCreator-Y.js"></script>
 
 <script type="text/javascript" src="javascript/draggableHtmlElement.js"></script>
 <script type="text/javascript" src="javascript/dragdCloneDivs.js"></script>
 <script type="text/javascript" src="javascript/svgCurvedLinesConnectors.js"></script>
-<script type="text/javascript" src="javascript/cssColorNamesArray.js"></script></html>
+<script type="text/javascript" src="javascript/cssColorNamesArray.js"></script>
+
+<script type="text/javascript" src="javascript/tableCreator-Y.js"></script></html>

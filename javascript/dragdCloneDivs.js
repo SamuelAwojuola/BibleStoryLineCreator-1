@@ -7,16 +7,21 @@ function dragDiv2TD() {
 	/*FOR DIVS TO BE DRAGGED********************************/
 	var div_items = document.querySelectorAll('.draggableDiv');
 	var tdDragEnd = document.querySelectorAll('#storyLineTable td');
+	var isDivAClone;
 
 
 	function dStart(e) {
-			connectAllDraggableDivsWithSVGLines();
+		connectAllDraggableDivsWithSVGLines();
 		if (e.ctrlKey) {
 			currentDraggedItem = this.cloneNode(true);
 			currentDraggedItem.classList.remove('dragEventListnerAdded');
+			isDivAClone = 1;
+			console.log(isDivAClone)
 		} else {
 			currentDraggedItem = this;
 			currentDraggedItem.classList.add('dragEventListnerAdded');
+			isDivAClone = 0;
+			console.log(isDivAClone)
 		}
 		youMayDropIt = 1;
 		setTimeout(function () {
@@ -30,6 +35,39 @@ function dragDiv2TD() {
 		setTimeout(function () {
 			currentDraggedItem = null;
 		}, 20);
+		
+		//TO UPDATE THE OPTCOUNTERS OF THE DIV NAME AND DIV CLASS OPTIONS AND ARRAYS
+		if (isDivAClone == 1) {
+			dragDiv2TD();
+			//GET NAME (INNER HTML) OF CLONED DIV
+			var divName = currentDraggedItem.innerHTML;
+
+
+			//find the option that has this name as its text and increase its optCounter value
+			var divNameOptions = divNameOptionsDropdown.getElementsByTagName('option');
+
+			for (k = 0; k < divNameOptions.length; k++) {
+				if (divNameOptions[k].text == divName) {
+					var optCounterValue = Number(divNameOptions[k].getAttribute('optCounter'));
+					divNameOptions[k].setAttribute('optCounter', ++optCounterValue);
+
+					//INCREASE OPTIONS COUNT OF CLASS TO WHICH THE DRAGGED/CLONED DIV BELONGS
+					var optionsClassNameOfDivToBeDeleted = divNameOptions[k].getAttribute('optClassName');
+
+					//find the class in the classOptionsDropdown and increase its optCounter value
+					var divClassOptions = divClassOptionsDropdown.getElementsByTagName('option');
+
+					for (l = 0; l < divClassOptions.length; l++) {
+						if (divClassOptions[l].text == optionsClassNameOfDivToBeDeleted) {
+							var optCounterValue = Number(divClassOptions[l].getAttribute('optCounter'))
+							divClassOptions[l].setAttribute('optCounter', ++optCounterValue);
+						}
+					}
+					break;
+				}
+			}
+		}
+
 	}
 
 	//FOR THE DRAGGD DIV
@@ -70,11 +108,14 @@ function dragDiv2TD() {
 			});
 
 			tdDragEnd[j].addEventListener('drop', function (e) {
+
 				this.style.backgroundColor = '';
 				if (currentDraggedItem) {
 					this.append(currentDraggedItem);
 				}
+
 				youMayDropIt = null;
+
 			});
 
 		}

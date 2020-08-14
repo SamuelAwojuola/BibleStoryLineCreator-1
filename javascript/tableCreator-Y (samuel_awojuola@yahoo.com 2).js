@@ -151,7 +151,6 @@ function resetClasses() {
 var prev_x = null;
 
 function cellHighlight(x) {
-
 	var heading = document.createElement(TypeOfHtmlHeader);
 	var hdtxt = '';
 
@@ -164,7 +163,7 @@ function cellHighlight(x) {
 			prev_x.querySelector(TypeOfHtmlHeader).remove();
 		}
 	}
-	prev_x = x;	
+	prev_x = x;
 
 	x.style.backgroundColor = 'white';
 	x.classList.add('clicked');
@@ -234,9 +233,8 @@ function cellListeners() {
 			cellHighlight(this);
 			celldeselect = this;
 			selectedCell = this;
-			
-			//REDRAW SVG CONNECTOR LINES
-			connectAllDraggableDivsWithSVGLines();
+
+			//FOR DIV
 		}
 	}
 }
@@ -916,7 +914,6 @@ function buildLegendTable() {
 
 
 	//CREATE <TR> TO APPEND TO LEGEND-TABLE
-	//newLTrow ==== new legend table row
 	function newLTrow(heightAtt, newTRtxt, appendHere) {
 
 		var newTR = document.createElement('TR');
@@ -1088,13 +1085,14 @@ function createDIV() {
 	/*SOME VARIBLES FOR CREATING THE OPTIONS FOR THE SELECT ELEMENTS***************************/
 	/******************************************************************************************/
 	var divNameOptionsDropdown = document.getElementById('divNameOptionsDropdown');
-	var divNameOptions = divNameOptionsDropdown.getElementsByTagName('option');
 	var divClassOptionsDropdown = document.getElementById('divClassOptionsDropdown');
+	var dNmoptOccurence = divNameOptionsDropdown.getElementsByTagName('option');
+	var dCloptOccurence = divClassOptionsDropdown.getElementsByTagName('option');
 	/******************************************************************************************/
 
 
 	/******************************************************************************************/
-	/*WHAT TO DO THE FIRST TIME DIV-CLASS IS CREATED*******************************************/
+	/*WHAT TO DO THE FIRST TIME DIVCLASS IS CREATED********************************************/
 	/******************************************************************************************/
 	//ADD THE CLASS TO THE ARRAY (divClassAttributeArray) IF IT DOESN'T ALREADY EXIST IN IT
 	if (divClassAttributeArray.indexOf(dClass) == -1) {
@@ -1205,121 +1203,130 @@ function createDIV() {
 		//APPEND LIST ELEMENT TO OL
 		labelNavSectionOL.appendChild(liToHoldLabelListName);
 		/****************************************/
-
-
+		
+		
 		/******************************************************************************************/
 		/*CREATING THE OPTIONS FOR THE DIVCLASS SELECT ELEMENTS************************************/
 		/******************************************************************************************/
-		var divClassOption = document.createElement('OPTION');
-		divClassOption.text = dClass;
-
-		divClassOption.setAttribute('optCounter', 1);
-		divClassOptionsDropdown.append(divClassOption);
+		var dCloption = document.createElement('OPTION');
+		dCloption.text = dClass;
 	}
 	/******************************************************************************************/
 	/*WHAT TO DO IF THE DIVCLASS HAS ALREADY BEEN CREATED**************************************/
 	/******************************************************************************************/
-	else if (divClassAttributeArray.indexOf(dClass) != -1) {
-		//find the option that has this classname as its text and increase its optCounter value
-		var divClassOptions = divClassOptionsDropdown.getElementsByTagName('option');
-
-		for (j = 0; j < divClassOptions.length; j++) {
-			if (divClassOptions[j].text == dClass) {
-				var optCounterValue = Number(divClassOptions[j].getAttribute('optCounter'))
-				divClassOptions[j].setAttribute('optCounter', ++optCounterValue);
-				break;
-			}
-		}
-	}
-
-	/******************************************************************************************/
-	/*WHAT TO DO THE FIRST TIME DIV-NAME IS CREATED********************************************/
-	/******************************************************************************************/
-	//ADD THE NAME TO THE ARRAY (divNameAttributeArray) IF IT DOESN'T ALREADY EXIST IN IT
-	if (divNameAttributeArray.indexOf(dName) == -1) {
-		divNameAttributeArray.push(dName);
-
-		var dNmoption = document.createElement('OPTION');
-		dNmoption.text = dName;
-
-		dNmoption.setAttribute('optCounter', 1);
-		dNmoption.setAttribute('optClassName', dClass);
-		divNameOptionsDropdown.append(dNmoption);
-	}
-	/******************************************************************************************/
-	/*WHAT TO DO IF THE DIVCLASS HAS ALREADY BEEN CREATED**************************************/
-	/******************************************************************************************/
-	else if (divClassAttributeArray.indexOf(dClass) != -1) {
-		//find the option that has this name as its text and increase its optCounter value
-		var divNameOptions = divNameOptionsDropdown.getElementsByTagName('option');
-
-		for (j = 0; j < divNameOptions.length; j++) {
-			if (divNameOptions[j].text == dName) {
-				var optCounterValue = Number(divNameOptions[j].getAttribute('optCounter'));
-				divNameOptions[j].setAttribute('optCounter', ++optCounterValue);
-				break;
-			}
-		}
-
-	}
-
+	else if (divClassAttributeArray.indexOf(dClass) != -1) {}
+	
 	divListeners();
 	dragDiv2TD();
 	connectAllDraggableDivsWithSVGLines();
+
+	/******************************************************************************************/
+	/*CREATING THE OPTIONS FOR THE SELECT ELEMENTS*********************************************/
+	/******************************************************************************************/
+
+	var dNmoption = document.createElement('OPTION');
+	dNmoption.text = dName;
+
+	var dCloption = document.createElement('OPTION');
+	dCloption.text = dClass;
+
+	//FOR DIV-NAMES OPTIONS
+
+	//FILTER DIV-CLASSES ARRAY FOR THE CURRENT dName
+	const functionToFilterClass = function (x) {
+		return x == dClass;
+	}
+
+	// Filter the classarray
+	const filteredClass = divClassArray.filter(functionToFilterClass);
+
+	if (filteredClass.length == 1) {
+		dCloption.setAttribute('optCounter', filteredClass.length);
+		divClassOptionsDropdown.append(dCloption);
+		console.log('asd:' + divClassArray);
+	} else if (filteredClass.length > 1) {
+		for (j = 0; j < dCloptOccurence.length; j++) {
+			if (dCloptOccurence[j].text == dClass) {
+				dCloptOccurence[j].setAttribute('optCounter', filteredClass.length);
+				break;
+			}
+		}
+	}
+
+
+	//FILTER DIV-NAMES ARRAY FOR THE CURRENT dName
+	const functionToFilterNames = function (x) {
+		return x == dName;
+	}
+
+	// Filter the namearray
+	const filteredName = divNameArray.filter(functionToFilterNames);
+
+	if (filteredName.length == 1) {
+		dNmoption.setAttribute('optCounter', filteredName.length);
+		divNameOptionsDropdown.append(dNmoption);
+	} else if (filteredName.length > 1) {
+		for (i = 0; i < dNmoptOccurence.length; i++) {
+			if (dNmoptOccurence[i].text == dName) {
+				dNmoptOccurence[i].setAttribute('optCounter', filteredName.length);
+				break;
+			}
+		}
+	}
 }
 
 function deleteDIV() {
 
-	if (clickedDIV) {
-		var divNameOptions = divNameOptionsDropdown.getElementsByTagName('option');
-		var dName = clickedDIV.innerHTML;
-		for (j = 0; j < divNameOptions.length; j++) {
+	var divNameOptionsDropdown = document.getElementById('divNameOptionsDropdown');
+	var divClassOptionsDropdown = document.getElementById('divClassOptionsDropdown');
+	var dNmoptOccurence = divNameOptionsDropdown.getElementsByTagName('option');
+	var dCloptOccurence = divClassOptionsDropdown.getElementsByTagName('option');
 
-			if (divNameOptions[j].text == dName) {
-				var optCounterValue = Number(divNameOptions[j].getAttribute('optCounter'));
-				divNameOptions[j].setAttribute('optCounter', --optCounterValue);
+	clickedDIV.remove();
+	let divInnerText = clickedDIV.innerHTML;
+	let divClasses = clickedDIV.classList;
+	var optClass;
+	for (i = 0; i < divClasses.length; i++) {
+		if (divClasses[i].includes('opt_')) {
+			optClass = divClasses[i].substr(4);
+			break;
+		}
+	}
+	//REMOVE FROM RESPECTIVE ARRAYS
+	var dNmIdx = divNameArray.indexOf(divInnerText);
+	var dClIdx = divClassArray.indexOf(optClass);
+	divNameArray.splice(dNmIdx, 1);
+	divClassArray.splice(dClIdx, 1);
 
-				//REDUCE OPTIONS COUNT OF CLASS TO WHICH DELETED DIV BELONGS
-				var optionsClassNameOfDivToBeDeleted = divNameOptions[j].getAttribute('optClassName');
-				//find the class in the classOptionsDropdown and reduce its optCounter value
-				var divClassOptions = divClassOptionsDropdown.getElementsByTagName('option');
-
-				for (j = 0; j < divClassOptions.length; j++) {
-					if (divClassOptions[j].text == optionsClassNameOfDivToBeDeleted) {
-						var optCounterValue = Number(divClassOptions[j].getAttribute('optCounter'))
-						divClassOptions[j].setAttribute('optCounter', --optCounterValue);
-
-						if (optCounterValue == 0) {
-						//REMOVE FROM ARRAY OF CLASS NAMES
-							var indexToRemove = divClassAttributeArray.indexOf(optionsClassNameOfDivToBeDeleted);
-							divClassAttributeArray.splice(indexToRemove, 1);
-						//REMOVE CORRESPONDING CLASS-NAME OPTION
-							divClassOptions[j].remove();
-						//REMOVE CORRESPONDING LI WITH CORRESPONDING LABEL AND INPUT
-							var inputOfLI2Remove = document.getElementById('opt_' + optionsClassNameOfDivToBeDeleted);
-							inputOfLI2Remove.closest('li').remove();							
-						}
-							break;
-					}
-				}
-
-				if (optCounterValue == 0) {
-					//REMOVE FROM ARRAY OF NAMES
-					var indexOfName2Remove = divNameAttributeArray.indexOf(dName);
-					divNameAttributeArray.splice(indexOfName2Remove, 1);
-					//REMOVE THE OPTIONS ELEMENT ITSELF
-					divNameOptions[j].remove();
-				};
-				break;
+	//REMOVE FROM OPTIONS
+	for (var j = 0; j < dCloptOccurence.length; j++) {
+		if (dCloptOccurence[j].text == divInnerText) {
+			alert(divInnerText);
+			var x = dCloptOccurence[j].getAttribute('optCounter');
+			dCloptOccurence[j].setAttribute('optCounter', --x);
+			if (x == 0) {
+				divClassOptionsDropdown.options[j] = null;
+				//				var checkboxInput2rmove = 
+				document.querySelector('#opt_' + optClass).closest('li').remove();
 			}
 		}
-
-		clickedDIV.remove();
-
-		connectAllDraggableDivsWithSVGLines();
-		deselectEmptyCell();
-		buildLegendTable();
+		break;
 	}
+
+	for (var i = 0; i < dNmoptOccurence.length; i++) {
+		if (dNmoptOccurence[i].text == optClass) {
+			var x = dNmoptOccurence[i].getAttribute('optCounter');
+			dNmoptOccurence[i].setAttribute('optCounter', --x)
+			if (x == 0) {
+				divNameOptionsDropdown.options[i] = null;
+			}
+		}
+		break;
+	}
+
+	connectAllDraggableDivsWithSVGLines();
+	deselectEmptyCell();
+	buildLegendTable();
 
 }
 /******************************************************/
