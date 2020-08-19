@@ -21,7 +21,7 @@ function dragDiv2TD() {
 			currentDraggedItem = this;
 			currentDraggedItem.classList.add('dragEventListnerAdded');
 			isDivAClone = 0;
-			console.log(isDivAClone)
+//			console.log(isDivAClone);
 		}
 		youMayDropIt = 1;
 		setTimeout(function () {

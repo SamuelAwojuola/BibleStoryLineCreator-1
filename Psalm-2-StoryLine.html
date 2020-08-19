@@ -1,0 +1,716 @@
+<html><head>
+	<title>Table Creator &amp; Modifier</title>
+	<script type="text/javascript" src="javascript/anseki/leader-line.min.js"></script>
+	<script type="text/javascript" src="javascript/anseki/anim-event.min.js"></script>
+
+	<style id="divColorStyles">.opt_God{ background-color: MediumOrchid;
+        stroke: MediumOrchid }.opt_Christ{ background-color: LightPink;
+        stroke: LightPink }.opt_Enemies{ background-color: DodgerBlue;
+        stroke: DodgerBlue }.opt_Enemies{ background-color: CadetBlue;
+        stroke: CadetBlue }</style>
+	<!--THIS STYLE WILL BE POPULLATED AS DIVS ARE CREATED-->
+		<link type="text/css" href="style/customCheckBox.css" rel="stylesheet">
+
+
+	<style>
+    
+		td:empty{
+			visibility:hidden;
+		}
+    
+		* {
+			font-family: 'Abril Fatface', serif;
+			font-family: 'Open Sans', sans-serif;
+			font-family: Arial, Helvetica, sans-serif;
+			font-family: Georgia, serif;
+			font-family: "Lucida Console", Courier, monospace;
+			font-family: 'Helvetica Neue', sans-serif;
+			font-family: "Times New Roman", Times, serif;
+			word-spacing: 2px;
+			/*						font-size: 95%;*/
+		}
+
+		body {
+			margin-left: 0;
+			margin-right: 0;
+			background-color: rgba(255, 237, 62, 0.87);
+			background-color: rgba(255, 255, 255, 0.87);
+			background-color: rgba(129, 98, 131, 0.87);
+			background-color: rgba(131, 128, 98, 0.87);
+			background-color: rgba(0, 0, 0, 0.87);
+			background-color: rgb(253, 255, 238);
+		}
+
+		#svg {
+			pointer-events: none;
+			/*THIS MAKES IT POSSIBLE TO CLICK THROUGH THE SVG*/
+			position: absolute;
+
+			z-index: 1;
+
+			/*			background-color: rgba(0, 255, 255, 0.49);*/
+			/*THE BELOW STYLE ATTRIBUTES OF TOP AND LEFT ARE  NECESSARY BECAUSE OF THE SVG IS APPENDED TO THE DIV CONTAINER OF THE TABLES AND NOT THE BODY*/
+			top: -10px;
+			left: -10px;
+			width: 110%;
+			height: 110%;
+			/*THESE HAVE TO BE EQUAL TO THE TOP AND LEFT STYLE ATTRIBUTES OF THE DIV CONTAINER OF THE TABLES*/
+		}
+
+		.svg-connectors {
+			/*			z-index: -10*/
+		}
+
+		#divTableContainer {
+			/*			position: absolute;*/
+			/*						width: 85vw;*/
+			height: 90vh;
+			overflow: auto;
+			margin-left: 10px;
+			margin-right: 10px;
+
+			border: 0.5px solid #847e7f;
+			border-radius: 2.5px;
+			box-shadow: 0px 3px 6px -3px black;
+			/*			background-color: rgba(255, 253, 232, 0.87);*/
+			background-color: rgba(255, 253, 232, 0.3);
+			/*			z-index: 99;*/
+		}
+
+		table table {
+			border-top: 0.5px solid #ead9dc;
+			border-bottom: 0.5px solid #ead9dc;
+			border-radius: 2px;
+		}
+
+		table>h1,
+		table>h2,
+		table>h3,
+		table>h4,
+		table>h5,
+		table>h6 {
+			color: blue;
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+
+		#masterTable {
+			position: relative;
+		}
+
+		#masterTable>td {
+			background-color: transparent;
+		}
+
+		#storyLineTable,
+		#legendTable {
+			position: relative;
+			/*	margin-left: 50px; */
+			/*			border-collapse: collapse;
+			border-spacing: 20px 20px;
+			*/
+			/*			box-shadow: 0px 3px 6px -3px black;*/
+		}
+
+		#storyLineTable {
+			margin-left: 30px;
+		}
+
+		#legendTable td,
+		#legendTable th,
+		#storyLineTable td,
+		#storyLineTable th {
+			min-width: 100px;
+			height: 55px;
+			border: 0.5px solid #847e7f;
+			background-color: rgba(245, 245, 220, 0.99);
+			border-radius: 2px;
+			/*			box-shadow: 0 8px 7.5px -8px black;*/
+			box-shadow: 0 4px 5px -6px black;
+			padding-left: 10px;
+			padding-right: 10px;
+		}
+
+		#legendTable td:hover,
+		#legendTable th:hover,
+		#storyLineTable td:hover,
+		#storyLineTable th:hover {
+			box-shadow: 0 8px 7.5px -8px black;
+		}
+
+		#legendTable th,
+		#legendTable thead td,
+		#storyLineTable th,
+		#storyLineTable thead td {
+			/*			background-color: #ffe7c1;*/
+			background-color: rgba(255, 231, 193, 0.99);
+			border-radius: 2px;
+			box-shadow: 0 4px 5px -6px black;
+		}
+
+	</style>
+
+	<style>
+		#tableBuilder {
+			position: absolute;
+			top: 12px;
+			right: 13px;
+			border-radius: 6px;
+			width: 165px;
+			/*			z-index: 10;*/
+			/*			overflow-y: auto;*/
+			background-color: white;
+			background-color: rgba(255, 244, 244, 0.61);
+		}
+
+		#tableBuilder * {
+			font-size: 90%;
+		}
+
+		#tableBuilder h3,
+		#tableBuilder h4 {
+			padding-bottom: 0;
+			margin-bottom: 0;
+			padding-top: 0;
+			color: black;
+			border-bottom: 3px solid grey;
+			text-align: center;
+			text-transform: uppercase;
+			text-overflow: ellipsis;
+		}
+
+		#tableBuilder>div:not(#tableBuilderheader) {
+			padding-left: 5px;
+			padding-bottom: 10px;
+			background-color: rgba(255, 255, 255, 0.8);
+			border: 0.5px solid #847e7f;
+			box-shadow: 0 8px 6px -8px black;
+		}
+
+		#tableBuilder>div:not(#tableBuilderheader) {
+			border-bottom-left-radius: 3px;
+			border-bottom-right-radius: 3px;
+		}
+
+		#tableBuilderheader {
+			/*			display: table-cell;*/
+			/*			vertical-align: middle;*/
+			text-align: center;
+			height: 18px;
+			width: 165px;
+			color: black;
+			font-weight: bolder;
+			padding-top: 0;
+			padding-bottom: 0;
+			border-top-left-radius: 2px;
+			border-top-right-radius: 2px;
+			border: 0.5px solid #847e7f;
+			background-color: #ffe295;
+		}
+
+		#tableBuilderheader:hover {
+			background-color: #ffd35c;
+		}
+
+		#tableBuilder>div>div h4 {
+			padding-bottom: 0;
+			margin-bottom: 0;
+			margin-top: 7px;
+			text-align: justify-all;
+			color: black;
+			border-bottom: 1px solid grey;
+		}
+
+		#tableBuilder>div>div h4:hover {
+			color: #bf0093;
+		}
+
+		#tableBuilder>div button {
+			width: 100%;
+			display: inline-block;
+			cursor: pointer;
+			/*			font-size: 11px;*/
+			font-weight: 900;
+			padding: 6px 24px;
+			text-decoration: none;
+		}
+
+		#max-min {
+			position: absolute;
+			right: 0;
+			border: 1px solid grey;
+			width: 20px;
+			font-size: 12px;
+			background-color: #e0ff98;
+			text-align: center;
+		}
+
+		button.create {
+			box-shadow: inset 0px 1px 0px 0px #ffffff;
+			background-color: #ffefac;
+			border: 1px solid #dcdcdc;
+			color: #4b0000;
+			text-shadow: 0px 1px 0px #ffffff;
+		}
+
+		button.create:hover {
+			background-color: #ffdd4c;
+			padding-left: 0;
+			padding-right: 0;
+			font-style: italic;
+		}
+
+		button.delete {
+			box-shadow: inset 0px 1px 0px 0px #f7c5c0;
+			background-color: #fa8d83;
+			border: 1px solid #d83526;
+			color: black;
+		}
+
+		button.delete:hover {
+			background-color: #ff5d76;
+			color: white;
+			font-style: italic;
+		}
+
+		button:last-child {
+			border-bottom: 0.5px solid grey;
+		}
+
+		button:first-child {
+			border-top: 0.5px solid grey;
+		}
+
+		input {
+			display: block;
+			width: 93%;
+		}
+
+		select {
+			display: block;
+			width: 98%;
+		}
+
+		.btnactivecolor {
+			background-color: aquamarine;
+		}
+
+	</style>
+	<style>
+		td>div {
+			position: relative;
+			min-height: 25px;
+			border: 2.5px solid grey;
+			background-color: rgba(255, 255, 255, 0.6);
+			padding-top: 7px;
+			border-radius: 5px;
+			margin: 4px;
+			text-align: center;
+			box-shadow: 0 4px 5px -6px black;
+			z-index: 1;
+		}
+
+		td>div:hover {
+			/*			border-color: #140f0f;*/
+			color: #140f0f;
+		}
+
+		td {
+			/*			border-left: 40px solid pink;*/
+		}
+
+	</style>
+	<style>
+		/* container properties */
+		.scrollbar {
+			max-height: 400px;
+			overflow-y: auto;
+		}
+
+		/* customize scrollbar css */
+		.scrollbar-custom::-webkit-scrollbar {
+			width: 8px;
+			background-color: #cccccc;
+		}
+
+		.scrollbar-custom::-webkit-scrollbar:horizontal {
+			height: 12px;
+		}
+
+		.scrollbar-custom::-webkit-scrollbar-track {
+			background-color: #e0e0e0;
+			border: 1px #ffffff solid;
+			border-radius: 5px;
+			-webkit-box-shadow: 0 0 6px #c8c8c8 inset;
+		}
+
+		.scrollbar-custom::-webkit-scrollbar-thumb {
+			background-color: #f8f8f8;
+			border: 1px solid #a5a5a5;
+			border-radius: 5px;
+		}
+
+		.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+			background-color: white;
+			border: 1px solid #333333;
+		}
+
+		.scrollbar-custom::-webkit-scrollbar-thumb:active {
+			background-color: white;
+			border: 1px solid #333333;
+		}
+
+	</style>
+	<style>
+		#showLabelMenu {
+			position: absolute;
+			top: 2px;
+			left: 2px;
+			background-color: floralwhite;
+			box-shadow: 2px 3px 2px -1px grey;
+			border: 1px solid grey;
+			border-radius: 2px;
+			height: 20px;
+			font-size: 12px;
+			text-align: center;
+			z-index: 11;
+		}
+
+		nav * {
+			font-size: 98%;
+		}
+
+		nav {
+			position: fixed;
+			left: 0;
+			top: 0;
+			background-color: rgba(219, 219, 219, 0.88);
+			background-color: rgba(254, 255, 251, 0.5);
+			width: 150px;
+			height: auto;
+			border: 2px solid grey;
+			border-radius: 3px;
+			padding-left: 5px;
+			padding-right: 5px;
+			z-index: 10;
+		}
+
+		nav h3 {
+			width: 100%;
+			display: block;
+			margin-top: 5px;
+			margin-bottom: 0;
+			text-align: center;
+		}
+
+		nav hr {
+			border: 2px solid grey;
+		}
+
+		nav li>div {
+			float: left;
+			vertical-align: middle;
+		}
+
+		#navDivButtonHolder {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-evenly;
+			width: 100%;
+		}
+
+		nav div>button {
+			flex-grow: 1;
+			background-color: antiquewhite;
+			background-color: rgba(254, 255, 251, 0.5);
+			border: 1px solid grey;
+			border-radius: 2px;
+		}
+
+		nav div>button:first-of-type {}
+
+		nav ol {
+			list-style: none;
+			counter-reset: any-name;
+		}
+
+		nav li {
+			display: flex;
+			background-color: antiquewhite;
+			border: 1px solid grey;
+			border-radius: 2px;
+			list-style-type: none;
+			margin-left: -20px;
+			padding-left: 5px;
+			counter-increment: any-name;
+		}
+
+		nav li::before {
+			content: counter(any-name);
+			margin-right: 0.5rem;
+		}
+
+		nav li>label {
+			flex-grow: 2;
+			border-right: 2px solid black;
+		}
+
+		nav li>input {
+			width: 20px;
+		}
+
+		.opacityClass {
+			opacity: 0.2;
+		}
+
+	</style>
+</head>
+
+<body>
+
+	<nav id="navSection4navDivButtonHolder" style="top: 575px; left: 40px;">
+		<h3 style="cursor: pointer;"><button id="showLabelMenu">⚊</button>Labels</h3>
+		<div style="">
+			<hr>
+			<div id="navDivButtonHolder">
+				<button id="soloDivsOfCheckedClass" onclick="hideAllOtherExcept4DivsOfClass(this)" title="Show only labels belonging to the checked list item" style="background-color: springgreen;">Show✔</button>
+				<button id="hideDivsOfCheckedClass" onclick="hideDivsOfClass(this)" title="Hide just the labels belonging to the checked list items" style="background-color: rgba(254, 255, 251, 0.5);">Hide✔</button>
+				<button id="uncheckAll" onclick="uncheckAll()">✖</button>
+			</div>
+			<ol id="labelList" style="margin-top: auto; padding-left: 20px">
+			<li><label for="opt_God">God</label><input type="checkbox" value="opt_God" id="opt_God" class="labelListNameCheckBox"></li><li><label for="opt_Christ">Christ</label><input type="checkbox" value="opt_Christ" id="opt_Christ" class="labelListNameCheckBox"></li><li><label for="opt_Enemies">Enemies</label><input type="checkbox" value="opt_Enemies" id="opt_Enemies" class="labelListNameCheckBox"></li></ol>
+		</div>
+	</nav>
+
+
+	<div id="divTableContainer">
+		<table id="masterTable">
+			<tbody><tr>
+				<td valign="top" colspan="1" class="col-1">
+		<h1>Psalm 2</h1>
+					<svg id="svg"><path d="M280.2666778564453,259.36668395996094 C380.2666778564453,259.36668395996094 849.9334106445312,280.1000061035156 949.9334106445312,280.1000061035156" stroke-width="20" opacity="0.7" fill="none" class="svg-connectors opt_God"></path><path d="M280.2666778564453,218.36668395996094 C380.2666778564453,218.36668395996094 334.7333679199219,259.36668395996094 434.7333679199219,259.36668395996094" stroke-width="20" opacity="0.7" fill="none" class="svg-connectors opt_Christ"></path><path d="M527.7333679199219,259.36668395996094 C627.7333679199219,259.36668395996094 849.9334106445312,239.10000610351562 949.9334106445312,239.10000610351562" stroke-width="20" opacity="0.7" fill="none" class="svg-connectors opt_Christ"></path><path d="M527.7333679199219,218.36668395996094 C627.7333679199219,218.36668395996094 582.2000122070312,238.6333465576172 682.2000122070312,238.6333465576172" stroke-width="20" opacity="0.7" fill="none" class="svg-connectors opt_Enemies"></path><path d="M795.2000122070312,238.6333465576172 C895.2000122070312,238.6333465576172 849.9334106445312,198.10000610351562 949.9334106445312,198.10000610351562" stroke-width="20" opacity="0.7" fill="none" class="svg-connectors opt_Enemies"></path></svg>
+					<!--I POSITION THE SVG HERE SO THAT IT CAN SCROLL WITH THE TABLE WITHOUT HAVING TO BE REDRAWN-->
+					<table id="legendTable">
+						<thead>
+						<tr rowname="null"><td colspan="1" class="col-1" style="height: 76.9667px;"><h4 style="margin-bottom: 0px;"></h4></td></tr></thead>
+						<tbody>
+						<tr rowname="Psalm 2"><td colspan="1" class="col-1" style="height: 84.9667px;"><h4 style="margin-bottom: 0px;">Psalm 2</h4></td></tr><tr rowname="null"><td colspan="1" class="col-1"><h4 style="margin-bottom: 0px;"></h4></td></tr></tbody>
+					</table>
+				</td>
+
+				<td valign="top" style="position: relative" colspan="1" class="col-2" originalcolspan="1">
+				<h1>Psalm 2</h1>
+					<table id="storyLineTable">
+						<thead>
+							<tr>
+								<td colspan="1" class="dragOverELAdded col-1" rindex="0" style=""><h4 contenteditable="true">The Son<br>is Chosen</h4></td>
+								<td colspan="1" class="dragOverELAdded col-2" originalcolspan="1" rindex="0" style=""></td>
+								<td colspan="1" class="dragOverELAdded col-3" originalcolspan="1" rindex="0" style=""><h4 contenteditable="true">Christ Ruling<br>the Nations</h4></td>
+								<td class="dragOverELAdded col-4" colspan="1" originalcolspan="1" rindex="0" style=""></td><td class="dragOverELAdded col-5" colspan="1" originalcolspan="1" rindex="0" style=""><h4 contenteditable="true">Nations Conspire</h4></td><td colspan="1" class="dragOverELAdded col-6" originalcolspan="1" rindex="0" style=""></td>
+								<td colspan="1" class="dragOverELAdded col-7" originalcolspan="1" rindex="0" style=""><h4 contenteditable="true">The Wrath<br>of the Son</h4></td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr rowname="Psalm 2" title="Psalm 2">
+								<td colspan="1" class="dragOverELAdded col-1" rindex="1" style=""><div class="opt_Christ draggableDiv nameLabelDiv dragEventListnerAdded" divclassname="Christ" draggable="true" style="">Christ</div><div class="opt_God draggableDiv nameLabelDiv dragEventListnerAdded" divclassname="God" draggable="true">God</div></td>
+								<td colspan="1" class="dragOverELAdded col-2" originalcolspan="1" rindex="1" style=""></td>
+								<td colspan="1" class="dragOverELAdded col-3" originalcolspan="1" rindex="1" style=""><div class="opt_Enemies draggableDiv nameLabelDiv dragEventListnerAdded" divclassname="Enemies" draggable="true">The Nations</div><div class="opt_Christ draggableDiv nameLabelDiv dragEventListnerAdded" divclassname="Christ" draggable="true" style="">Christ</div></td>
+								<td class="dragOverELAdded col-4" colspan="1" originalcolspan="1" rindex="1" style=""></td><td class="dragOverELAdded col-5" colspan="1" originalcolspan="1" rindex="1" style=""><div class="opt_Enemies draggableDiv nameLabelDiv dragEventListnerAdded" divclassname="Enemies" draggable="true">The Nations</div></td><td colspan="1" class="dragOverELAdded col-6" originalcolspan="1" rindex="1" style=""></td>
+								<td colspan="1" class="dragOverELAdded col-7" originalcolspan="1" rindex="1" style=""><div class="opt_Enemies draggableDiv nameLabelDiv dragEventListnerAdded" divclassname="Enemies" draggable="true">The Nations</div><div class="opt_Christ draggableDiv nameLabelDiv dragEventListnerAdded" divclassname="Christ" draggable="true" style="">Christ</div><div class="opt_God draggableDiv nameLabelDiv dragEventListnerAdded" divclassname="God" draggable="true">God</div></td>
+							</tr>
+							<tr>
+								<td colspan="1" class="dragOverELAdded col-1" rindex="2" style=""></td>
+								<td colspan="1" class="dragOverELAdded col-2" originalcolspan="1" rindex="2" style=""></td>
+								<td colspan="1" class="dragOverELAdded col-3" originalcolspan="1" rindex="2" style=""></td>
+								<td class="dragOverELAdded col-4" colspan="1" originalcolspan="1" rindex="2" style=""></td><td class="dragOverELAdded col-5" colspan="1" originalcolspan="1" rindex="2" style=""></td><td colspan="1" class="dragOverELAdded col-6" originalcolspan="1" rindex="2" style=""></td>
+								<td colspan="1" class="dragOverELAdded col-7" originalcolspan="1" rindex="2" style=""></td>
+							</tr>
+						</tbody>
+					</table>
+
+				</td>
+			</tr>
+		</tbody></table>
+
+	</div>
+
+	<div id="tableBuilder" style="top: 379px; left: 769px;">
+		<div id="tableBuilderheader" title="Drag to move" style="cursor: pointer;">TABLE EDITOR <span id="max-min">☰</span></div>
+		<div class=" scrollbar scrollbar-custom" style="display: none;">
+
+			<!--DIVS-->
+			<h3 class="tableBuilderSections" style="cursor: pointer;">Divs</h3>
+			<div style="">
+				<h4 style="cursor: pointer;">Create Div</h4>
+				<span style="font-style: italic;">Div Name:</span> <input type="text" id="divName" value="" draggable="false" style="">
+				<select id="divNameOptionsDropdown" style="">
+				<option optcounter="2" optclassname="God">God</option><option optcounter="3" optclassname="Christ">Christ</option><option optcounter="3" optclassname="Enemies">The Nations</option></select><br style="">
+				<span style="font-style: italic;">Div Class:</span> <input type="text" id="divClass" value="" draggable="false" style="">
+				<select id="divClassOptionsDropdown" style="">
+				<option optcounter="2">God</option><option optcounter="3">Christ</option><option optcounter="3">Enemies</option></select><br style="">
+				<button class="create" onclick="createDIV()" style="">Create Div</button>
+			</div>
+			<div style="">
+				<h4 style="cursor: pointer;">Delete Div</h4>
+				<button class="create" onclick="deleteDIV()" style="">Delete Div</button>
+			</div>
+
+			<!--CELLS-->
+			<h3 class="tableBuilderSections" style="cursor: pointer;">Cells</h3>
+			<div style="">
+				<h4 style="cursor: pointer;">Create Cell</h4>
+				<span style="font-style: italic; display: none;">Cell Name:</span> <input type="text" id="myText" value="" style="display: none;">
+
+				<button class="create" onclick="createCellBefore()" style="display: none;">Cell Before</button>
+				<button class="create" onclick="createCellAfter()" style="display: none;">Cell After</button>
+			</div>
+			<div style="">
+				<h4 style="cursor: pointer;">Edit Cell</h4>
+				<span style="font-style: italic;">Cell Heading:</span> <input type="text" id="cellHeading" value="" style="">
+
+				<button id="applyHeadingBtn" class="create" onclick="insertHeading()" style="">Apply Heading</button>
+				<button class="create" onclick="increaseCellColspan()" title="increase colspan" style="">Widen Cell</button>
+				<button class="create" onclick="decreaseCellColspan()" title="decrease colspan" style="">Contract Cell</button>
+			</div>
+			<div style="">
+				<h4 style="cursor: pointer;">Merge/Split Cells</h4>
+				<button class="create" onclick="selectCells(this)" style="display: none;">Select Cells</button>
+				<button class="create" onclick="mergeContents(this)" style="display: none;">Merge Contents</button>
+				<button class="create" onclick="mergeCells()" style="display: none;">Merge Cells</button>
+				<button class="create" onclick="splitCell()" style="display: none;">Split Cells</button>
+			</div>
+			<div style="">
+				<h4 style="cursor: pointer;">Cell Display</h4>
+				<button class="delete" onclick="deleteCell()" style="display: none;">Cell None Display</button>
+				<button class="delete" onclick="hideCell()" style="display: none;">Cell Hidden Visibility</button><button class="delete" onclick="destroyCell()" style="font-style: italic; display: none;">Destroy Cell</button>
+			</div>
+
+			<!--ROWS-->
+			<h3 class="tableBuilderSections" style="cursor: pointer;">Rows</h3>
+			<div style="">
+				<h4 style="cursor: pointer;">New Row</h4>
+				<button class="create" onclick="createRowAbove()" style="display: none;">New Row Above</button>
+				<button class="create" onclick="createRowBelow()" style="display: none;">New Row Below</button>
+			</div>
+			<div style="">
+				<h4 style="cursor: pointer;">Clone Row</h4>
+				<button class="create" onclick="cloneRowAbove()" style="display: none;">Clone Row Above</button>
+				<button class="create" onclick="cloneRowBelow()" style="display: none;">Clone Row Below</button>
+			</div>
+			<div style="">
+				<h4 style="cursor: pointer;">Edit Row</h4>
+				<span style="font-style: italic;">Row Group:</span> <input type="text" id="rowGroup" value="" style="">
+				<span style="font-style: italic;">Row Name:</span> <input type="text" id="rowName" value="" style="">
+
+				<button id="applyRowEditBtn" class="create" onclick="rowEdit()" style="">Apply Row Edit</button>
+			</div>
+			<div style="">
+				<h4 style="cursor: pointer;">Delete Row</h4>
+				<button class="delete" onclick="deleteRow()" style="display: none;">Row Display-None</button>
+				<button class="delete" onclick="hideRow()" style="display: none;">Row Hidden-Visibility</button>
+				<button class="delete" onclick="destroyRow()" style="font-style: italic; display: none;">Destroy Row</button>
+			</div>
+
+			<!--COLUMNS-->
+			<h3 class="tableBuilderSections" style="cursor: pointer;">Column</h3>
+			<div style="">
+				<h4 style="cursor: pointer;">Create Column</h4>
+				<button class="create" onclick="createColumnBefore()" style="">Column Before</button>
+				<button class="create" onclick="createColumnAfter()" style="">Column After</button>
+			</div>
+			<div style="">
+				<h4 style="cursor: pointer;">Delete Column</h4>
+				<button class="delete" onclick="deleteColumn()" style="display: none;">Delete Column</button>
+				<button class="delete" onclick="hideColumn()" style="display: none;">Hide Column</button>
+			</div>
+
+			<h3 class="tableBuilderSections" style="cursor: pointer;">Show All</h3>
+			<button class="create" onclick="showAll()" style="display: none;">Show All Rows &amp; Cells</button>
+
+			<h3 class="tableBuilderSections" style="cursor: pointer;">Re-Align Table</h3>
+			<button class="create" onclick="btn_buildLegendTable()" style="">Re-Align Tables</button>
+			<button class="create" onclick="connectAllDraggableDivsWithSVGLines()" style="">Connect Divs</button>
+		</div>
+
+	</div>
+
+	<div>
+		<button title="delete label">
+			✘
+			<br>
+			Del
+			<br>
+			Label
+		</button>
+		<button title="create cell to the left">
+			←
+			<br>
+			new
+			<br>
+			Cell
+		</button>
+		&nbsp;
+		<button title="create cell to the right">
+			→
+			<br>
+			new
+			<br>
+			Cell
+		</button>
+		<button title="clone row above">
+			↑
+			<br>
+			clone
+			<br>
+			Row
+		</button>
+		<button title="clone row below">
+			clone
+			<br>
+			Row
+			<br>
+			↓
+		</button>
+		<button title="new row above">
+			↑
+			<br>
+			new
+			<br>
+			Row
+		</button>
+		<button title="new row below">
+			new
+			<br>
+			Row
+			<br>
+			↓
+		</button>
+		<button title="new column to the left">
+			←
+			<br>
+			new
+			<br>
+			Col
+		</button>
+		<button title="new column to the right">
+			→
+			<br>
+			new
+			<br>
+			Col
+		</button>
+	</div>
+
+
+<script type="text/javascript" src="javascript/GetElement-XY-Coordinates.js"></script>
+<script type="text/javascript" src="javascript/tableColumnClasses.js"></script>
+
+<script type="text/javascript" src="javascript/draggableHtmlElement.js"></script>
+<script type="text/javascript" src="javascript/dragdCloneDivs.js"></script>
+<script type="text/javascript" src="javascript/svgCurvedLinesConnectors.js"></script>
+<script type="text/javascript" src="javascript/cssColorNamesArray.js"></script>
+
+<script type="text/javascript" src="javascript/tableCreator-Z.js"></script>
+
+
+</body></html>
