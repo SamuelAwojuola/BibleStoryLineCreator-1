@@ -236,11 +236,8 @@ function rowListeners() {
 			newIrow = null;
 			clickedRow = this.rowIndex;
 			aboveRow = newIrow || clickedRow;
-			//				belowRow = this.rowIndex + 1;
 			belowRow = (newIrow || clickedRow) + 1;
-
-			//			console.log('FIRST: clickedRow is ' + clickedRow);
-
+			
 			rowListeners();
 		}
 	}
@@ -568,10 +565,7 @@ function createRowAbove() {
 	/*****************************************/
 	newIrow = (newIrow || aboveRow) + 1;
 
-	rowListeners();
-	cellListeners();
-	resetClasses();
-	buildLegendTable();
+	analyzeTable();
 	//	generateColumnClasses();
 	dragDiv2TD();
 	divListeners();
@@ -607,10 +601,7 @@ function createRowBelow() {
 	/*****************************************/
 	newIrow = (newIrow || aboveRow) + 1;
 
-	rowListeners();
-	cellListeners();
-	resetClasses();
-	buildLegendTable();
+	analyzeTable();
 	//	generateColumnClasses();
 	dragDiv2TD();
 	divListeners();
@@ -653,10 +644,7 @@ function cloneRowAbove() {
 
 		}
 	}
-	rowListeners();
-	cellListeners();
-	resetClasses();
-	buildLegendTable();
+	analyzeTable();
 	//	generateColumnClasses();
 	dragDiv2TD();
 	divListeners();
@@ -698,10 +686,7 @@ function cloneRowBelow() {
 
 		}
 	}
-	rowListeners();
-	cellListeners();
-	resetClasses();
-	buildLegendTable();
+	analyzeTable();
 	//	generateColumnClasses();
 	dragDiv2TD();
 	divListeners();
@@ -748,6 +733,7 @@ function createColumnBefore() {
 	newIcell = (newIcell || beforeCell) + 1;
 	analyzeTable();
 	generateColumnClasses();
+	connectAllDraggableDivsWithSVGLines();
 	dragDiv2TD();
 	divListeners();
 }
@@ -763,6 +749,7 @@ function createColumnAfter() {
 	newIcell = (newIcell || afterCell) + 1;
 	analyzeTable();
 	generateColumnClasses();
+	connectAllDraggableDivsWithSVGLines();
 	dragDiv2TD();
 	divListeners();
 }
@@ -1125,8 +1112,6 @@ function btn_buildLegendTable() {
 		deselectEmptyCell();
 	}
 	buildLegendTable();
-	//		rowListeners();
-	//		cellListeners();
 	resetClasses();
 
 }
@@ -1157,11 +1142,7 @@ function createDIV() {
 
 	selectedCell.appendChild(dIVwtLabel);
 
-	rowListeners();
-	cellListeners();
-	resetClasses();
-	deselectEmptyCell();
-	buildLegendTable();
+	analyzeTable();
 
 	//ARRAYS FOR DIV'S & THEIR CLASSES
 	divClassArray.push(dClass)

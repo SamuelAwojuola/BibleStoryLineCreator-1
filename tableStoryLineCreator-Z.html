@@ -68,7 +68,6 @@
 			box-shadow: 0px 3px 6px -3px black;
 			/*			background-color: rgba(255, 253, 232, 0.87);*/
 			background-color: rgba(255, 253, 232, 0.3);
-			/*			z-index: 99;*/
 		}
 
 		table table {
@@ -162,6 +161,7 @@
 			/*			overflow-y: auto;*/
 			background-color: white;
 			background-color: rgba(255, 244, 244, 0.61);
+			z-index: 3;
 		}
 
 		#tableBuilder * {
@@ -371,7 +371,7 @@
 			height: 20px;
 			font-size: 12px;
 			text-align: center;
-			z-index: 11;
+/*			z-index: 11;*/
 		}
 
 		nav * {
@@ -390,7 +390,7 @@
 			border-radius: 3px;
 			padding-left: 5px;
 			padding-right: 5px;
-			z-index: 10;
+			z-index: 3;
 		}
 
 		nav h3 {
@@ -485,7 +485,7 @@
 		<table id="masterTable">
 			<tr>
 				<td valign="top">
-		<h1>*</h1>
+		<h1 style="padding: 0; margin: 0;">*</h1>
 					<svg id="svg"></svg>
 					<!--I POSITION THE SVG HERE SO THAT IT CAN SCROLL WITH THE TABLE WITHOUT HAVING TO BE REDRAWN-->
 					<table id="legendTable">
