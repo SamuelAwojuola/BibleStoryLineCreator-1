@@ -2,6 +2,7 @@
 //dragElement(document.getElementById("draggable"));
 dragElement(document.getElementById("tableBuilder"));
 dragElement(document.getElementById("navSection4navDivButtonHolder"));
+dragElement(document.getElementById("detailsSection"));
 
 function dragElement(elmnt) {
 	var pos1 = 0,
