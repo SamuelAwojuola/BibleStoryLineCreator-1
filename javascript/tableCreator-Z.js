@@ -16,6 +16,7 @@ var nameLabelDiv = storyLineTable.getElementsByClassName('nameLabelDiv');
 var opacityCounter = 0;
 var divNameOptionsDropdown = document.getElementById('divNameOptionsDropdown');
 var divClassOptionsDropdown = document.getElementById('divClassOptionsDropdown');
+var addDetailKeys;
 
 //FUNCTION FOR REMOVING CLASSES
 function removeClassByPrefix(node, prefix) {
@@ -261,6 +262,8 @@ function cellListeners() {
 
 			//REDRAW SVG CONNECTOR LINES
 			connectAllDraggableDivsWithSVGLines();
+			//CREATE DETAILS KEY
+			addDetailKeys();
 		}
 	}
 }
@@ -922,7 +925,7 @@ var input4rowName = document.getElementById('rowName'); //GETS VALUE FROM INPUT 
 inputEnter(input4text, 'applyHeadingBtn');
 inputEnter(input4rowName, 'applyRowEditBtn');
 
-function insertText() {
+function insertTextIntoTD() {
 	var x = input4text.value; //GETS VALUE FROM INPUT BOX
 
 	var row = storyLineTable.querySelectorAll('tr');
@@ -1486,3 +1489,4 @@ function fillDivClassInput() {
 
 /******************************************************/
 /******************************************************/
+
