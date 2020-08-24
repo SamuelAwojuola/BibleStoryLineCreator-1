@@ -27,12 +27,18 @@
 		body {
 			margin-left: 0;
 			margin-right: 0;
-			background-color: rgba(255, 237, 62, 0.87);/*Yellow*/
-			background-color: rgba(129, 98, 131, 0.87);/*Purple*/
-			background-color: rgba(131, 128, 98, 0.87);/*Gray sort of*/
-			background-color: rgba(0, 0, 0, 0.87);/*Black*/
-			background-color: rgb(253, 255, 238);/*Beige*/
-			background-color: rgba(255, 255, 255, 0.87);/*White*/
+			background-color: rgba(255, 237, 62, 0.87);
+			/*Yellow*/
+			background-color: rgba(129, 98, 131, 0.87);
+			/*Purple*/
+			background-color: rgba(131, 128, 98, 0.87);
+			/*Gray sort of*/
+			background-color: rgba(255, 255, 255, 0.87);
+			/*White*/
+			background-color: rgba(0, 0, 0, 0.87);
+			/*Black*/
+			background-color: rgb(253, 255, 238);
+			/*Beige*/
 		}
 
 		#svg {
@@ -146,7 +152,6 @@
 			border: 0;
 			box-shadow: 0 0 transparent;
 		}
-
 	</style>
 
 	<!--TABLE-BUILDER STYLING--->
@@ -277,11 +282,11 @@
 			font-style: italic;
 		}
 
-		button:last-child {
+		#tableBuilder button:last-child {
 			border-bottom: 0.5px solid grey;
 		}
 
-		button:first-child {
+		#tableBuilder button:first-child {
 			border-top: 0.5px solid grey;
 		}
 
@@ -298,7 +303,6 @@
 		.btnactivecolor {
 			background-color: aquamarine;
 		}
-
 	</style>
 
 	<!--DIV LABELS STYLING------>
@@ -315,7 +319,6 @@
 			box-shadow: 0 4px 5px -6px black;
 			z-index: 1;
 		}
-
 	</style>
 
 	<!--TABLE EDITOR SCROLLBAR-->
@@ -358,7 +361,6 @@
 			background-color: white;
 			border: 1px solid #333333;
 		}
-
 	</style>
 
 	<!--SHOW HIDE DIVS SECTION-->
@@ -470,7 +472,6 @@
 		.opacityClass {
 			opacity: 0.2;
 		}
-
 	</style>
 
 	<!--DETAILS SECTIONS-------->
@@ -509,28 +510,28 @@
 		}
 
 		#detailsSummary {
-		height: 260px;
-		width: 350px;
-		padding-right: 8px;
-		text-align: justify;
-		overflow-y: scroll;
-		overflow-x: hidden;
-		background-color: white;
+			height: 260px;
+			width: 350px;
+			padding-right: 8px;
+			text-align: justify;
+			overflow-y: scroll;
+			overflow-x: hidden;
+			background-color: white;
 		}
 
 		#detailsSummary>div>p:empty::before {
-		content: "Insert details for selected cell here";
+			content: "Insert details for selected cell here";
 		}
 
 		#detailsKeyFacts {
-		position: relative;
-		margin-right: 10px;
-		padding-left: 8px;
-		padding-right: 8px;
-		/* top: 0;*/
-		background-color: beige;
-		border-right: 3px solid grey;
-		border-radius: 3px;
+			position: relative;
+			margin-right: 10px;
+			padding-left: 8px;
+			padding-right: 8px;
+			/* top: 0;*/
+			background-color: beige;
+			border-right: 3px solid grey;
+			border-radius: 3px;
 		}
 
 		#addDetail {
@@ -549,17 +550,64 @@
 		}
 
 		#detailsSummary>div {
-/*		display: none;*/
+			/*		display: none;*/
 		}
-		
+
 		.hideDetail {
 			display: none;
 		}
-		
+
 		.showDetail {
 			display: block;
 		}
+	</style>
 
+	<!--ULTERNATE STORYLINE TABLE EDITOR BUTTONS-->
+	<style>
+		#alternateStoryLineEditorButtons {
+			position: absolute;
+			background-color:beige;
+			align-items: flex-end;
+			margin-left: 12px;
+			margin-top: 12px;
+			bottom: 0;
+			box-shadow: 0px 2px 2px 2px grey;
+		}
+
+		#alternateStoryLineEditorButtons button {
+			font-weight: bold;
+			width: 70px;
+		}
+
+		#alternateStoryLineEditorButtons button span {
+			font-size: 20px;
+			font-style: normal;
+			padding: 0;
+			margin: 0;
+		}
+
+		#alternateStoryLineEditorButtons>div>span {
+			font-size: 17px;
+			/*			font-style: italic;*/
+			font-weight: bold;
+			text-transform: uppercase;
+			margin-right: 10px;
+		}
+
+		#alternateStoryLineEditorButtons>.vertical {
+			border-right: 1px solid black;
+			padding: 0 2px;
+		}
+
+		.vertical {
+			display: inline-flex;
+			padding-left: 6px;
+			margin: 5px;
+		}
+
+		.vertical2 {
+			/*			box-shadow: 5px 0px 5px 0px grey;*/
+		}
 	</style>
 
 </head>
@@ -628,7 +676,7 @@
 			<div>
 				<h4>Merge/Split Cells</h4>
 				<button class="create" onclick="selectCells(this)">Select Cells</button>
-				<button class="create" onclick="mergeContents(this)">Merge Contents</button>
+				<!--				<button class="create" onclick="mergeContents(this)">Merge Contents</button>-->
 				<button class="create" onclick="mergeCells()">Merge Cells</button>
 				<button class="create" onclick="splitCell()">Split Cells</button>
 			</div>
@@ -754,92 +802,163 @@
 
 				<h4>Characters/Actors</h4>
 				<ul id="detailsActors">
-					<!--<li>Jesus</li>-->
 				</ul>
-				<div id="detailsRegions">
-					<h4 title="Where this/these event/events takes place">Location/Region:</h4><span>Heaven</span>
-				</div>
+				<h4 title="Where this/these event/events takes place">Location/Region:</h4>
+				<!--<span>Heaven</span>-->
+				<ul id="detailsRegions">
+				</ul>
 				<h4 title="Absolute/Relative time when this/these event/events takes place">Time:</h4>
 				<ul id="detailsTimePeriods">
-				<!--<li>Beginning</li>-->
 				</ul>
+
 			</div>
 			<div id="detailsSummary" class="scrollbar scrollbar-custom">
-				<!--<div>
-					<p>Then your Father, who sees what is done in secret, will reward you. 7And when you pray, do not keep on babbling like pagans, for they think they will be heard because of their many words. 8Do not be like them, for your Father knows what you need before you ask him. 9“This, then, is how you should pray: “‘Our Father in heaven, hallowed be your name,
-						Then your Father, who sees what is done in secret, will reward you. 7And when you pray, do not keep on babbling like pagans, for they think they will be heard because of their many words. 8Do not be like them, for your Father knows what you need before you ask him. 9“This, then, is how you should pray: “‘Our Father in heaven, hallowed be your name,Then your Father, who sees what is done in secret, will reward you. 7And when you pray, do not keep on babbling like pagans, for they think they will be heard because of their many words. 8Do not be like them, for your Father knows what you need before you ask him. 9“This, then, is how you should pray: “‘Our Father in heaven, hallowed be your name,</p>
-				</div>-->
 			</div>
 		</div>
 	</section>
 	<!--***********************************************-->
 
 	<!--ALTERNATIVE STORYLINE TABLE EDITOR BUTTONS *****-->
-	<section>
-		<button title="delete label" onclick="deleteDIV()">
-			✘
-			<br />
-			Del
-			<br />
-			Label
-		</button>
-		<button title="create cell to the left" onclick="createCellBefore()">
-			&larr;
-			<br />
-			new
-			<br />
-			Cell
-		</button>
-		&nbsp;
-		<button title="create cell to the right" onclick="createCellAfter()">
-			&rarr;
-			<br />
-			new
-			<br />
-			Cell
-		</button>
-		<button title="clone row above" onclick="cloneRowAbove()">
-			&uarr;
-			<br />
-			clone
-			<br />
-			Row
-		</button>
-		<button title="clone row below" onclick="cloneRowBelow()">
-			clone
-			<br />
-			Row
-			<br />
-			&darr;
-		</button>
-		<button title="new row above" onclick="createRowAbove()">
-			&uarr;
-			<br />
-			new
-			<br />
-			Row
-		</button>
-		<button title="new row below" onclick="createRowBelow()">
-			new
-			<br />
-			Row
-			<br />
-			&darr;
-		</button>
-		<button title="new column to the left" onclick="createColumnBefore()">
-			&larr;
-			<br />
-			new
-			<br />
-			Col
-		</button>
-		<button title="new column to the right" onclick="createColumnAfter()">
-			&rarr;
-			<br />
-			new
-			<br />
-			Col
-		</button>
+	<section id="alternateStoryLineEditorButtons">
+
+		<div class="vertical">
+			<span>Delete:</span>
+			<div class="vertical">
+				<button title="delete label" onclick="deleteDIV()">
+					✘<br />Del<br />Label
+				</button><button title="delete label" onclick="destroyCell()">
+					✘<br />Del<br />Cell
+				</button><button title="delete label" onclick="destroyRow()">
+					✘<br />Del<br />Row
+				</button><button title="delete label" onclick="destroyColumn()">
+					✘<br />Del<br />Row
+				</button>
+			</div>
+		</div>
+
+		<div class="vertical">
+			<span>Create:</span>
+			<div class="vertical">
+				<div class="vertical">
+					<div class="vertical2">
+						<span style="font-style: italic">Cell Name:</span> <input type="text" id="myText" value="">
+					</div>
+					<button title="create cell to the left" onclick="createCellBefore()">
+						&#129032;
+						<br />
+						new
+						<br />
+						Cell
+					</button><button title="create cell to the right" onclick="createCellAfter()">
+						&#129034;
+						<br />
+						new
+						<br />
+						Cell
+					</button>
+				</div>
+				<div class="vertical">
+					<button title="clone row above" onclick="cloneRowAbove()">
+						&#129033;
+						<br />
+						clone
+						<br />
+						Row
+					</button><button title="clone row below" onclick="cloneRowBelow()">
+						&#129035;
+						<br />
+						clone
+						<br />
+						Row
+					</button><button title="new row above" onclick="createRowAbove()">
+						&#129033;
+						<br />
+						new
+						<br />
+						Row
+					</button><button title="new row below" onclick="createRowBelow()">
+						&#129035;
+						<br />
+						new
+						<br />
+						Row
+					</button>
+				</div>
+				<div class="vertical">
+					<button title="new column to the left" onclick="createColumnBefore()">
+						&#129032;
+						<br />
+						new
+						<br />
+						Col
+					</button><button title="new column to the right" onclick="createColumnAfter()">
+						&#129034;
+						<br />
+						new
+						<br />
+						Col
+					</button></div>
+			</div>
+		</div>
+
+		<div class="vertical">
+			<span>Merge/Split:</span>
+			<div class="vertical">
+				<button title="select cells to be merged or split" onclick="selectCells(this)">
+					&#10010;
+					<br />
+					Select
+					<br />
+					Cells
+				</button><button title="merge selected cells" onclick="mergeCells()">
+					&#124; &#129034;&#129032; &#124;
+					<br />
+					Merge
+					<br />
+					Cells
+				</button><button title="split selected cells" onclick="splitCell()">
+					&#124;&#124;&#129032; &#129034;&#124;&#124;
+					<br />Split
+					<br />
+					Cells
+				</button>
+			</div>
+		</div>
+
+		<div class="vertical">
+			<span>Edit:</span>
+			<div class="vertical">
+				<!--			<div class="vertical">-->
+				<div class="vertical">
+					<div class="vertical2">
+						<span style="font-style: italic">Cell Heading:</span> <input type="text" id="cellHeading" value="">
+					</div>
+					<button id="applyHeadingBtn" onclick="insertHeading()">Apply Heading</button>
+					<!--				</div>-->
+
+					<!--				<div class="vertical">-->
+					<div class="vertical2">
+						<!--for the content of the cell-->
+						<span style="font-style: italic">Cell Details:</span> <input type="text" id="cellText" value="">
+					</div>
+					<button id="applyTextBtn" onclick="insertTextIntoTD()">Apply Details</button>
+
+					<div class="vertical2">
+						<span style="font-style: italic">Row Group:</span> <input type="text" id="rowGroup" value="">
+					</div>
+					<div class="vertical2">
+						<span style="font-style: italic">Row Name:</span> <input type="text" id="rowName" value=""></div>
+
+					<button id="applyRowEditBtn" onclick="rowEdit()">Apply Row Edit</button>
+				</div>
+			</div>
+			</div>
+
+		<div class="vertical">
+			<span>Table:</span>
+			<button onclick="btn_buildLegendTable()">Re-Align Tables</button>
+			<button onclick="connectAllDraggableDivsWithSVGLines()">Connect Divs</button>
+			</div>
 	</section>
 	<!--***********************************************-->
 </body>
@@ -853,6 +972,4 @@
 <script type="text/javascript" src="javascript/cssColorNamesArray.js"></script>
 
 <script type="text/javascript" src="javascript/tableCreator-Z.js"></script>
-<script type="text/javascript" src="javascript/detailsSection.js"></script>
-
-</html>
+<script type="text/javascript" src="javascript/detailsSection.js"></script></html>

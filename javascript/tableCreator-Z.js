@@ -238,14 +238,13 @@ function rowListeners() {
 			clickedRow = this.rowIndex;
 			aboveRow = newIrow || clickedRow;
 			belowRow = (newIrow || clickedRow) + 1;
-			
+
 			rowListeners();
 		}
 	}
 }
 
 //FIND INDEX OF CLICKED CELL
-
 function cellListeners() {
 	var cells = storyLineTable.querySelectorAll('td');
 	for (i = 0; i < cells.length; i++) {
@@ -262,14 +261,13 @@ function cellListeners() {
 
 			//REDRAW SVG CONNECTOR LINES
 			connectAllDraggableDivsWithSVGLines();
-			//CREATE DETAILS KEY
+			//CREATE DETAILS KEY WHEN CELL IS CLICKED
 			addDetailKeys();
 		}
 	}
 }
 
 //FIND INDEX OF CLICKED DIV
-
 function divListeners() {
 	var cells = storyLineTable.querySelectorAll('td');
 	var allDivs;
@@ -724,16 +722,57 @@ function destroyRow() {
 
 /*COLUMNS***********************************************************************************************/
 //CREATE COLUMN BEFORE CLICKED COLUMN
-//var z = 1;
 
 function createColumnBefore() {
+
 	var row = storyLineTable.querySelectorAll('tr');
-	for (j = 0; j < row.length; j++) {
-		var cell = row[j].insertCell(newIcell || beforeCell);
-		//		cell.innerHTML = 'columnBefore ' + z;
+
+	/***********************************************************/
+
+	//find true index of clicked cell
+	var trueIndex = -1;
+	for (i = 0; i < (clickedCell + 1); i++) {
+		var cellsUp2clickedCell = row[clickedRow].cells[i];
+
+		trueIndex = trueIndex + row[clickedRow].cells[i].colSpan; //all colspans minus 1 will give the trueindex
 	}
-	//	++z;
-	newIcell = (newIcell || beforeCell) + 1;
+		
+	//for when clickedCell has colSpan > 1
+	var colSpanOfClickedCell = row[clickedRow].cells[clickedCell].colSpan;
+	if (colSpanOfClickedCell > 1) {
+		trueIndex = trueIndex - colSpanOfClickedCell + 1;
+	}
+	console.log("trueIndex: " + trueIndex);
+
+	var colClass2query = 'col-' + (trueIndex + 1);
+	console.log("colClass2query: " + colClass2query);
+	var lessThanColClass2query = 'col-' + (trueIndex);
+	console.log("lessThanColClass2query: " + lessThanColClass2query);
+	var greaterThanColClass2query = 'col-' + (trueIndex + 2);
+	//in each row, add cell before cell with the class of colClass2query
+
+	/***********************************************************/
+	for (j = 0; j < row.length; j++) {
+		console.log("querySelector: " + row[j]);
+		beforeCell = row[j].querySelector('.' + colClass2query).cellIndex; //getting index of cell with class of colClass2query. this is for insertion before
+		console.log("ContainsLessThanClass: " + row[j].querySelector('.' + colClass2query).classList.contains(lessThanColClass2query));
+
+		if (row[j].querySelector('.' + colClass2query).classList.contains(lessThanColClass2query)) {
+			console.log("colspan to expand");
+			row[j].cells[beforeCell].colSpan = row[j].cells[beforeCell].colSpan + 1;
+		} else {
+			row[j].insertCell(newIcell || beforeCell);
+		}
+
+	}
+	/***********************************************************/
+
+	//	
+	//	for (j = 0; j < row.length; j++) {
+	//		/*var cell =*/ row[j].insertCell(newIcell || beforeCell);
+	//	}
+
+	//	newIcell = (newIcell || beforeCell) + 1;
 	analyzeTable();
 	generateColumnClasses();
 	connectAllDraggableDivsWithSVGLines();
@@ -744,12 +783,41 @@ function createColumnBefore() {
 //CREATE COLUMN AFTER CLICKED COLUMN
 function createColumnAfter() {
 	var row = storyLineTable.querySelectorAll('tr');
-	for (j = 0; j < row.length; j++) {
-		var cell = row[j].insertCell(afterCell);
-		//		cell.innerHTML = 'columnAfter ' + z;
+
+	/***********************************************************/
+
+	//find true index of clicked cell
+	var trueIndex = -1;
+	for (i = 0; i < (clickedCell + 1); i++) {
+		var cellsUp2clickedCell = row[clickedRow].cells[i];
+		trueIndex = trueIndex + row[clickedRow].cells[i].colSpan; //all colspans minus 1 will give the trueindex
+		console.log("trueIndex: " + trueIndex);
 	}
-	//	++z;
-	newIcell = (newIcell || afterCell) + 1;
+	var colClass2query = 'col-' + (trueIndex + 1);
+	console.log("colClass2query: " + colClass2query);
+	var lessThanColClass2query = 'col-' + (trueIndex);
+	console.log("lessThanColClass2query: " + lessThanColClass2query);
+	var greaterThanColClass2query = 'col-' + (trueIndex + 2);
+	//in each row, add cell before cell with the class of colClass2query
+
+	/***********************************************************/
+	for (j = 0; j < row.length; j++) {
+		console.log("querySelector: " + row[j]);
+		beforeCell = row[j].querySelector('.' + colClass2query).cellIndex; //getting index of cell with class of colClass2query. this is for insertion before
+		console.log("ContainsLessThanClass: " + row[j].querySelector('.' + colClass2query).classList.contains(lessThanColClass2query));
+		afterCell = beforeCell + 1;
+
+		if (row[j].querySelector('.' + colClass2query).classList.contains(greaterThanColClass2query)) {
+			console.log("colspan to expand");
+			row[j].cells[beforeCell].colSpan = row[j].cells[beforeCell].colSpan + 1;
+		} else {
+			row[j].insertCell(newIcell || afterCell);
+		}
+
+	}
+	/***********************************************************/
+
+	//	newIcell = (newIcell || afterCell) + 1;
 	analyzeTable();
 	generateColumnClasses();
 	connectAllDraggableDivsWithSVGLines();
@@ -932,13 +1000,13 @@ function insertTextIntoTD() {
 	var cell = row[clickedRow].querySelectorAll('td')[clickedCell];
 
 	if (x) {
-		var cell_p_text = document.createElement('p'); 
+		var cell_p_text = document.createElement('p');
 		cell_p_text.innerHTML = x;
-		
+
 		var heading = cell.querySelector(TypeOfHtmlHeader);
 		//		heading.setAttribute('contentEditable', 'true');
 		heading.after(cell_p_text);
-		
+
 		input4text.value = ''; //THIS CLEARS THE INPUT BOX
 		celldeselect = cell;
 
@@ -1489,4 +1557,3 @@ function fillDivClassInput() {
 
 /******************************************************/
 /******************************************************/
-
