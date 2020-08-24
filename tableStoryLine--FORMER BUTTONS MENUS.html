@@ -1,0 +1,109 @@
+<!--I HAD TO REMOVE THESE BECAUSE THE IDS OF THE INPUTS WERE DUPLICATES OF THOSE IN THE NEW ALTERNATE MENU I MADE-->
+
+
+
+	<!--STORYLINE TABLE EDITOR *************************-->
+	<div id="tableBuilder">
+		<div id="tableBuilderheader" title="Drag to move">TABLE EDITOR <span id="max-min">&#9776;</span></div>
+		<div class=" scrollbar scrollbar-custom" style="">
+
+			<!--DIVS-->
+			<h3 class='tableBuilderSections'>Divs</h3>
+			<div>
+				<!--				<h4>Create Div</h4>-->
+				<span style="font-style: italic">Div Name:</span> <input type="text" id="divName" value="" draggable="false">
+				<select id="divNameOptionsDropdown">
+				</select><br>
+				<span style="font-style: italic">Div Class:</span> <input type="text" id="divClass" value="" draggable="false">
+				<select id="divClassOptionsDropdown">
+				</select><br>
+				<button class="create" onclick="createDIV()">Create Div</button>
+			</div>
+			<div>
+				<h4>Delete Div</h4>
+				<button class="create" onclick="deleteDIV()">Delete Div</button>
+			</div>
+
+			<!--CELLS-->
+			<h3 class='tableBuilderSections'>Cells</h3>
+			<div>
+				<h4>Create Cell</h4>
+				<span style="font-style: italic">Cell Name:</span> <input type="text" id="myText" value="">
+
+				<button class="create" onclick="createCellBefore()">Cell Before</button>
+				<button class="create" onclick="createCellAfter()">Cell After</button>
+			</div>
+			<div>
+				<h4>Edit Cell</h4>
+				<!--for cell heading-->
+				<span style="font-style: italic">Cell Heading:</span> <input type="text" id="cellHeading" value="">
+				<button id="applyHeadingBtn" class="create" onclick="insertHeading()">Apply Heading</button>
+				<!--for the content of the cell-->
+				<span style="font-style: italic">Cell Details:</span> <input type="text" id="cellText" value="">
+				<button id="applyTextBtn" class="create" onclick="insertTextIntoTD()">Apply Details</button>
+				<!--merge and split cells-->
+				<button class="create" onclick="increaseCellColspan()" title="increase colspan">Widen Cell</button>
+				<button class="create" onclick="decreaseCellColspan()" title="decrease colspan">Contract Cell</button>
+			</div>
+			<div>
+				<h4>Merge/Split Cells</h4>
+				<button class="create" onclick="selectCells(this)">Select Cells</button>
+				<!--				<button class="create" onclick="mergeContents(this)">Merge Contents</button>-->
+				<button class="create" onclick="mergeCells()">Merge Cells</button>
+				<button class="create" onclick="splitCell()">Split Cells</button>
+			</div>
+			<div>
+				<h4>Cell Display</h4>
+				<button class="delete" onclick="deleteCell()">Cell None Display</button>
+				<button class="delete" onclick="hideCell()">Cell Hidden Visibility</button><button class="delete" onclick="destroyCell()" style="font-style: italic">Destroy Cell</button>
+			</div>
+
+			<!--ROWS-->
+			<h3 class='tableBuilderSections'>Rows</h3>
+			<div>
+				<h4>New Row</h4>
+				<button class="create" onclick="createRowAbove()">New Row Above</button>
+				<button class="create" onclick="createRowBelow()">New Row Below</button>
+			</div>
+			<div>
+				<h4>Clone Row</h4>
+				<button class="create" onclick="cloneRowAbove()">Clone Row Above</button>
+				<button class="create" onclick="cloneRowBelow()">Clone Row Below</button>
+			</div>
+			<div>
+				<h4>Edit Row</h4>
+				<span style="font-style: italic">Row Group:</span> <input type="text" id="rowGroup" value="">
+				<span style="font-style: italic">Row Name:</span> <input type="text" id="rowName" value="">
+
+				<button id="applyRowEditBtn" class="create" onclick="rowEdit()">Apply Row Edit</button>
+			</div>
+			<div>
+				<h4>Delete Row</h4>
+				<button class="delete" onclick="deleteRow()">Row Display-None</button>
+				<button class="delete" onclick="hideRow()">Row Hidden-Visibility</button>
+				<button class="delete" onclick="destroyRow()" style="font-style: italic">Destroy Row</button>
+			</div>
+
+			<!--COLUMNS-->
+			<h3 class='tableBuilderSections'>Column</h3>
+			<div>
+				<h4>Create Column</h4>
+				<button class="create" onclick="createColumnBefore()">Column Before</button>
+				<button class="create" onclick="createColumnAfter()">Column After</button>
+			</div>
+			<div>
+				<h4>Delete Column</h4>
+				<button class="delete" onclick="deleteColumn()">Delete Column</button>
+				<button class="delete" onclick="hideColumn()">Hide Column</button>
+			</div>
+
+			<h3 class='tableBuilderSections'>Show All</h3>
+			<button class="create" onclick="showAll()">Show All Rows & Cells</button>
+
+			<h3 class='tableBuilderSections'>Re-Align Table</h3>
+			<button class="create" onclick="btn_buildLegendTable()">Re-Align Tables</button>
+			<button class="create" onclick="connectAllDraggableDivsWithSVGLines()">Connect Divs</button>
+		</div>
+
+	</div>
+	<!--***********************************************-->

@@ -64,7 +64,7 @@ var preferredColors = [
 	"DeepSkyBlue",
 	"Moccasin",
 	"LemonChiffon",
-	"",
+	"Magenta",
 	"",
 	"",
 	"",

@@ -1554,6 +1554,25 @@ function fillDivClassInput() {
 	console.log(divClassOptionsDropdown.value);
 };
 
+/******************************************************/
+/******************************************************/
 
+/*MAKE TABLE EDITABLE BUTTON***************************/
+/******************************************************/
+
+function alternateClose(){
+	var alternateStoryLineEditorButtons = document
+	.getElementById('alternateStoryLineEditorButtons');
+	if(alternateStoryLineEditorButtons.style.display == 'none'){
+		alternateStoryLineEditorButtons.style.display
+	= '';
+	   } else {
+		alternateStoryLineEditorButtons.style.display
+	= 'none';
+	   }
+	}
+function makeTableEditable(){
+	alternateClose();
+}
 /******************************************************/
 /******************************************************/
