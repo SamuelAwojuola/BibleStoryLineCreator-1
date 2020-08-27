@@ -1,6 +1,13 @@
 var documentBody = document.querySelector('body');
+
 var divTableContainer = document.getElementById('divTableContainer');
+var onPageLoad_divTableContainer_Left_Coord;
+var onPageLoad_divTableContainer_Top_Coord;
+
 var storyLineTable = document.getElementById('storyLineTable');
+var onPageLoad_StoryLineTable_Left_Coord;
+var onPageLoad_StoryLineTable_Top_Coord;
+
 var masterTable = document.getElementById('masterTable');
 var TypeOfHtmlHeader = 'H4';
 var celldeselect;
@@ -48,6 +55,7 @@ function deslectOnClickAway() {
 onload = onloadAnalysis();
 
 function onloadAnalysis() {
+	
 	rowListeners();
 	cellListeners();
 	deslectOnClickAway();
@@ -123,6 +131,21 @@ function onloadAnalysis() {
 	}
 	/****************************************************/
 	/****************************************************/
+	
+	/****************************************************/
+	/*ORIGNAL COORDINATES OF THE STORYLINETABLE***************************************************/
+	/*(THESE WILL BE USED TO GET THE DISTANCES SCROLLED TO GET THE COORDINATES TO ASSIGN THE SVG CONNECTORS)*/
+	/****************************************************/
+	onPageLoad_StoryLineTable_Left_Coord = storyLineTable.getBoundingClientRect().left;
+	onPageLoad_StoryLineTable_Top_Coord = storyLineTable.getBoundingClientRect().top;
+	
+	onPageLoad_divTableContainer_Left_Coord = divTableContainer.getBoundingClientRect().left;
+	onPageLoad_divTableContainer_Top_Coord = divTableContainer.getBoundingClientRect().top;
+	/****************************************************/
+	/*these are put here at the end of the onLoad functions, to ensure that the table has been copletely built before the orginal coordinates of teh StoryLineTable are taken*/
+	/****************************************************/
+	
+	
 }
 
 function analyzeTable() {
@@ -1571,8 +1594,17 @@ function alternateClose(){
 	= 'none';
 	   }
 	}
+function storyLineTableTitleHeaderEditable(){
+	var storyLineTableTitleHeader = divTableContainer.querySelector('#storyLineTableTitleHeader');
+	if(storyLineTableTitleHeader.contentEditable == 'true'){
+		storyLineTableTitleHeader.contentEditable = 'false'
+	} else {
+		storyLineTableTitleHeader.contentEditable = 'true'
+	}
+}
 function makeTableEditable(){
 	alternateClose();
+	storyLineTableTitleHeaderEditable();
 }
 /******************************************************/
 /******************************************************/

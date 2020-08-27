@@ -3,7 +3,7 @@
 dragElement(document.getElementById("tableBuilder"));
 dragElement(document.getElementById("navSection4navDivButtonHolder"));
 dragElement(document.getElementById("detailsSection"));
-//dragElement(document.getElementById("alternateStoryLineEditorButtons"));
+dragElement(document.getElementById("alternateStoryLineEditorButtons"));
 
 function dragElement(elmnt) {
 	var pos1 = 0,

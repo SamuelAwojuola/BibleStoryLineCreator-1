@@ -16,36 +16,20 @@ function nodesconnector(pathXYcord, divClassLineConnects) {
 
 
 // CREATE SVG CONNECTOR PATHS
-//var startElement = document.querySelector("#a");
-//var endElement = document.querySelector("#b");
+var startElement = document.querySelector("#a");
+var endElement = document.querySelector("#b");
 // var connector = document.querySelector("#connector");
 
 function drawConnector(X, Y, divClassforColor) {
-	//To get the distance scrolled within the divTableContainer to be added to the coordinates
-	//LEFT SCROLL
-	var current_StoryLineTable_Left_Coord = storyLineTable.getBoundingClientRect().left;//the current scroll position
-	var storyLineTableScrollXDiff = onPageLoad_StoryLineTable_Left_Coord - current_StoryLineTable_Left_Coord;//the currenct scroll position subracted from the original scroll position
-	
-	var current_divTableContainer_Left_Coord = divTableContainer.getBoundingClientRect().left;//the current scroll position
-	var divTableContainerScrollXDiff = onPageLoad_divTableContainer_Left_Coord - current_divTableContainer_Left_Coord;//the currenct scroll position subracted from the original scroll position
-	
-	//DOWN SCROLL
-	var current_StoryLineTable_Top_Coord = storyLineTable.getBoundingClientRect().top;
-	var storyLineTableScrollYDiff = onPageLoad_StoryLineTable_Top_Coord - current_StoryLineTable_Top_Coord;
-	
-	var current_divTableContainer_Top_Coord = divTableContainer.getBoundingClientRect().top;
-	var divTableContainerScrollYDiff = onPageLoad_divTableContainer_Top_Coord - current_divTableContainer_Top_Coord;
-	/**********************************************/
-	
 	var A = getCoordinates(X);
 	var B = getCoordinates(Y);
 	var posnA = {
-		x: A.rightCenterX + storyLineTableScrollXDiff - divTableContainerScrollXDiff,
-		y: A.rightCenterY + 1.5 + storyLineTableScrollYDiff - divTableContainerScrollYDiff
+		x: A.rightCenterX,
+		y: A.rightCenterY + 1.5
 	};
 	var posnB = {
-		x: B.leftCenterX + storyLineTableScrollXDiff - divTableContainerScrollXDiff,
-		y: B.leftCenterY + 1.5 + storyLineTableScrollYDiff - divTableContainerScrollYDiff
+		x: B.leftCenterX,
+		y: B.leftCenterY + 1.5
 	};
 	var dStr =
 		"M" +
