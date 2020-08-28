@@ -1,4 +1,12 @@
 var documentBody = document.querySelector('body');
+var masterTable = document.getElementById('masterTable');
+
+var legendTable = document.querySelector('#legendTable');
+var onPageLoad_legendTable_Left_Coord;
+var resize_legendTable_Left_Coord;
+var onPageLoad_legendTable_Top_Coord;
+
+var onPageLoad_distanceBetweenLegendTable_and_StorylineTable;
 
 var divTableContainer = document.getElementById('divTableContainer');
 var onPageLoad_divTableContainer_Left_Coord;
@@ -6,9 +14,16 @@ var onPageLoad_divTableContainer_Top_Coord;
 
 var storyLineTable = document.getElementById('storyLineTable');
 var onPageLoad_StoryLineTable_Left_Coord;
+var original_onPageLoad_StoryLineTable_Left_Coord;
 var onPageLoad_StoryLineTable_Top_Coord;
+var original_onPageLoad_StoryLineTable_Top_Coord;
 
-var masterTable = document.getElementById('masterTable');
+var alternateStoryLineEditorButtons = document.getElementById('alternateStoryLineEditorButtons');
+
+var storyLineTableTitleHeader = divTableContainer.querySelector('#storyLineTableTitleHeader');
+//var onPageLoad_storyLineTableTitleHeader_Top_Coord;
+//var original_onPageLoad_storyLineTableTitleHeader_Top_Coord;
+
 var TypeOfHtmlHeader = 'H4';
 var celldeselect;
 var tblReady;
@@ -56,11 +71,13 @@ onload = onloadAnalysis();
 
 function onloadAnalysis() {
 	
+	alternateStoryLineEditorButtons.style.display = 'none';
+
 	rowListeners();
 	cellListeners();
 	deslectOnClickAway();
 
-	/*TO REMOVE THE DRAGOVER CLASSES USED TO PREVENT ADDITION OF DTAGOVER RELATED EVENT-LISTNERS SO THAT THOSE EVENT-LISTNERS CAN BE ADDED****************************************/
+	/*TO REMOVE THE DRAGOVER CLASSES USED TO PREVENT ADDITION OF DRAGOVER RELATED EVENT-LISTNERS SO THAT THOSE EVENT-LISTNERS CAN BE ADDED****************************************/
 	var tdsWithDragOverELAddedClass = storyLineTable.querySelectorAll('.dragOverELAdded');
 	if (tdsWithDragOverELAddedClass) {
 		for (i = 0; i < tdsWithDragOverELAddedClass.length; i++) {
@@ -131,22 +148,54 @@ function onloadAnalysis() {
 	}
 	/****************************************************/
 	/****************************************************/
-	
+
 	/****************************************************/
 	/*ORIGNAL COORDINATES OF THE STORYLINETABLE***************************************************/
 	/*(THESE WILL BE USED TO GET THE DISTANCES SCROLLED TO GET THE COORDINATES TO ASSIGN THE SVG CONNECTORS)*/
 	/****************************************************/
 	onPageLoad_StoryLineTable_Left_Coord = storyLineTable.getBoundingClientRect().left;
 	onPageLoad_StoryLineTable_Top_Coord = storyLineTable.getBoundingClientRect().top;
-	
+	original_onPageLoad_StoryLineTable_Left_Coord = onPageLoad_StoryLineTable_Left_Coord;//for windowResize
+	original_onPageLoad_StoryLineTable_Top_Coord = onPageLoad_StoryLineTable_Top_Coord;//for windowResize
+
 	onPageLoad_divTableContainer_Left_Coord = divTableContainer.getBoundingClientRect().left;
 	onPageLoad_divTableContainer_Top_Coord = divTableContainer.getBoundingClientRect().top;
+
+	onPageLoad_legendTable_Left_Coord = legendTable.getBoundingClientRect().left;
+	
+	onPageLoad_distanceBetweenLegendTable_and_StorylineTable = onPageLoad_StoryLineTable_Left_Coord - onPageLoad_legendTable_Left_Coord;
+	
+//	onPageLoad_legendTable_Top_Coord = legendTable.getBoundingClientRect().top;
 	/****************************************************/
 	/*these are put here at the end of the onLoad functions, to ensure that the table has been copletely built before the orginal coordinates of teh StoryLineTable are taken*/
 	/****************************************************/
-	
-	
+
 }
+
+/*BECAUSE COORDINATES CHANGE WHEN BROWSER WINDOW IS RESIZE*******************************/
+/****************************************************************************************/
+window.addEventListener("resize", function () {
+	
+	resize_legendTable_Left_Coord = legendTable.getBoundingClientRect().left;
+	var resize_StoryLineTable_Left_Coord = storyLineTable.getBoundingClientRect().left;
+	var resize_StoryLineTable_Top_Coord = storyLineTable.getBoundingClientRect().top;
+
+	var newDistanceBetweenLegendTable_and_StorylineTable = resize_StoryLineTable_Left_Coord - resize_legendTable_Left_Coord;
+	
+	var diffbtwOldAndNewDistances = onPageLoad_distanceBetweenLegendTable_and_StorylineTable -newDistanceBetweenLegendTable_and_StorylineTable;
+	
+	onPageLoad_StoryLineTable_Left_Coord = original_onPageLoad_StoryLineTable_Left_Coord - diffbtwOldAndNewDistances;
+//	onPageLoad_StoryLineTable_Top_Coord = original_onPageLoad_StoryLineTable_Top_Coord - diffbtwOldAndNewDistances;
+	
+
+//	onPageLoad_divTableContainer_Left_Coord = divTableContainer.getBoundingClientRect().left;
+//	onPageLoad_divTableContainer_Top_Coord = divTableContainer.getBoundingClientRect().top;
+
+	btn_buildLegendTable();
+	connectAllDraggableDivsWithSVGLines();
+});
+/****************************************************************************************/
+/****************************************************************************************/
 
 function analyzeTable() {
 	rowListeners();
@@ -233,7 +282,7 @@ function cellHighlight(x) {
 			}
 		}
 
-		setTimeout(() => [x.style.backgroundColor = '', x.classList.remove('clicked'), shs()], 22000);
+		setTimeout(() => [x.style.backgroundColor = '', x.classList.remove('clicked'), shs(), connectAllDraggableDivsWithSVGLines()], 22000);
 		//	setTimeout(() => [], 22000);
 	}
 }
@@ -306,7 +355,7 @@ function divListeners() {
 				clickedDIV = this;
 				var initialColor = this.style.backgroundColor;
 				this.style.backgroundColor = "lightgrey";
-				setTimeout(() => [clickedDIV.style.backgroundColor = initialColor], 2000)
+				setTimeout(() => [clickedDIV.style.backgroundColor = initialColor], 5000)
 				setTimeout(() => [clickedDIV = null], 2000)
 			}
 		}
@@ -724,6 +773,7 @@ function deleteRow() {
 	row[clickedRow].style.display = 'none';
 
 	analyzeTable();
+	connectAllDraggableDivsWithSVGLines();
 }
 
 //HIDE ROW
@@ -732,6 +782,7 @@ function hideRow() {
 	row[clickedRow].style.visibility = 'hidden';
 
 	analyzeTable();
+	connectAllDraggableDivsWithSVGLines();
 }
 
 //DESTROY ROW (I.E. REMOVE FROM DOM)
@@ -740,6 +791,7 @@ function destroyRow() {
 	row[clickedRow].remove();
 
 	analyzeTable();
+	connectAllDraggableDivsWithSVGLines();
 }
 
 
@@ -759,7 +811,7 @@ function createColumnBefore() {
 
 		trueIndex = trueIndex + row[clickedRow].cells[i].colSpan; //all colspans minus 1 will give the trueindex
 	}
-		
+
 	//for when clickedCell has colSpan > 1
 	var colSpanOfClickedCell = row[clickedRow].cells[clickedCell].colSpan;
 	if (colSpanOfClickedCell > 1) {
@@ -1069,7 +1121,6 @@ var clear;
 
 function buildLegendTable() {
 
-	var legendTable = document.querySelector('#legendTable');
 	var ltbl_thead = legendTable.querySelector('thead');
 	var ltbl_tbody = legendTable.querySelector('tbody');
 	var ltbl_thd_tr = ltbl_thead.querySelectorAll('tr');
@@ -1253,6 +1304,7 @@ function createDIV() {
 	dIVwtLabel.classList.add('draggableDiv');
 	dIVwtLabel.classList.add('nameLabelDiv');
 	dIVwtLabel.setAttribute('divClassName', dClass);
+	dIVwtLabel.setAttribute('title', dClass);
 	dIVwtLabel.innerHTML = dName;
 	//	dIVwtLabel.style.backgroundColor = 'pink';
 	dIVwtLabel.setAttribute('draggable', 'true');
@@ -1286,7 +1338,7 @@ function createDIV() {
 
 		/****************************************/
 		/* ASSIGN COLOR TO DIV CLASS ************/
-		var colorFromArray = cssColorNamesArray[Math.floor(Math.random() * cssColorNamesArray.length)];
+		var colorFromArray = preferredColors[Math.floor(Math.random() * preferredColors.length)];
 		var headerStyles = document.getElementById('divColorStyles');
 		var styles = `.opt_` + dClass + `{ background-color: ` + colorFromArray + `;
         stroke: ` + colorFromArray + ` }`;
@@ -1583,28 +1635,40 @@ function fillDivClassInput() {
 /*MAKE TABLE EDITABLE BUTTON***************************/
 /******************************************************/
 
-function alternateClose(){
-	var alternateStoryLineEditorButtons = document
-	.getElementById('alternateStoryLineEditorButtons');
-	if(alternateStoryLineEditorButtons.style.display == 'none'){
-		alternateStoryLineEditorButtons.style.display
-	= '';
-	   } else {
-		alternateStoryLineEditorButtons.style.display
-	= 'none';
-	   }
-	}
-function storyLineTableTitleHeaderEditable(){
-	var storyLineTableTitleHeader = divTableContainer.querySelector('#storyLineTableTitleHeader');
-	if(storyLineTableTitleHeader.contentEditable == 'true'){
-		storyLineTableTitleHeader.contentEditable = 'false'
-	} else {
-		storyLineTableTitleHeader.contentEditable = 'true'
-	}
+var masterEditButton = document.getElementById('masterEditButton');
+
+function alternateClose() {
+	makeEditableCheckbox.checked = false;
+	storyLineTableTitleHeader.contentEditable = 'false';
+	alternateStoryLineEditorButtons.style.display = 'none';
 }
-function makeTableEditable(){
-	alternateClose();
-	storyLineTableTitleHeaderEditable();
+
+//function storyLineTableTitleHeaderEditable() {
+//	if (storyLineTableTitleHeader.contentEditable == 'true') {
+//		storyLineTableTitleHeader.contentEditable = 'false'
+//	} else {
+//		storyLineTableTitleHeader.contentEditable = 'true'
+//	}
+//}
+var makeEditableCheckbox = document.getElementById('editableRadio');
+
+function makeTableEditable() {
+//	alternateClose();
+//	storyLineTableTitleHeaderEditable();
+	
+	if (makeEditableCheckbox.checked == true) {
+		makeEditableCheckbox.checked = false;
+	} else  {
+		makeEditableCheckbox.checked = true;
+	}
+	
+	if (makeEditableCheckbox.checked == true) {
+		alternateStoryLineEditorButtons.style.display = '';
+		storyLineTableTitleHeader.contentEditable = 'true';
+	} else  {
+		storyLineTableTitleHeader.contentEditable = 'false';
+		alternateStoryLineEditorButtons.style.display = 'none';
+	}
 }
 /******************************************************/
 /******************************************************/

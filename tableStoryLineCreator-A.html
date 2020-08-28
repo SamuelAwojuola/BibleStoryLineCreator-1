@@ -3,8 +3,6 @@
 
 <head>
 	<title>Table Creator & Modifier</title>
-	<script type="text/javascript" src="javascript/anseki/leader-line.min.js"></script>
-	<script type="text/javascript" src="javascript/anseki/anim-event.min.js"></script>
 
 	<style id="divColorStyles"></style>
 	<!--THIS STYLE WILL BE POPULLATED AS DIVS ARE CREATED-->
@@ -13,7 +11,7 @@
 
 	<style>
 		* {
-			/*			font-family: "Lucida Console", Courier, monospace;*/
+			/*font-family: "Lucida Console", Courier, monospace;*/
 			font-family: 'Abril Fatface', serif;
 			font-family: 'Open Sans', sans-serif;
 			font-family: Arial, Helvetica, sans-serif;
@@ -94,6 +92,36 @@
 		#masterTable {
 			position: relative;
 		}
+		
+		#masterEditButton {
+			display: flex;
+			align-items: center;
+			padding-right: 0;
+			cursor: pointer;
+			font-style: italic;
+			width: 100%;
+			border: grey;
+			box-shadow: 0px 3px 2px -3px black;
+			background-color: #f4f9ff;
+			border-radius: 2px;
+			border:1px solid grey;
+		}
+		
+		#masterEditButton:hover {
+			background-color: #fcffb6;
+/*
+			box-shadow: -1.5px -1.5px 2px 2px grey; 
+			background-color: #c8fc8b;
+*/
+		}
+		
+		#masterEditButton:active {
+			/*			background-color: #b6ffe6;*/
+		}
+		
+		.tableHeadEqualHeights {
+			height: 32px;
+		}
 
 		#masterTable>td {
 			background-color: transparent;
@@ -159,6 +187,8 @@
 		#storyLineTable td div:not(:first-child) {
 			margin-top: 5px;
 			padding: 5px 0;
+			border: 1px solid #acacac;
+			border-radius: 3px;
 		}
 
 		#legendTable th div,
@@ -166,6 +196,16 @@
 		#storyLineTable th div,
 		#storyLineTable td div {
 			padding: 5px 0;
+			border: 1px solid #acacac;
+			border-radius: 3px;
+		}
+		
+		#storyLineTableTitleHeader {
+			padding-left: 100px;
+		}
+
+		#storyLineTableTitleHeader:empty::before {
+			content: "Insert Title Here"
 		}
 	</style>
 
@@ -610,7 +650,7 @@
 			border: 1px solid grey;
 			border-radius: 3px;
 		}
-		
+
 		[onclick="selectCells(this)"] {
 			background-color: yellow;
 			border: 1px solid grey;
@@ -632,7 +672,7 @@
 			width: 50px;
 			padding-right: 5px;
 			padding-top: 10px;
-/*			padding-bottom: 10px;*/
+			/*			padding-bottom: 10px;*/
 			border-radius: 2px;
 			text-align: right;
 		}
@@ -649,7 +689,7 @@
 			padding-left: 6px;
 			margin: 2px;
 		}
-		
+
 		.vertical2:not(:first-of-type):not(:last-of-type) {
 			border-left: 10px solid #b7b7b7;
 			margin-left: 2px;
@@ -657,7 +697,7 @@
 		}
 
 		.vertical3 input {
-			border:0.5px solid #d3d3d3;
+			border: 0.5px solid #d3d3d3;
 			padding-bottom: 0;
 			font-size: 12.3px;
 		}
@@ -717,8 +757,9 @@
 		<table id="masterTable">
 			<tr>
 				<td valign="top">
-					<!--					<h1 style="padding: 0; margin: 0;">*</h1>-->
-					<button onclick="makeTableEditable()">StoryLine<br>Editable</button>
+					<button type="checkbox" class="tableHeadEqualHeights" id="masterEditButton" onclick="makeTableEditable()" title="Click to Edit StoryLineTable" for="editableRadio">Edit StoryLine
+						<input id="editableRadio" type="checkbox" value="editableRadio" style="width: 20px"></input>
+					</button>
 					<svg id="svg"></svg>
 					<!--I POSITION THE SVG HERE SO THAT IT CAN SCROLL WITH THE TABLE WITHOUT HAVING TO BE REDRAWN-->
 					<table id="legendTable">
@@ -730,7 +771,7 @@
 				</td>
 
 				<td valign="top" style="position: relative">
-					<h1 id="storyLineTableTitleHeader" style="padding: 0; margin: 0;" contenteditable="true">Insert Title Here</h1>
+					<h1 class="tableHeadEqualHeights" id="storyLineTableTitleHeader" style="padding: 0; margin: 0;"></h1>
 					<table id="storyLineTable">
 						<thead>
 							<tr rowname='Time'>
@@ -820,21 +861,22 @@
 				<span style="font-style: italic">Div Name:</span>
 				<div class="vertical3">
 					<input type="text" id="divName" value="" draggable="false">
-				<select id="divNameOptionsDropdown">
-				</select>
+					<select id="divNameOptionsDropdown">
+					</select>
 				</div>
 				<span style="font-style: italic">Div Class:</span>
 				<div class="vertical3">
 					<input type="text" id="divClass" value="" draggable="false">
-				<select id="divClassOptionsDropdown">
-				</select><br>
-				</div>								<div class="vertical2">
-				<button onclick="createDIV()">Create Div</button></div>
+					<select id="divClassOptionsDropdown">
+					</select><br>
+				</div>
+				<div class="vertical2">
+					<button onclick="createDIV()">Create Div</button></div>
 			</div>
 		</div>
 		<!--Delete-->
 		<div class="vertical">
-					<span>Delete:</span>
+			<span>Delete:</span>
 			<div class="vertical">
 				<button title="delete label" onclick="deleteDIV()">
 					✘<br />Del<br />Label
@@ -873,7 +915,7 @@
 		</div>
 		<!--Create-->
 		<div class="vertical">
-					<span>Create:</span>
+			<span>Create:</span>
 			<div class="vertical">
 				<div class="vertical">
 					<div class="vertical2">
@@ -938,8 +980,8 @@
 		</div>
 
 		<!--Edit-->
-				<div class="vertical">
-							<span>Edit:</span>
+		<div class="vertical">
+			<span>Edit:</span>
 			<div class="vertical">
 				<!--			<div class="vertical">-->
 				<div class="vertical">
@@ -977,7 +1019,7 @@
 <script type="text/javascript" src="javascript/draggableHtmlElement.js"></script>
 <script type="text/javascript" src="javascript/dragdCloneDivs.js"></script>
 <script type="text/javascript" src="javascript/svgCurvedLinesConnectors.js"></script>
-<script type="text/javascript" src="javascript/cssColorNamesArray.js"></script>
+<script type="text/javascript" src="javascript/preferredColors.js"></script>
 
 <script type="text/javascript" src="javascript/tableCreator-Z.js"></script>
 <script type="text/javascript" src="javascript/detailsSection.js"></script></html>

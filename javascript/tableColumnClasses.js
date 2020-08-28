@@ -9,6 +9,7 @@
 //The colspan value of a cell with colspan will be made equal to the number of  class-x'es it has.
 
 var arrayOfAllColClasses = [];
+var colClassesCount = [];
 
 function generateColumnClasses() {
 
@@ -72,9 +73,17 @@ function generateColumnClasses() {
 		}
 
 		if (arrayOfAllColClasses.indexOf(colClass) == -1) {
-			arrayOfAllColClasses.push(colClass)
+			//arrayOfAllColClasses.push(colClass);
+			if (colClassesCount.indexOf(customIndex) == -1) {
+			colClassesCount.push(customIndex);
+			}
 		}
 	}
+	colClassesCount.sort(function(a, b){return a-b});
+		arrayOfAllColClasses = [];
+		for(i=0; i<colClassesCount.length; i++){
+		arrayOfAllColClasses.push("col-" + colClassesCount[i])
+		}
 }
 
 /*function deleteCol_xClasses() {

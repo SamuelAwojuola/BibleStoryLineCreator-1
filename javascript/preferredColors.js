@@ -67,9 +67,9 @@ var preferredColors = [
 	"Magenta",
 	"DodgerBlue",
 	"DarkTurquoise",
+/*	"",
 	"",
 	"",
 	"",
-	"",
-	"",
+	"",*/
 ]
