@@ -364,6 +364,23 @@ function divListeners() {
 
 /*CELLS***********************************************************************************************/
 
+//APPEND LOCATION ATTRIBUTE
+function createRegionAttribute() {
+	var x = document.getElementById('locationInput').value;
+	
+	var row = storyLineTable.querySelectorAll('tr');
+	var cell = row[clickedRow].querySelectorAll('td')[clickedCell];
+	
+	cell.setAttribute('location', x );
+	if (cell.hasAttribute('title')){
+		
+		x = cell.getAttribute('title') + x;
+		cell.setAttribute('title', x );
+	}
+
+	analyzeTable();
+}
+
 //CREATE CELL BEFORE CLICKED CELL
 function createCellBefore() {
 	var x = document.getElementById('myText').value;
@@ -374,6 +391,7 @@ function createCellBefore() {
 	newIcell = (newIcell || beforeCell) + 1;
 
 	analyzeTable();
+	connectAllDraggableDivsWithSVGLines();
 }
 
 //CREATE CELL AFTER CLICKED CELL
@@ -384,6 +402,7 @@ function createCellAfter() {
 	cell.innerHTML = x || '';
 
 	analyzeTable();
+	connectAllDraggableDivsWithSVGLines();
 }
 
 //INCREASE CELL COLSPAN

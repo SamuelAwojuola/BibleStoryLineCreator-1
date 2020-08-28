@@ -23,6 +23,7 @@ function getClassesWithPrefix(node, prefix) {
 function addDetailKeys() {
 	var previouslyShownDetail = document.querySelector('.showDetail');
 	var detailsActors = document.getElementById('detailsActors');
+	var detailsRegions = document.getElementById('detailsRegions');
 
 	//if selected cell has label divs
 	if (selectedCell.querySelectorAll('div[divclassname]').length != 0) {
@@ -30,7 +31,7 @@ function addDetailKeys() {
 		/*TO GET ACTORS/CHARACTERS IN SELECTED CELL*/
 		var actorsInSelectedCell = selectedCell.querySelectorAll('div[divclassname]');
 
-		//remove lis in detailsActors ul to populate it with new names
+		//remove <li>s in detailsActors <ul> to populate it with new names
 		removeAllChildNodesOf(detailsActors);
 
 		//			console.log(actorsInSelectedCell.length);
@@ -42,6 +43,17 @@ function addDetailKeys() {
 			detailsActors.appendChild(cellDetail_LI)
 		}
 
+		/*TO GET LOCATION/REGION OF SELECTED CELL*/
+		var location = selectedCell.getAttribute('location') || '';//the selectedCell may or may not have the location attribute
+		var cellLocation_LI = document.createElement('LI');
+		cellLocation_LI.innerHTML = location;
+		removeAllChildNodesOf(detailsRegions);
+		//if it has location attribute, then the <li> will be appended 
+		if(location != ''){
+			detailsRegions.appendChild(cellLocation_LI);
+		}
+
+
 		/*TO GET TIME PERIOD OF SELECTED CELL*/
 		var detailsTimePeriods = document.getElementById('detailsTimePeriods');
 
@@ -49,6 +61,8 @@ function addDetailKeys() {
 		//first get the col-x class
 
 		/*FUNCTION TO GET COL-X CLASS OF SELECTED CELL*/
+		//to be used to get its time from the corresponding col-x class in the thead
+		//the thead was used for time periods
 		var col_xClass;
 		var nodeClassList = selectedCell.classList;
 		for (i = 0; i < nodeClassList.length; i++) {
@@ -58,6 +72,7 @@ function addDetailKeys() {
 			}
 		}
 
+		//get the selected celss time from its corresponding col-x class in the thead
 		var storyLineTableTHead = storyLineTable.querySelector('thead');
 		var timeRegion = storyLineTableTHead.querySelectorAll(col_xClass);
 		for (i = 0; i < timeRegion.length; i++) {
@@ -70,6 +85,7 @@ function addDetailKeys() {
 		}
 
 		//FUNCTION TO SHOW DETAIL OF SELECTED CELL
+		//if selectedCell does not have details
 		if (selectedCell.getAttribute('detailIndex') == null) {
 			/*FUNCTION TO CREATE DETAIlS*/
 			if (selectedCell.getAttribute('detailIndex') == null) {
@@ -78,7 +94,7 @@ function addDetailKeys() {
 
 				/*HIDE PREVIOUSLY SHOWN DETAIL IF ANY*/
 				if (document.querySelector('.showDetail')) {
-					var previouslyShownDetail = document.querySelector('.showDetail');
+					/*var*/ previouslyShownDetail = document.querySelector('.showDetail');
 					previouslyShownDetail.classList.add('hideDetail');
 					previouslyShownDetail.classList.remove('showDetail');
 					previouslyShownDetail.contentEditable = 'false';
@@ -101,7 +117,7 @@ function addDetailKeys() {
 				selectedCell.setAttribute('detailIndex', detailsCount);
 			}
 		} else if (selectedCell.getAttribute('detailIndex') != null) {
-			var x = selectedCell.getAttribute('detailIndex');
+			/*var*/ x = selectedCell.getAttribute('detailIndex');
 			//			var y = `#detailsSummary>div:not([detailIndex="` + x + `"])`;
 			//			console.log(detailsSection.querySelectorAll(y));
 
@@ -128,12 +144,16 @@ function addDetailKeys() {
 				detailToShow.classList.add('showDetail');
 			}*/
 		}
+	} else {
+		previouslyShownDetail.contentEditable = 'false';
 	}
 }
 
 var detailsCount = 0;
 var detailsSection = document.getElementById('detailsSection');
 
+/*FOR ADD/EDIT DETAIL BUTTON*/
+//to make details editable
 function addDetail() {
 
 	if (selectedCell) {
@@ -169,7 +189,7 @@ function addDetail() {
 			}
 
 		} else {
-			alert('Selected Cell has no actors')
+			alert('Selected Cell has no actor')
 		}
 	} else {
 		alert('Please, select a cell to add or view its details.')

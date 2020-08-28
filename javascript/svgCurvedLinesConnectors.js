@@ -103,8 +103,6 @@ var connectAllDraggableDivsWithSVGLines = function () {
 		//LOOK FOR DIV WITH THE CURRENT DIVCLASS ATTRIBUTE VALUE IN EACH COLUMN OF THE STORYLINE TABLE
 		for (j = 0; j < arrayOfAllColClasses.length; j++) {
 			
-			console.log("Col-Xs: " + arrayOfAllColClasses);
-			
 			var currentColumn = arrayOfAllColClasses[j];
 			var currentColumnClass = '.' + currentColumn;
 			var currentColumnCells = storyLineTable.querySelectorAll(currentColumnClass);

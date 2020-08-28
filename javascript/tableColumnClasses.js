@@ -79,6 +79,7 @@ function generateColumnClasses() {
 			}
 		}
 	}
+	//THE COL-X CLASSES HAVE TO BE SORTED FOR THE CONNECT SVG CURVES FUNCTION TO WORK AS DESIRED SINCE IT MOVES FROM COLUMN TO COLUMN AS LISTED IN THE COL-CLASS ARRAY 
 	colClassesCount.sort(function(a, b){return a-b});
 		arrayOfAllColClasses = [];
 		for(i=0; i<colClassesCount.length; i++){

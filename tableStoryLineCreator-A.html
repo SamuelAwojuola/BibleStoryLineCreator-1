@@ -25,18 +25,12 @@
 		body {
 			margin-left: 0;
 			margin-right: 0;
-			background-color: rgba(255, 237, 62, 0.87);
-			/*Yellow*/
-			background-color: rgba(129, 98, 131, 0.87);
-			/*Purple*/
-			background-color: rgba(131, 128, 98, 0.87);
-			/*Gray sort of*/
-			background-color: rgba(255, 255, 255, 0.87);
-			/*White*/
-			background-color: rgba(0, 0, 0, 0.87);
-			/*Black*/
-			background-color: rgb(253, 255, 238);
-			/*Beige*/
+			background-color: rgba(0, 0, 0, 0.87);/*Black*/
+			background-color: rgba(131, 128, 98, 0.87);/*Army green sort of*/
+			background-color: rgba(255, 255, 255, 0.87);/*White*/
+			background-color: rgba(129, 98, 131, 0.87);/*Purple*/
+			background-color: rgba(255, 237, 62, 0.87);/*Yellow*/
+			background-color: rgb(253, 255, 238);/*Beige*/
 		}
 
 		#svg {
@@ -145,9 +139,9 @@
 		#storyLineTable th {
 			min-width: 100px;
 			height: 55px;
-			border: 0.5px solid #847e7f;
+			border: 0.5px solid rgba(208, 164, 171, 0.48);
 			background-color: rgba(245, 245, 220, 0.5);
-			border-radius: 2px;
+			border-radius: 5px;
 			/*			box-shadow: 0 8px 7.5px -8px black;*/
 			box-shadow: 0 4px 5px -6px black;
 			padding-left: 10px;
@@ -637,6 +631,7 @@
 		#alternateStoryLineEditorButtons button {
 			font-size: 12px;
 			width: 70px;
+			min-height: 35px;
 		}
 
 		#alternateStoryLineEditorButtons button:hover {
@@ -708,10 +703,15 @@
 			font-size: 12.3px;
 			margin-bottom: -100px;
 		}
+		
+		#realignandreconnect {
+			min-height: 50px;
+		}
 
 		#alternateClose {
-			width: 30px !important;
+			min-height: 25px !important;
 			position: absolute;
+			width: 30px !important;
 			right: 2px;
 			top: 2px;
 			border: 1px solid grey;
@@ -729,6 +729,16 @@
 			border-top: 1px solid grey;
 			border-left: 1px solid grey;
 			border-bottom: 1px solid grey;
+		}
+		
+		#realignandreconnect {
+			background-color: #d8ffa2!important;
+		}
+		
+		#realignandreconnect button {
+			background-color: #f5edad!important;
+			border: 0.5px solid grey;
+			border-radius: 3px;
 		}
 	</style>
 
@@ -820,10 +830,11 @@
 				<h4>Characters/Actors</h4>
 				<ul id="detailsActors">
 				</ul>
+				
 				<h4 title="Where this/these event/events takes place">Location/Region:</h4>
-				<!--<span>Heaven</span>-->
 				<ul id="detailsRegions">
 				</ul>
+				
 				<h4 title="Absolute/Relative time when this/these event/events takes place">Time:</h4>
 				<ul id="detailsTimePeriods">
 				</ul>
@@ -847,33 +858,6 @@
 			<button id="alternateClose" onclick="alternateClose()">X</button>
 		</div>
 
-		<!--Table-->
-		<div class="vertical">
-			<span>Table:</span>
-			<div class="vertical"><button onclick="btn_buildLegendTable()">Re-Align Tables</button>
-				<button onclick="connectAllDraggableDivsWithSVGLines()">Connect Divs</button>
-			</div>
-		</div>
-		<!--Label-->
-		<div class="vertical">
-			<span>Label:</span>
-			<div class="vertical">
-				<span style="font-style: italic">Div Name:</span>
-				<div class="vertical3">
-					<input type="text" id="divName" value="" draggable="false">
-					<select id="divNameOptionsDropdown">
-					</select>
-				</div>
-				<span style="font-style: italic">Div Class:</span>
-				<div class="vertical3">
-					<input type="text" id="divClass" value="" draggable="false">
-					<select id="divClassOptionsDropdown">
-					</select><br>
-				</div>
-				<div class="vertical2">
-					<button onclick="createDIV()">Create Div</button></div>
-			</div>
-		</div>
 		<!--Delete-->
 		<div class="vertical">
 			<span>Delete:</span>
@@ -911,6 +895,46 @@
 					<br />
 					Cells
 				</button>
+			</div>
+		</div>
+		<!--Table-->
+		<div id="realignandreconnect" class="vertical">
+			<span>Table:</span>
+			<div class="vertical"><button onclick="btn_buildLegendTable()">Re-Align Tables</button>
+				<button onclick="connectAllDraggableDivsWithSVGLines()">Connect Divs</button>
+			</div>
+		</div>
+		<!--Label-->
+		<div class="vertical">
+			<span>Label:</span>
+			<div class="vertical">
+				<span style="font-style: italic">Div Name:</span>
+				<div class="vertical3">
+					<input type="text" id="divName" value="" draggable="false">
+					<select id="divNameOptionsDropdown">
+					</select>
+				</div>
+				<span style="font-style: italic">Div Class:</span>
+				<div class="vertical3">
+					<input type="text" id="divClass" value="" draggable="false">
+					<select id="divClassOptionsDropdown">
+					</select><br>
+				</div>
+				<div class="vertical2">
+					<button onclick="createDIV()">Create Div</button></div>
+			</div>
+		</div>
+		<!--Land/Region-->
+		<div class="vertical">
+			<span>Location /Region:</span>
+			<div class="vertical">
+				<div class="vertical3">
+					<input type="text" id="locationInput" value="" draggable="false">
+					<select id="locationOptionsDropdown">
+					</select>
+				</div>
+				<div class="vertical2">
+					<button onclick="createRegionAttribute()">Append Location</button></div>
 			</div>
 		</div>
 		<!--Create-->
