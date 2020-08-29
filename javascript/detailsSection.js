@@ -144,7 +144,7 @@ function addDetailKeys() {
 				detailToShow.classList.add('showDetail');
 			}*/
 		}
-	} else {
+	} else if (previouslyShownDetail) {
 		previouslyShownDetail.contentEditable = 'false';
 	}
 }

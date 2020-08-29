@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Table Creator & Modifier</title>
+
+	<style id="divColorStyles"></style>
+	<!--THIS STYLE WILL BE POPULLATED AS DIVS ARE CREATED-->
+	<link type="text/css" href="style/customCheckBox.css" rel="stylesheet">
+
+
+	<style>
+		.col-1:hover {
+			background-color: aquamarine
+		}
+
+		* {
+			/*font-family: "Lucida Console", Courier, monospace;*/
+			font-family: 'Abril Fatface', serif;
+			font-family: 'Open Sans', sans-serif;
+			font-family: Arial, Helvetica, sans-serif;
+			font-family: 'Helvetica Neue', sans-serif;
+			font-family: "Times New Roman", Times, serif;
+			font-family: Georgia, serif;
+			word-spacing: 2px;
+			/*						font-size: 95%;*/
+		}
+
+		body {
+			margin-left: 0;
+			margin-right: 0;
+			background-color: rgba(0, 0, 0, 0.87);
+			/*Black*/
+			background-color: rgba(131, 128, 98, 0.87);
+			/*Army green sort of*/
+			background-color: rgba(255, 255, 255, 0.87);
+			/*White*/
+			background-color: rgba(129, 98, 131, 0.87);
+			/*Purple*/
+			background-color: rgba(255, 237, 62, 0.87);
+			/*Yellow*/
+			background-color: rgb(253, 255, 238);
+			/*Beige*/
+		}
+
+		#svg {
+			pointer-events: none;
+			/*THIS MAKES IT POSSIBLE TO CLICK THROUGH THE SVG*/
+			position: absolute;
+
+			z-index: 1;
+
+			/*			background-color: rgba(0, 255, 255, 0.49);*/
+			/*THE BELOW STYLE ATTRIBUTES OF TOP AND LEFT ARE  NECESSARY BECAUSE OF THE SVG IS APPENDED TO THE DIV CONTAINER OF THE TABLES AND NOT THE BODY*/
+			top: -10px;
+			left: -10px;
+			width: 110%;
+			height: 110%;
+			/*THESE HAVE TO BE EQUAL TO THE TOP AND LEFT STYLE ATTRIBUTES OF THE DIV CONTAINER OF THE TABLES*/
+		}
+
+		.svg-connectors {}
+
+		#divTableContainer {
+			/*			position: absolute;*/
+			width: 85vw;
+			height: 90vh;
+			overflow: auto;
+			margin-left: 10px;
+			margin-right: 10px;
+
+			border: 0.5px solid #847e7f;
+			border-radius: 2.5px;
+			box-shadow: 0px 3px 6px -3px black;
+			/*			background-color: rgba(255, 253, 232, 0.87);*/
+			background-color: rgba(255, 253, 232, 0.3);
+		}
+
+		table table {
+			border-top: 0.5px solid #ead9dc;
+			border-bottom: 0.5px solid #ead9dc;
+			border-radius: 2px;
+		}
+
+		table>h1,
+		table>h2,
+		table>h3,
+		table>h4,
+		table>h5,
+		table>h6 {
+			color: blue;
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+
+		#masterTable {
+			position: relative;
+		}
+
+		#masterEditButton {
+			display: flex;
+			align-items: center;
+			padding-right: 0;
+			cursor: pointer;
+			font-style: italic;
+			width: 100%;
+			border: grey;
+			box-shadow: 0px 3px 2px -3px black;
+			background-color: #f4f9ff;
+			border-radius: 2px;
+			border: 1px solid grey;
+		}
+
+		#masterEditButton:hover {
+			background-color: #fcffb6;
+			/*
+			box-shadow: -1.5px -1.5px 2px 2px grey; 
+			background-color: #c8fc8b;
+*/
+		}
+
+		#masterEditButton:active {
+			/*			background-color: #b6ffe6;*/
+		}
+
+		.tableHeadEqualHeights {
+			height: 32px;
+		}
+
+		#masterTable>td {
+			background-color: transparent;
+		}
+
+		#storyLineTable,
+		#legendTable {
+			margin-top: 5px;
+			position: relative;
+			box-shadow: 0px 3px 6px -3px black;
+			z-index: 2;
+		}
+
+		#storyLineTable {
+			margin-left: 30px;
+		}
+
+		#legendTable td,
+		#legendTable th,
+		#storyLineTable td,
+		#storyLineTable th {
+			min-width: 100px;
+			height: 55px;
+			border: 0.5px solid rgba(208, 164, 171, 0.48);
+			background-color: rgba(245, 245, 220, 0.5);
+			border-radius: 5px;
+			/*			box-shadow: 0 8px 7.5px -8px black;*/
+			box-shadow: 0 4px 5px -6px black;
+			padding-left: 10px;
+			padding-right: 10px;
+		}
+
+		#legendTable td:hover,
+		#legendTable th:hover,
+		#storyLineTable td:hover,
+		#storyLineTable th:hover {
+			box-shadow: 0 8px 7.5px -8px black;
+		}
+
+		#legendTable th,
+		#legendTable thead td,
+		#storyLineTable th,
+		#storyLineTable thead td {
+			/*			background-color: #ffe7c1;*/
+			background-color: rgba(255, 231, 193, 0.4);
+			border-radius: 2px;
+			box-shadow: 0 4px 5px -6px black;
+		}
+
+		#legendTable th:empty,
+		#legendTable thead td:empty,
+		#storyLineTable th:empty,
+		#storyLineTable td:empty {
+			/*			visibility:hidden;*/
+			background-color: transparent;
+			border: 0;
+			box-shadow: 0 0 transparent;
+		}
+
+		#legendTable th div:not(:first-child),
+		#legendTable thead td div:not(:first-child),
+		#storyLineTable th div:not(:first-child),
+		#storyLineTable td div:not(:first-child) {
+			margin-top: 5px;
+			padding: 5px 0;
+			border: 1px solid #acacac;
+			border-radius: 3px;
+		}
+
+		#legendTable th div,
+		#legendTable thead td div,
+		#storyLineTable th div,
+		#storyLineTable td div {
+			padding: 5px 0;
+			border: 1px solid #acacac;
+			border-radius: 3px;
+		}
+
+		#storyLineTableTitleHeader {
+			padding-left: 100px;
+		}
+
+		#storyLineTableTitleHeader:empty::before {
+			content: "Insert Title Here"
+		}
+	</style>
+
+	<!--TABLE-BUILDER STYLING--->
+	<style>
+		#tableBuilder {
+			display: none;
+			position: absolute;
+			top: 300px;
+			left: 200px;
+			border-radius: 6px;
+			width: 165px;
+			/*			z-index: 10;*/
+			/*			overflow-y: auto;*/
+			background-color: white;
+			background-color: rgba(255, 244, 244, 0.61);
+			z-index: 3;
+		}
+
+		#tableBuilder * {
+			font-size: 90%;
+		}
+
+		#tableBuilder h3,
+		#tableBuilder h4 {
+			padding-bottom: 0;
+			margin-bottom: 0;
+			padding-top: 0;
+			color: black;
+			border-bottom: 3px solid grey;
+			text-align: center;
+			text-transform: uppercase;
+			text-overflow: ellipsis;
+		}
+
+		#tableBuilder>div:not(#tableBuilderheader) {
+			padding-left: 5px;
+			padding-bottom: 10px;
+			background-color: rgba(255, 255, 255, 0.8);
+			border: 0.5px solid #847e7f;
+			box-shadow: 0 8px 6px -8px black;
+		}
+
+		#tableBuilder>div:not(#tableBuilderheader) {
+			border-bottom-left-radius: 3px;
+			border-bottom-right-radius: 3px;
+		}
+
+		#tableBuilderheader {
+			text-align: center;
+			padding: 2px;
+			height: 25px;
+			width: 160px;
+			color: black;
+			font-weight: bolder;
+			padding-top: 0;
+			padding-bottom: 0;
+			border-top-left-radius: 2px;
+			border-top-right-radius: 2px;
+			border: 0.5px solid #847e7f;
+			background-color: #ffe295;
+		}
+
+		#tableBuilderheader:hover {
+			background-color: #ffd35c;
+		}
+
+		#tableBuilder>div>div h4 {
+			padding-bottom: 0;
+			margin-bottom: 0;
+			margin-top: 7px;
+			text-align: justify-all;
+			color: black;
+			border-bottom: 1px solid grey;
+		}
+
+		#tableBuilder>div>div h4:hover {
+			color: #bf0093;
+		}
+
+		#tableBuilder>div button {
+			width: 100%;
+			display: inline-block;
+			cursor: pointer;
+			/*			font-size: 11px;*/
+			font-weight: 900;
+			padding: 6px 24px;
+			text-decoration: none;
+		}
+
+		#max-min {
+			position: absolute;
+			top: 1px;
+			left: 2px;
+			padding: 1px 1px;
+			width: 20px;
+			font-size: 12px;
+			text-align: center;
+			background-color: #e0ff98;
+			border: 1px solid grey;
+			border-radius: 2px;
+			box-shadow: 2px 3px 2px -1px grey;
+		}
+
+		button.create {
+			box-shadow: inset 0px 1px 0px 0px #ffffff;
+			background-color: #ffefac;
+			border: 1px solid #dcdcdc;
+			color: #4b0000;
+			text-shadow: 0px 1px 0px #ffffff;
+		}
+
+		button.create:hover {
+			background-color: #ffdd4c;
+			padding-left: 0;
+			padding-right: 0;
+			font-style: italic;
+		}
+
+		button.delete {
+			box-shadow: inset 0px 1px 0px 0px #f7c5c0;
+			background-color: #fa8d83;
+			border: 1px solid #d83526;
+			color: black;
+		}
+
+		button.delete:hover {
+			background-color: #ff5d76;
+			color: white;
+			font-style: italic;
+		}
+
+		#tableBuilder button:last-child {
+			border-bottom: 0.5px solid grey;
+		}
+
+		#tableBuilder button:first-child {
+			border-top: 0.5px solid grey;
+		}
+
+		input {
+			display: block;
+			width: 93%;
+		}
+
+		select {
+			display: block;
+			width: 98%;
+		}
+
+		.btnactivecolor {
+			background-color: aquamarine;
+		}
+	</style>
+
+	<!--DIV LABELS STYLING------>
+	<style>
+		td>div {
+			position: relative;
+			padding-top: 2px;
+			/*			margin: 4px;*/
+			/*			min-height: 25px;*/
+			/*			border: 0.5px solid grey;*/
+			background-color: rgba(255, 255, 255, 0.6);
+			border-radius: 2px;
+			text-align: center;
+			box-shadow: 0 4px 5px -6px black;
+			z-index: 1;
+		}
+	</style>
+
+	<!--TABLE EDITOR SCROLLBAR-->
+	<style>
+		/* container properties */
+		.scrollbar {
+			max-height: 400px;
+			overflow-y: auto;
+		}
+
+		/* customize scrollbar css */
+		.scrollbar-custom::-webkit-scrollbar {
+			width: 8px;
+			background-color: #cccccc;
+		}
+
+		.scrollbar-custom::-webkit-scrollbar:horizontal {
+			height: 12px;
+		}
+
+		.scrollbar-custom::-webkit-scrollbar-track {
+			background-color: #e0e0e0;
+			border: 1px #ffffff solid;
+			border-radius: 5px;
+			-webkit-box-shadow: 0 0 6px #c8c8c8 inset;
+		}
+
+		.scrollbar-custom::-webkit-scrollbar-thumb {
+			background-color: #f8f8f8;
+			border: 1px solid #a5a5a5;
+			border-radius: 5px;
+		}
+
+		.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+			background-color: white;
+			border: 1px solid #333333;
+		}
+
+		.scrollbar-custom::-webkit-scrollbar-thumb:active {
+			background-color: white;
+			border: 1px solid #333333;
+		}
+	</style>
+
+	<!--SHOW HIDE DIVS SECTION-->
+	<style>
+		.expandMinimizeButton {
+			position: absolute;
+			top: 0px;
+			left: 2px;
+			background-color: floralwhite;
+			box-shadow: 2px 3px 2px -1px grey;
+			border: 1px solid grey;
+			border-radius: 2px;
+			height: 20px;
+			font-size: 12px;
+			text-align: center;
+			/*			z-index: 11;*/
+		}
+
+		nav *,
+		.draggableSection * {
+			font-size: 98%;
+		}
+
+		nav,
+		.draggableSection {
+			position: fixed;
+			top: 300px;
+			left: 13px;
+			background-color: rgba(219, 219, 219, 0.88);
+			background-color: rgba(254, 255, 251, 0.5);
+			width: 150px;
+			height: auto;
+			border: 0.5px solid grey;
+			border-radius: 3px;
+			padding-left: 5px;
+			padding-right: 5px;
+			z-index: 3;
+		}
+
+		nav h3,
+		.titleBarH3 {
+			width: 100%;
+			display: block;
+			margin-top: 5px;
+			margin-bottom: 0;
+			border-bottom: 2px solid grey;
+			margin-bottom: 5px;
+			text-align: center;
+			cursor: pointer;
+		}
+
+		nav hr {
+			border: 2px solid grey;
+		}
+
+		nav li>div {
+			float: left;
+			vertical-align: middle;
+		}
+
+		nav h3,
+		#navDivButtonHolder {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-evenly;
+			width: 100%;
+		}
+
+		nav div>button {
+			flex-grow: 1;
+			background-color: antiquewhite;
+			background-color: rgba(254, 255, 251, 0.5);
+			border: 1px solid grey;
+			border-radius: 2px;
+		}
+
+		nav div>button:first-of-type {}
+
+		nav ol {
+			list-style: none;
+			counter-reset: any-name;
+		}
+
+		nav li {
+			display: flex;
+			background-color: antiquewhite;
+			border: 1px solid grey;
+			border-radius: 2px;
+			list-style-type: none;
+			margin-left: -20px;
+			padding-left: 5px;
+			counter-increment: any-name;
+		}
+
+		nav li::before {
+			content: counter(any-name);
+			margin-right: 0.5rem;
+		}
+
+		nav li>label {
+			flex-grow: 2;
+			border-right: 2px solid black;
+		}
+
+		nav li>input {
+			width: 20px;
+		}
+
+		.opacityClass {
+			opacity: 0.2;
+		}
+	</style>
+
+	<!--DETAILS SECTIONS-------->
+	<style>
+		#detailsSection {
+			position: absolute;
+			top: 300px;
+			left: 400px;
+			width: 500px;
+			height: 300px;
+
+			border: 1px solid grey;
+			border-radius: 5px;
+			z-index: 3;
+			display: flex;
+			flex-direction: column;
+		}
+
+		#detailsSectionheader {
+			/*			position: sticky;*/
+			/*			top: 0;*/
+		}
+
+		#detailsSectionBody {
+			display: flex;
+			/*			background-color: white;*/
+		}
+
+		#detailsSectionBody h4 {
+			margin-bottom: 0;
+		}
+
+		#detailsSectionBody ul {
+			margin-top: 0;
+			padding-left: 20px;
+		}
+
+		#detailsSummary {
+			height: 260px;
+			width: 350px;
+			padding-right: 8px;
+			text-align: justify;
+			overflow-y: scroll;
+			overflow-x: hidden;
+			background-color: white;
+		}
+
+		#detailsSummary>div>p:empty::before {
+			content: "Insert details for selected cell here";
+		}
+
+		#detailsKeyFacts {
+			position: relative;
+			margin-right: 10px;
+			padding-left: 8px;
+			padding-right: 8px;
+			/* top: 0;*/
+			background-color: beige;
+			border-right: 3px solid grey;
+			border-radius: 3px;
+		}
+
+		#addDetail {
+			float: left;
+			margin-left: 30px;
+			margin-top: -4px;
+			border-radius: 2px;
+			border: 1px solid lightgrey;
+			/*			color: #585858;*/
+		}
+
+		#addDetail:active {
+			background-color: #f2f2f2;
+			border: 1px solid grey;
+			color: darkred;
+		}
+
+		#detailsSummary>div {
+			/*		display: none;*/
+		}
+
+		.hideDetail {
+			display: none;
+		}
+
+		.showDetail {
+			display: block;
+		}
+	</style>
+
+	<!--ULTERNATE STORYLINE TABLE EDITOR BUTTONS-->
+	<style>
+		#alternateStoryLineEditorButtons {
+			font-size: 11px;
+			font-weight: 1000;
+			align-items: flex-end;
+			position: absolute;
+			left: 10px;
+			bottom: 5px;
+			width: 900px;
+			height: 250px;
+			background-color: rgba(245, 245, 220, 0.9);
+			box-shadow: 0px 2px 2px 2px grey;
+			z-index: 10;
+		}
+
+		#alternateStoryLineEditorButtons button {
+			font-size: 12px;
+			width: 70px;
+			min-height: 35px;
+		}
+
+		#alternateStoryLineEditorButtons button:hover {
+			background-color: aquamarine;
+			border: 1px solid grey;
+			border-radius: 3px;
+		}
+
+		#alternateStoryLineEditorButtons button:active {
+			background-color: greenyellow;
+			border: 1px solid grey;
+			border-radius: 3px;
+		}
+
+		[onclick="selectCells(this)"] {
+			background-color: yellow;
+			border: 1px solid grey;
+			border-radius: 3px;
+		}
+
+		#alternateStoryLineEditorButtons button span {
+			font-size: 10px;
+			font-style: normal;
+			padding: 0;
+			margin: 0;
+		}
+
+		#alternateStoryLineEditorButtons>div>span {
+			font-style: italic;
+			font-weight: bold;
+			text-transform: uppercase;
+			margin-right: 10px;
+			width: 50px;
+			padding-right: 5px;
+			padding-top: 10px;
+			/*			padding-bottom: 10px;*/
+			border-radius: 2px;
+			text-align: right;
+		}
+
+		#alternateStoryLineEditorButtons>.vertical {
+			background-color: beige;
+			border: 1px solid #bcbcbc;
+			padding: 0 2px;
+			border-radius: 4px;
+		}
+
+		.vertical {
+			display: inline-flex;
+			padding-left: 6px;
+			margin: 2px;
+		}
+
+		.vertical2:not(:first-of-type):not(:last-of-type) {
+			border-left: 10px solid #b7b7b7;
+			margin-left: 2px;
+			padding-left: 10px;
+		}
+
+		.vertical3 input {
+			border: 0.5px solid #d3d3d3;
+			padding-bottom: 0;
+			font-size: 12.3px;
+		}
+
+		.vertical3 select {
+			border: 5x solid black;
+			padding-bottom: 0;
+			font-size: 12.3px;
+			margin-bottom: -100px;
+		}
+
+		#realignandreconnect {
+			min-height: 50px;
+		}
+
+		#alternateClose {
+			min-height: 25px !important;
+			position: absolute;
+			width: 30px !important;
+			right: 2px;
+			top: 2px;
+			border: 1px solid grey;
+			border-radius: 3px;
+			cursor: pointer;
+			box-shadow: 2px 2px 2px 0px grey;
+		}
+
+		#alternateStoryLineEditorButtonsheader {
+			width: 100%;
+			background-color: black;
+			height: 25px;
+			box-shadow: 0px 2px 5px 0px grey;
+			border: 1px solid grey;
+			border-top: 1px solid grey;
+			border-left: 1px solid grey;
+			border-bottom: 1px solid grey;
+		}
+
+		#realignandreconnect {
+			background-color: #d8ffa2 !important;
+		}
+
+		#realignandreconnect button {
+			background-color: #f5edad !important;
+			border: 0.5px solid grey;
+			border-radius: 3px;
+		}
+	</style>
+
+</head>
+
+<body>
+
+	<!--CONTROLS FOR THE LABELS ************************-->
+	<nav id="navSection4navDivButtonHolder" class="draggableSection">
+		<h3 class="titleBarH3"><button id="showLabelMenu" class="expandMinimizeButton">&#9776;</button>Labels</h3>
+		<div style="">
+			<!--			<hr>-->
+			<div id="navDivButtonHolder" class="scrollbar scrollbar-custom">
+				<button id='soloDivsOfCheckedClass' onclick="hideAllOtherExcept4DivsOfClass(this)" title="Show only labels belonging to the checked list item">Show&#10004;</button>
+				<button id='hideDivsOfCheckedClass' onclick="hideDivsOfClass(this)" title="Hide just the labels belonging to the checked list items">Hide&#10004;</button>
+				<button id='uncheckAll' onclick="uncheckAll()">&#10006;</button>
+			</div>
+			<ol id="labelList" style="margin-top: auto; padding-left: 20px">
+			</ol>
+		</div>
+	</nav>
+	<!--*****************************************-->
+	<!--***********************************************-->
+
+	<div id="timePeriodMenu" class="" style="float:left; <!--position: absolute; top:0; left:0-->">
+		<div style="display: flex; align-items: baseline">
+			<button id="showTimeMenu" class="" style="" onclick="toggleTimeMenu()" title="Times Menu">&#9776;</button>
+			<h3 id="timesMenuH3" class="titleBarH3" style="">Times</h3>
+		</div>
+		<div style="">
+			<!--			<div id="navDivButtonHolder" class="scrollbar scrollbar-custom">
+				<button id='soloDivsOfCheckedClass' onclick="hideAllOtherExcept4DivsOfClass(this)" title="Show only labels belonging to the checked list item">Show&#10004;</button>
+				<button id='hideDivsOfCheckedClass' onclick="hideDivsOfClass(this)" title="Hide just the labels belonging to the checked list items">Hide&#10004;</button>
+				<button id='uncheckAll' onclick="uncheckAll()">&#10006;</button>
+			</div>
+-->
+			<ol id="timeMenuList" style="margin-top: auto; padding-left: 20px">
+				<li>Jesus</li>
+				<li>Jesus Christ</li>
+				<li>Jesus</li>
+				<li>Jesus Christ</li>
+				<li>Jesus</li>
+				<li>Jesus Christ</li>
+			</ol>
+		</div>
+	</div>
+
+	<!--ACTUAL TABLE STORY LINE ************************-->
+	<!--<div>Heavne is real <br> heaven is so real people <br> heaven is so real people
+	</div>-->
+	<div id="divTableContainer" style="float: left">
+		<table id="masterTable">
+			<tr>
+				<td valign="top">
+					<button type="checkbox" class="tableHeadEqualHeights" id="masterEditButton" onclick="makeTableEditable()" title="Click to Edit StoryLineTable" for="editableRadio" checked="true">Edit StoryLine
+						<input id="editableRadio" type="checkbox" value="editableRadio" style="width: 20px">
+					</button>
+					<svg id="svg"></svg>
+					<!--I POSITION THE SVG HERE SO THAT IT CAN SCROLL WITH THE TABLE WITHOUT HAVING TO BE REDRAWN-->
+					<table id="legendTable">
+						<thead>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</td>
+
+				<td valign="top" style="position: relative">
+					<h1 class="tableHeadEqualHeights" id="storyLineTableTitleHeader" style="padding: 0; margin: 0;"></h1>
+					<table id="storyLineTable">
+						<thead>
+							<tr rowname='Time'>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+
+				</td>
+			</tr>
+		</table>
+
+	</div>
+
+
+	<!--***********************************************-->
+
+	<!--DETAILS SECTION (SHOWS DETAILS FOR THE CELlS) **-->
+	<section id="detailsSection" class="draggableSection">
+		<h3 id="detailsSectionheader" class="titleBarH3">
+			<button id="expandDetails" class="expandMinimizeButton">&#9776;</button>
+			Details
+			<button id="addDetail" class="" title="Add details for the selected cell" onclick="addDetail()">Add/Edit Detail</button>
+		</h3>
+		<div id="detailsSectionBody">
+			<div id="detailsKeyFacts" style="">
+
+				<h4>Characters/Actors</h4>
+				<ul id="detailsActors">
+				</ul>
+
+				<h4 title="Where this/these event/events takes place">Location/Region:</h4>
+				<ul id="detailsRegions">
+				</ul>
+
+				<h4 title="Absolute/Relative time when this/these event/events takes place">Time:</h4>
+				<ul id="detailsTimePeriods">
+				</ul>
+
+			</div>
+			<div id="detailsSummary" class="scrollbar scrollbar-custom">
+			</div>
+		</div>
+	</section>
+	<!--***********************************************-->
+	<!--STRIPPED DOWN STORYLINE TABLE EDITOR *************************-->
+	<div id="tableBuilder">
+		<div id="tableBuilderheader" title="Drag to move">TABLE EDITOR <span id="max-min">&#9776;</span></div>
+		<div class=" scrollbar scrollbar-custom" style=""></div>
+	</div>
+	<!--***********************************************-->
+
+	<!--ALTERNATIVE STORYLINE TABLE EDITOR BUTTONS *****-->
+	<section id="alternateStoryLineEditorButtons">
+		<div id="alternateStoryLineEditorButtonsheader">
+			<button id="alternateClose" onclick="alternateClose()">X</button>
+		</div>
+
+		<!--Delete-->
+		<div class="vertical">
+			<span>Delete:</span>
+			<div class="vertical">
+				<button title="delete label" onclick="deleteDIV()">
+					✘<br />Del<br />Label
+				</button><button title="delete label" onclick="destroyCell()">
+					✘<br />Del<br />Cell
+				</button><button title="delete label" onclick="destroyRow()">
+					✘<br />Del<br />Row
+				</button><button title="delete label" onclick="destroyColumn()">
+					✘<br />Del<br />Row
+				</button>
+			</div>
+		</div>
+		<!--Merge & Split-->
+		<div class="vertical">
+			<span>Merge<br>/Split:</span>
+			<div class="vertical">
+				<button title="select cells to be merged or split" onclick="selectCells(this)">
+					&#10010;
+					<br />
+					Select
+					<br />
+					Cells
+				</button><button title="merge selected cells" onclick="mergeCells()">
+					&#124; &#129034;&#129032; &#124;
+					<br />
+					Merge
+					<br />
+					Cells
+				</button><button title="split selected cells" onclick="splitCell()">
+					&#124;&#124;&#129032; &#129034;&#124;&#124;
+					<br />Split
+					<br />
+					Cells
+				</button>
+			</div>
+		</div>
+		<!--Table-->
+		<div id="realignandreconnect" class="vertical">
+			<span>Table:</span>
+			<div class="vertical"><button onclick="btn_buildLegendTable()">Re-Align Tables</button>
+				<button onclick="connectAllDraggableDivsWithSVGLines()">Connect Divs</button>
+			</div>
+		</div>
+		<!--Label-->
+		<div class="vertical">
+			<span>Label:</span>
+			<div class="vertical">
+				<span style="font-style: italic">Div Name:</span>
+				<div class="vertical3">
+					<input type="text" id="divName" value="" draggable="false">
+					<select id="divNameOptionsDropdown">
+					</select>
+				</div>
+				<span style="font-style: italic">Div Class:</span>
+				<div class="vertical3">
+					<input type="text" id="divClass" value="" draggable="false">
+					<select id="divClassOptionsDropdown">
+					</select><br>
+				</div>
+				<div class="vertical2">
+					<button onclick="createDIV()">Create Div</button></div>
+			</div>
+		</div>
+		<!--Land/Region-->
+		<div class="vertical">
+			<span>Location /Region:</span>
+			<div class="vertical">
+				<div class="vertical3">
+					<input type="text" id="locationInput" value="" draggable="false">
+					<select id="locationOptionsDropdown">
+					</select>
+				</div>
+				<div class="vertical2">
+					<button onclick="createRegionAttribute()">Append Location</button></div>
+			</div>
+		</div>
+		<!--Create-->
+		<div class="vertical">
+			<span>Create:</span>
+			<div class="vertical">
+				<div class="vertical">
+					<div class="vertical2">
+						<span style="font-style: italic">Cell Name:</span> <input type="text" id="myText" value="">
+					</div>
+					<button title="create cell to the left" onclick="createCellBefore()">
+						&#129032;
+						<br />
+						new
+						<br />
+						Cell
+					</button><button title="create cell to the right" onclick="createCellAfter()">
+						&#129034;
+						<br />
+						new
+						<br />
+						Cell
+					</button>
+				</div>
+				<div class="vertical">
+					<button title="clone row above" onclick="cloneRowAbove()">
+						&#129033;
+						<br />
+						clone
+						<br />
+						Row
+					</button><button title="clone row below" onclick="cloneRowBelow()">
+						&#129035;
+						<br />
+						clone
+						<br />
+						Row
+					</button><button title="new row above" onclick="createRowAbove()">
+						&#129033;
+						<br />
+						new
+						<br />
+						Row
+					</button><button title="new row below" onclick="createRowBelow()">
+						&#129035;
+						<br />
+						new
+						<br />
+						Row
+					</button>
+				</div>
+				<div class="vertical">
+					<button title="new column to the left" onclick="createColumnBefore()">
+						&#129032;
+						<br />
+						new
+						<br />
+						Col
+					</button><button title="new column to the right" onclick="createColumnAfter()">
+						&#129034;
+						<br />
+						new
+						<br />
+						Col
+					</button></div>
+			</div>
+		</div>
+
+		<!--Edit-->
+		<div class="vertical">
+			<span>Edit:</span>
+			<div class="vertical">
+				<!--			<div class="vertical">-->
+				<div class="vertical">
+					<div class="vertical2">
+						<span style="font-style: italic">Cell Heading:</span> <input type="text" id="cellHeading" value="">
+					</div>
+					<button id="applyHeadingBtn" onclick="insertHeading()">Apply Heading</button>
+					<!--				</div>-->
+
+					<!--				<div class="vertical">-->
+					<div class="vertical2">
+						<!--for the content of the cell-->
+						<span style="font-style: italic">Cell Details:</span> <input type="text" id="cellText" value="">
+					</div>
+					<button id="applyTextBtn" onclick="insertTextIntoTD()">Apply Details</button>
+
+					<div class="vertical2">
+						<span style="font-style: italic">Row Group:</span> <input type="text" id="rowGroup" value="">
+					</div>
+					<div class="vertical2">
+						<span style="font-style: italic">Row Name:</span> <input type="text" id="rowName" value=""></div>
+
+					<button id="applyRowEditBtn" onclick="rowEdit()">Apply Row Edit</button>
+				</div>
+			</div>
+		</div>
+
+	</section>
+	<!--***********************************************-->
+</body>
+
+<script type="text/javascript" src="javascript/GetElement-XY-Coordinates.js"></script>
+<script type="text/javascript" src="javascript/tableColumnClasses.js"></script>
+
+<script type="text/javascript" src="javascript/draggableHtmlElement.js"></script>
+<script type="text/javascript" src="javascript/dragdCloneDivs.js"></script>
+<script type="text/javascript" src="javascript/svgCurvedLinesConnectors.js"></script>
+<script type="text/javascript" src="javascript/preferredColors.js"></script>
+
+<script type="text/javascript" src="javascript/tableCreator-Z.js"></script>
+<script type="text/javascript" src="javascript/detailsSection.js"></script></html>

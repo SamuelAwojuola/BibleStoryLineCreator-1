@@ -24,6 +24,9 @@ var storyLineTableTitleHeader = divTableContainer.querySelector('#storyLineTable
 //var onPageLoad_storyLineTableTitleHeader_Top_Coord;
 //var original_onPageLoad_storyLineTableTitleHeader_Top_Coord;
 
+var timeMenuList = document.getElementById('timeMenuList');
+var timesMenuH3 = document.getElementById('timesMenuH3');
+
 var TypeOfHtmlHeader = 'H4';
 var celldeselect;
 var tblReady;
@@ -1689,5 +1692,35 @@ function makeTableEditable() {
 		alternateStoryLineEditorButtons.style.display = 'none';
 	}
 }
+/******************************************************/
+/******************************************************/
+
+/*TOGGLE TIME MENU*************************************/
+/******************************************************/
+
+function toggleTimeMenu(){
+	if(timeMenuList.style.display == 'none'){
+		timeMenuList.style.display = ''
+		timesMenuH3.style.display = ''
+	} else {
+		timeMenuList.style.display = 'none'
+		timesMenuH3.style.display = 'none'
+	}
+}
+
+/******************************************************/
+
+var storyLineTableTHead = storyLineTable.querySelector('thead');
+var storyLineTHeadRowz = storyLineTableTHead.querySelectorAll('tr');
+var storyLineTHeadRowzCells = storyLineTHeadRowz.querySelectorAll('td');
+
+var timeMenuArray = [];
+
+	for(i=0;i<storyLineTHeadRowz.length; i++){
+		storyLineTHeadRowz[i];
+//		storyLineTHeadRowzCells
+	}
+
+//timeMenuArray = 
 /******************************************************/
 /******************************************************/

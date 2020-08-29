@@ -40,11 +40,11 @@ function drawConnector(X, Y, divClassforColor) {
 	var A = getCoordinates(X);
 	var B = getCoordinates(Y);
 	var posnA = {
-		x: A.rightCenterX + storyLineTableScrollXDiff - divTableContainerScrollXDiff,
+		x: A.rightCenterX - onPageLoad_divTableContainer_Left_Coord + storyLineTableScrollXDiff - divTableContainerScrollXDiff,
 		y: A.rightCenterY + 1.5 + storyLineTableScrollYDiff - divTableContainerScrollYDiff
 	};
 	var posnB = {
-		x: B.leftCenterX + storyLineTableScrollXDiff - divTableContainerScrollXDiff,
+		x: B.leftCenterX - onPageLoad_divTableContainer_Left_Coord + storyLineTableScrollXDiff - divTableContainerScrollXDiff,
 		y: B.leftCenterY + 1.5 + storyLineTableScrollYDiff - divTableContainerScrollYDiff
 	};
 	var dStr =
