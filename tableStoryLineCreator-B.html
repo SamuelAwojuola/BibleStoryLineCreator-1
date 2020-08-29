@@ -10,10 +10,6 @@
 
 
 	<style>
-		.col-1:hover {
-			background-color: aquamarine
-		}
-
 		* {
 			/*font-family: "Lucida Console", Courier, monospace;*/
 			font-family: 'Abril Fatface', serif;
@@ -23,24 +19,20 @@
 			font-family: "Times New Roman", Times, serif;
 			font-family: Georgia, serif;
 			word-spacing: 2px;
-			/*						font-size: 95%;*/
+			/*font-size: 95%;*/
 		}
 
 		body {
 			margin-left: 0;
 			margin-right: 0;
-			background-color: rgba(0, 0, 0, 0.87);
-			/*Black*/
-			background-color: rgba(131, 128, 98, 0.87);
-			/*Army green sort of*/
-			background-color: rgba(255, 255, 255, 0.87);
-			/*White*/
-			background-color: rgba(129, 98, 131, 0.87);
-			/*Purple*/
-			background-color: rgba(255, 237, 62, 0.87);
-			/*Yellow*/
-			background-color: rgb(253, 255, 238);
-			/*Beige*/
+			background-color: rgba(131, 128, 98, 0.87);/*Army green sort of*/
+			background-color: rgba(255, 255, 255, 0.87);/*White*/
+			background-color: rgba(129, 98, 131, 0.87);/*Purple*/
+			background-color: rgba(255, 237, 62, 0.87);/*Yellow*/
+			background-color: rgba(0, 0, 0, 0.87);/*Black*/
+			background-color: rgb(253, 255, 238);/*Light Beige*/
+			background-color: lemonchiffon;/*LemonChiffon*/
+			background-color: Beige;/*Beige*/
 		}
 
 		#svg {
@@ -202,6 +194,16 @@
 			padding: 5px 0;
 			border: 1px solid #acacac;
 			border-radius: 3px;
+			font-weight: bold;
+			color: rgb(250, 255, 214);
+			color: #000000;
+			/*			max-width: 2000px;*/
+
+			text-shadow:
+				0px 1px 1px #f7f7f7,
+				0px 0.5px 1px #f7f7f7,
+				1px 2px 5px #f7f7f7,
+				2px 0px 5px #f7f7f7;
 		}
 
 		#storyLineTableTitleHeader {
@@ -632,7 +634,7 @@
 			left: 10px;
 			bottom: 5px;
 			width: 900px;
-			height: 250px;
+			height: 256px;
 			background-color: rgba(245, 245, 220, 0.9);
 			box-shadow: 0px 2px 2px 2px grey;
 			z-index: 10;
@@ -714,10 +716,6 @@
 			margin-bottom: -100px;
 		}
 
-		#realignandreconnect {
-			min-height: 50px;
-		}
-
 		#alternateClose {
 			min-height: 25px !important;
 			position: absolute;
@@ -741,14 +739,30 @@
 			border-bottom: 1px solid grey;
 		}
 
+		#deleteButtons {
+			/*			background-color: rgba(255, 162, 183, 0.65) !important;*/
+		}
+
+		#mergeAndSplit {
+			/*			background-color: rgba(255, 249, 172, 0.64)!important;*/
+		}
+
 		#realignandreconnect {
-			background-color: #d8ffa2 !important;
+			min-height: 53px;
+			/*			background-color: #ccff86 !important;*/
 		}
 
 		#realignandreconnect button {
-			background-color: #f5edad !important;
+			/*			background-color: #f5edad !important;*/
 			border: 0.5px solid grey;
 			border-radius: 3px;
+		}
+	</style>
+	
+	<!--TIME MENU NAV-->
+	<style>
+		#timeMenuListDiv ol, #timeMenuListDiv ul {
+			padding-left: 20px;
 		}
 	</style>
 
@@ -778,21 +792,14 @@
 			<button id="showTimeMenu" class="" style="" onclick="toggleTimeMenu()" title="Times Menu">&#9776;</button>
 			<h3 id="timesMenuH3" class="titleBarH3" style="">Times</h3>
 		</div>
-		<div style="">
+		<div id="timeMenuListDiv" style="">
 			<!--			<div id="navDivButtonHolder" class="scrollbar scrollbar-custom">
 				<button id='soloDivsOfCheckedClass' onclick="hideAllOtherExcept4DivsOfClass(this)" title="Show only labels belonging to the checked list item">Show&#10004;</button>
 				<button id='hideDivsOfCheckedClass' onclick="hideDivsOfClass(this)" title="Hide just the labels belonging to the checked list items">Hide&#10004;</button>
 				<button id='uncheckAll' onclick="uncheckAll()">&#10006;</button>
 			</div>
 -->
-			<ol id="timeMenuList" style="margin-top: auto; padding-left: 20px">
-				<li>Jesus</li>
-				<li>Jesus Christ</li>
-				<li>Jesus</li>
-				<li>Jesus Christ</li>
-				<li>Jesus</li>
-				<li>Jesus Christ</li>
-			</ol>
+			<ol id="timeMenuList" style="margin-top: auto; padding-left: 20px"></ol>
 		</div>
 	</div>
 
@@ -896,8 +903,17 @@
 			<button id="alternateClose" onclick="alternateClose()">X</button>
 		</div>
 
-		<!--Delete-->
-		<div class="vertical">
+
+
+		<!--Table-->
+		<div id="realignandreconnect" class="vertical">
+			<span>Table:</span>
+			<div class="vertical"><button onclick="btn_buildLegendTable()">Re-Align Tables</button>
+				<button onclick="connectAllDraggableDivsWithSVGLines()">Connect Divs</button>
+			</div>
+		</div>
+				<!--Delete-->
+		<div id="deleteButtons" class="vertical">
 			<span>Delete:</span>
 			<div class="vertical">
 				<button title="delete label" onclick="deleteDIV()">
@@ -912,7 +928,7 @@
 			</div>
 		</div>
 		<!--Merge & Split-->
-		<div class="vertical">
+		<div id="mergeAndSplit" class="vertical">
 			<span>Merge<br>/Split:</span>
 			<div class="vertical">
 				<button title="select cells to be merged or split" onclick="selectCells(this)">
@@ -935,46 +951,9 @@
 				</button>
 			</div>
 		</div>
-		<!--Table-->
-		<div id="realignandreconnect" class="vertical">
-			<span>Table:</span>
-			<div class="vertical"><button onclick="btn_buildLegendTable()">Re-Align Tables</button>
-				<button onclick="connectAllDraggableDivsWithSVGLines()">Connect Divs</button>
-			</div>
-		</div>
-		<!--Label-->
-		<div class="vertical">
-			<span>Label:</span>
-			<div class="vertical">
-				<span style="font-style: italic">Div Name:</span>
-				<div class="vertical3">
-					<input type="text" id="divName" value="" draggable="false">
-					<select id="divNameOptionsDropdown">
-					</select>
-				</div>
-				<span style="font-style: italic">Div Class:</span>
-				<div class="vertical3">
-					<input type="text" id="divClass" value="" draggable="false">
-					<select id="divClassOptionsDropdown">
-					</select><br>
-				</div>
-				<div class="vertical2">
-					<button onclick="createDIV()">Create Div</button></div>
-			</div>
-		</div>
-		<!--Land/Region-->
-		<div class="vertical">
-			<span>Location /Region:</span>
-			<div class="vertical">
-				<div class="vertical3">
-					<input type="text" id="locationInput" value="" draggable="false">
-					<select id="locationOptionsDropdown">
-					</select>
-				</div>
-				<div class="vertical2">
-					<button onclick="createRegionAttribute()">Append Location</button></div>
-			</div>
-		</div>
+
+
+
 		<!--Create-->
 		<div class="vertical">
 			<span>Create:</span>
@@ -1070,6 +1049,41 @@
 				</div>
 			</div>
 		</div>
+		<!--Label-->
+		<div class="vertical">
+			<span>Label:</span>
+			<div class="vertical">
+				<span style="font-style: italic">Div Name:</span>
+				<div class="vertical3">
+					<input type="text" id="divName" value="" draggable="false">
+					<select id="divNameOptionsDropdown">
+					</select>
+				</div>
+				<span style="font-style: italic">Div Class:</span>
+				<div class="vertical3">
+					<input type="text" id="divClass" value="" draggable="false">
+					<select id="divClassOptionsDropdown">
+					</select><br>
+				</div>
+				<div class="vertical2">
+					<button onclick="createDIV()">Create Div</button></div>
+			</div>
+		</div>
+
+		<!--Land/Region-->
+		<div class="vertical">
+			<span>Location /Region:</span>
+			<div class="vertical">
+				<div class="vertical3">
+					<input type="text" id="locationInput" value="" draggable="false">
+					<select id="locationOptionsDropdown">
+					</select>
+				</div>
+				<div class="vertical2">
+					<button onclick="createRegionAttribute()">Append Location</button></div>
+			</div>
+		</div>
+
 
 	</section>
 	<!--***********************************************-->
@@ -1083,5 +1097,5 @@
 <script type="text/javascript" src="javascript/svgCurvedLinesConnectors.js"></script>
 <script type="text/javascript" src="javascript/preferredColors.js"></script>
 
-<script type="text/javascript" src="javascript/tableCreator-Z.js"></script>
+<script type="text/javascript" src="javascript/tableCreator-B.js"></script>
 <script type="text/javascript" src="javascript/detailsSection.js"></script></html>

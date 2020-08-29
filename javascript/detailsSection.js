@@ -5,7 +5,7 @@ function removeAllChildNodesOf(parent) {
 	}
 }
 
-/*FUNCTIO TO GET COL-X CLASS OF SELECTED CELL*/
+/*FUNCTION TO GET COL-X CLASS OF SELECTED CELL*/
 //element.getSingleClassWithPrefix(prefix);
 //element.getArrayOfClassesWithPrefix(prefix);
 function getClassesWithPrefix(node, prefix) {
