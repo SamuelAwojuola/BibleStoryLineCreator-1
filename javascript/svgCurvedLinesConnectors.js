@@ -6,7 +6,7 @@ function nodesconnector(pathXYcord, divClassLineConnects) {
 
 	//	path1.setAttributeNS(null, pathXYcord);
 	path1.setAttributeNS(null, "d", pathXYcord);
-//	path1.setAttributeNS(null, "stroke", "pink");
+	//	path1.setAttributeNS(null, "stroke", "pink");
 	path1.setAttributeNS(null, "stroke-width", 20);
 	path1.setAttributeNS(null, "opacity", 0.7);
 	path1.setAttributeNS(null, "fill", "none");
@@ -21,31 +21,21 @@ function nodesconnector(pathXYcord, divClassLineConnects) {
 // var connector = document.querySelector("#connector");
 
 function drawConnector(X, Y, divClassforColor) {
-	//To get the distance scrolled within the divTableContainer to be added to the coordinates
-	//LEFT SCROLL
-	var current_StoryLineTable_Left_Coord = storyLineTable.getBoundingClientRect().left;//the current scroll position
-	var storyLineTableScrollXDiff = onPageLoad_StoryLineTable_Left_Coord - current_StoryLineTable_Left_Coord;//the currenct scroll position subracted from the original scroll position
 	
-	var current_divTableContainer_Left_Coord = divTableContainer.getBoundingClientRect().left;//the current scroll position
-	var divTableContainerScrollXDiff = onPageLoad_divTableContainer_Left_Coord - current_divTableContainer_Left_Coord;//the currenct scroll position subracted from the original scroll position
-	
-	//DOWN SCROLL
-	var current_StoryLineTable_Top_Coord = storyLineTable.getBoundingClientRect().top;
-	var storyLineTableScrollYDiff = onPageLoad_StoryLineTable_Top_Coord - current_StoryLineTable_Top_Coord;
-	
-	var current_divTableContainer_Top_Coord = divTableContainer.getBoundingClientRect().top;
-	var divTableContainerScrollYDiff = onPageLoad_divTableContainer_Top_Coord - current_divTableContainer_Top_Coord;
-	/**********************************************/
-	
+	var svgMasterTop = svgMaster.getBoundingClientRect().top;
+	var svgMasterLeft = svgMaster.getBoundingClientRect().left;
+	var pageScrollX = documentHTML.scrollLeft;
+	var pageScrollY = documentHTML.scrollTop;
+
 	var A = getCoordinates(X);
 	var B = getCoordinates(Y);
 	var posnA = {
-		x: A.rightCenterX - onPageLoad_divTableContainer_Left_Coord + storyLineTableScrollXDiff - divTableContainerScrollXDiff,
-		y: A.rightCenterY + 1.5 + storyLineTableScrollYDiff - divTableContainerScrollYDiff
+		x: A.rightCenterX - svgMasterLeft - pageScrollX,
+		y: A.rightCenterY - svgMasterTop - pageScrollY
 	};
 	var posnB = {
-		x: B.leftCenterX - onPageLoad_divTableContainer_Left_Coord + storyLineTableScrollXDiff - divTableContainerScrollXDiff,
-		y: B.leftCenterY + 1.5 + storyLineTableScrollYDiff - divTableContainerScrollYDiff
+		x: B.leftCenterX - svgMasterLeft - pageScrollX,
+		y: B.leftCenterY - svgMasterTop - pageScrollY
 	};
 	var dStr =
 		"M" +
@@ -74,7 +64,7 @@ var connectAllDraggableDivsWithSVGLines = function () {
 		}
 	}
 	var startElement, endElement;
-	
+
 	/**********************************************************************/
 	/*THIS SEARCHES FOR ALL MEMBERS OF A divClassName FROM CELL TO CELL IN A ROW AND FROM ROW TO ROW*/
 	/*
@@ -102,23 +92,26 @@ var connectAllDraggableDivsWithSVGLines = function () {
 
 		//LOOK FOR DIV WITH THE CURRENT DIVCLASS ATTRIBUTE VALUE IN EACH COLUMN OF THE STORYLINE TABLE
 		for (j = 0; j < arrayOfAllColClasses.length; j++) {
-			
+
 			var currentColumn = arrayOfAllColClasses[j];
 			var currentColumnClass = '.' + currentColumn;
 			var currentColumnCells = storyLineTable.querySelectorAll(currentColumnClass);
 
 			//LOOK FOR DIV WITH THE CURRENT DIVCLASS ATTRIBUTE VALUE IN THE CELLS OF EACH COLUMN 
 			for (k = 0; k < currentColumnCells.length; k++) {
-				var divWithCurrentDivClassNameinColumn = currentColumnCells[k].querySelector('[divClassName=' + divClassAttributeArray[i] + ']');
-				if ((firstDivofClassFound == 0) && (divWithCurrentDivClassNameinColumn)) {
-					startElement = divWithCurrentDivClassNameinColumn;
-					firstDivofClassFound = 1;
-				} else if ((firstDivofClassFound == 1) && (divWithCurrentDivClassNameinColumn)) {
-					endElement = divWithCurrentDivClassNameinColumn
-					////////////////////////////////////////
-					drawConnector(startElement, endElement, divClassAttributeArray[i]);
-					////////////////////////////////////////
-					startElement = divWithCurrentDivClassNameinColumn
+
+				if (currentColumnCells[k].style.display != 'none') {
+					var divWithCurrentDivClassNameinColumn = currentColumnCells[k].querySelector('[divClassName=' + divClassAttributeArray[i] + ']');
+					if ((firstDivofClassFound == 0) && (divWithCurrentDivClassNameinColumn)) {
+						startElement = divWithCurrentDivClassNameinColumn;
+						firstDivofClassFound = 1;
+					} else if ((firstDivofClassFound == 1) && (divWithCurrentDivClassNameinColumn)) {
+						endElement = divWithCurrentDivClassNameinColumn
+						////////////////////////////////////////
+						drawConnector(startElement, endElement, divClassAttributeArray[i]);
+						////////////////////////////////////////
+						startElement = divWithCurrentDivClassNameinColumn
+					}
 				}
 			}
 		}

@@ -25,36 +25,37 @@
 		body {
 			margin-left: 0;
 			margin-right: 0;
-			background-color: rgba(131, 128, 98, 0.87);/*Army green sort of*/
-			background-color: rgba(255, 255, 255, 0.87);/*White*/
-			background-color: rgba(129, 98, 131, 0.87);/*Purple*/
-			background-color: rgba(255, 237, 62, 0.87);/*Yellow*/
-			background-color: rgba(0, 0, 0, 0.87);/*Black*/
-			background-color: rgb(253, 255, 238);/*Light Beige*/
-			background-color: lemonchiffon;/*LemonChiffon*/
-			background-color: Beige;/*Beige*/
+			background-color: rgba(131, 128, 98, 0.87);
+			/*Army green sort of*/
+			background-color: rgba(255, 255, 255, 0.87);
+			/*White*/
+			background-color: rgba(129, 98, 131, 0.87);
+			/*Purple*/
+			background-color: rgba(255, 237, 62, 0.87);
+			/*Yellow*/
+			background-color: rgba(0, 0, 0, 0.87);
+			/*Black*/
+			background-color: rgb(253, 255, 238);
+			/*Light Beige*/
+			background-color: lemonchiffon;
+			/*LemonChiffon*/
+			background-color: Beige;
+			/*Beige*/
 		}
 
 		#svg {
 			pointer-events: none;
 			/*THIS MAKES IT POSSIBLE TO CLICK THROUGH THE SVG*/
 			position: absolute;
-
 			z-index: 1;
-
-			/*			background-color: rgba(0, 255, 255, 0.49);*/
-			/*THE BELOW STYLE ATTRIBUTES OF TOP AND LEFT ARE  NECESSARY BECAUSE OF THE SVG IS APPENDED TO THE DIV CONTAINER OF THE TABLES AND NOT THE BODY*/
-			top: -10px;
-			left: -10px;
 			width: 110%;
 			height: 110%;
-			/*THESE HAVE TO BE EQUAL TO THE TOP AND LEFT STYLE ATTRIBUTES OF THE DIV CONTAINER OF THE TABLES*/
 		}
 
 		.svg-connectors {}
 
 		#divTableContainer {
-			/*			position: absolute;*/
+			float: left;
 			width: 85vw;
 			height: 90vh;
 			overflow: auto;
@@ -64,7 +65,6 @@
 			border: 0.5px solid #847e7f;
 			border-radius: 2.5px;
 			box-shadow: 0px 3px 6px -3px black;
-			/*			background-color: rgba(255, 253, 232, 0.87);*/
 			background-color: rgba(255, 253, 232, 0.3);
 		}
 
@@ -425,117 +425,6 @@
 		}
 	</style>
 
-	<!--SHOW HIDE DIVS SECTION-->
-	<style>
-		.expandMinimizeButton {
-			position: absolute;
-			top: 0px;
-			left: 2px;
-			background-color: floralwhite;
-			box-shadow: 2px 3px 2px -1px grey;
-			border: 1px solid grey;
-			border-radius: 2px;
-			height: 20px;
-			font-size: 12px;
-			text-align: center;
-			/*			z-index: 11;*/
-		}
-
-		nav *,
-		.draggableSection * {
-			font-size: 98%;
-		}
-
-		nav,
-		.draggableSection {
-			position: fixed;
-			top: 300px;
-			left: 13px;
-			background-color: rgba(219, 219, 219, 0.88);
-			background-color: rgba(254, 255, 251, 0.5);
-			width: 150px;
-			height: auto;
-			border: 0.5px solid grey;
-			border-radius: 3px;
-			padding-left: 5px;
-			padding-right: 5px;
-			z-index: 3;
-		}
-
-		nav h3,
-		.titleBarH3 {
-			width: 100%;
-			display: block;
-			margin-top: 5px;
-			margin-bottom: 0;
-			border-bottom: 2px solid grey;
-			margin-bottom: 5px;
-			text-align: center;
-			cursor: pointer;
-		}
-
-		nav hr {
-			border: 2px solid grey;
-		}
-
-		nav li>div {
-			float: left;
-			vertical-align: middle;
-		}
-
-		nav h3,
-		#navDivButtonHolder {
-			display: flex;
-			flex-wrap: wrap;
-			justify-content: space-evenly;
-			width: 100%;
-		}
-
-		nav div>button {
-			flex-grow: 1;
-			background-color: antiquewhite;
-			background-color: rgba(254, 255, 251, 0.5);
-			border: 1px solid grey;
-			border-radius: 2px;
-		}
-
-		nav div>button:first-of-type {}
-
-		nav ol {
-			list-style: none;
-			counter-reset: any-name;
-		}
-
-		nav li {
-			display: flex;
-			background-color: antiquewhite;
-			border: 1px solid grey;
-			border-radius: 2px;
-			list-style-type: none;
-			margin-left: -20px;
-			padding-left: 5px;
-			counter-increment: any-name;
-		}
-
-		nav li::before {
-			content: counter(any-name);
-			margin-right: 0.5rem;
-		}
-
-		nav li>label {
-			flex-grow: 2;
-			border-right: 2px solid black;
-		}
-
-		nav li>input {
-			width: 20px;
-		}
-
-		.opacityClass {
-			opacity: 0.2;
-		}
-	</style>
-
 	<!--DETAILS SECTIONS-------->
 	<style>
 		#detailsSection {
@@ -545,6 +434,9 @@
 			width: 500px;
 			height: 300px;
 
+			padding: 10px;
+			background-color: Beige;
+
 			border: 1px solid grey;
 			border-radius: 5px;
 			z-index: 3;
@@ -553,13 +445,14 @@
 		}
 
 		#detailsSectionheader {
-			/*			position: sticky;*/
-			/*			top: 0;*/
+			margin-top: 0;
+			padding-bottom: 5px;
+			margin-bottom: 0;
+			border-bottom: 5px solid grey;
 		}
 
 		#detailsSectionBody {
 			display: flex;
-			/*			background-color: white;*/
 		}
 
 		#detailsSectionBody h4 {
@@ -597,9 +490,9 @@
 		}
 
 		#addDetail {
-			float: left;
-			margin-left: 30px;
-			margin-top: -4px;
+			float: right;
+			margin-right: 5px;
+			margin-top: ;
 			border-radius: 2px;
 			border: 1px solid lightgrey;
 			/*			color: #585858;*/
@@ -611,8 +504,11 @@
 			color: darkred;
 		}
 
-		#detailsSummary>div {
-			/*		display: none;*/
+		#detailsSummary>div {}
+
+		#expandDetails {
+			float: left;
+			margin-left: 10px;
 		}
 
 		.hideDetail {
@@ -631,8 +527,8 @@
 			font-weight: 1000;
 			align-items: flex-end;
 			position: absolute;
-			left: 10px;
-			bottom: 5px;
+			left: 20vw;
+			top: 35vh;
 			width: 900px;
 			height: 256px;
 			background-color: rgba(245, 245, 220, 0.9);
@@ -758,65 +654,122 @@
 			border-radius: 3px;
 		}
 	</style>
-	
-	<!--TIME MENU NAV-->
+
+	<!--SHOW HIDE DIVS SECTION-->
 	<style>
-		#timeMenuListDiv ol, #timeMenuListDiv ul {
+		#labelList {
 			padding-left: 20px;
+		}
+
+		.opacityClass {
+			opacity: 0.2;
 		}
 	</style>
 
+	<!--TIME MENU NAV-->
+	<style>
+		#timePeriodMenu {
+		}
+
+		#timeMenuListDiv ol,
+		#timeMenuListDiv ul {
+		}
+	</style>
+
+	<!--MASTER-NAV-->
+	<style>
+		#masterNav {
+			float: left;
+		}
+
+		.titleDiv {
+			display: flex;
+			align-items: baseline;
+		}
+
+		ol {
+			padding-left: 20px;
+			list-style: none;
+			counter-reset: any-name;
+		}
+
+		li {
+			display: flex;
+			list-style-type: none;
+			margin-left: -20px;
+			padding-left: 5px;
+			counter-increment: any-name;
+		}
+
+		li:hover {
+			background-color: #ddddc6;
+			font-style: italic;
+			box-shadow: 0px 0px 2px 0px grey;
+			border-radius: 0px;
+		}
+
+		li::before {
+			content: counter(any-name);
+			margin-right: 0.5rem;
+		}
+
+		li>label {
+			flex-grow: 2;
+		}
+
+		li>input {
+			width: 20px;
+		}
+	</style>
 </head>
 
 <body>
 
-	<!--CONTROLS FOR THE LABELS ************************-->
-	<nav id="navSection4navDivButtonHolder" class="draggableSection">
-		<h3 class="titleBarH3"><button id="showLabelMenu" class="expandMinimizeButton">&#9776;</button>Labels</h3>
-		<div style="">
-			<!--			<hr>-->
-			<div id="navDivButtonHolder" class="scrollbar scrollbar-custom">
-				<button id='soloDivsOfCheckedClass' onclick="hideAllOtherExcept4DivsOfClass(this)" title="Show only labels belonging to the checked list item">Show&#10004;</button>
-				<button id='hideDivsOfCheckedClass' onclick="hideDivsOfClass(this)" title="Hide just the labels belonging to the checked list items">Hide&#10004;</button>
-				<button id='uncheckAll' onclick="uncheckAll()">&#10006;</button>
+	<div id="masterNav">
+		<!--TIME PERIODS MENU*******************************-->
+		<div id="timePeriodMenu" class="">
+			<div class="titleDiv">
+				<button id="showTimeMenu" class="" style="" onclick="toggleTimeMenu()" title="Times Menu">&#9776;</button>
+				<h3 id="timesMenuH3" class="titleBarH3" style="">Times</h3>
 			</div>
-			<ol id="labelList" style="margin-top: auto; padding-left: 20px">
-			</ol>
-		</div>
-	</nav>
-	<!--*****************************************-->
-	<!--***********************************************-->
-
-	<div id="timePeriodMenu" class="" style="float:left; <!--position: absolute; top:0; left:0-->">
-		<div style="display: flex; align-items: baseline">
-			<button id="showTimeMenu" class="" style="" onclick="toggleTimeMenu()" title="Times Menu">&#9776;</button>
-			<h3 id="timesMenuH3" class="titleBarH3" style="">Times</h3>
-		</div>
-		<div id="navDivButtonHolder" class="scrollbar scrollbar-custom">
+			<div id="timeMenuDivButtonHolder" class="scrollbar scrollbar-custom">
 				<button id='soloAllColXOfCheckedTD' onclick="hideAllOtherColXsExcept4AllColXOfCheckedTD(this)" title="Show only labels belonging to the checked list item">Show&#10004;</button>
 				<button id='hideAllColXOfCheckedTD' onclick="hideAllColXOfCheckedTD(this)" title="Hide just the labels belonging to the checked list items">Hide&#10004;</button>
 				<button id='uncheckAlltimePeriodMenu' onclick="uncheckAlltimePeriodMenu()">&#10006;</button>
 			</div>
-		<div id="timeMenuListDiv" style="">
-<!--			<div id="navDivButtonHolder" class="scrollbar scrollbar-custom">
-				<button id='soloDivsOfCheckedClass' onclick="hideAllOtherExcept4DivsOfClass(this)" title="Show only labels belonging to the checked list item">Show&#10004;</button>
-				<button id='hideDivsOfCheckedClass' onclick="hideDivsOfClass(this)" title="Hide just the labels belonging to the checked list items">Hide&#10004;</button>
-				<button id='uncheckAll' onclick="uncheckAll()">&#10006;</button>
+			<div id="timeMenuListDiv" style="">
+				<ol id="timeMenuList" style="margin-top: auto; padding-left: 20px"></ol>
 			</div>
--->
-			<ol id="timeMenuList" style="margin-top: auto; padding-left: 20px"></ol>
 		</div>
+		<!--***********************************************-->
+		<!--***********************************************-->
+
+		<!--CONTROLS FOR THE LABELS ************************-->
+		<nav id="navSection4navDivButtonHolder" class="draggableSection">
+			<div class="titleDiv">
+				<button id="showLabelMenu" class="expandMinimizeButton" title="Nodes Control">&#9776;</button>
+				<h3 class="titleBarH3">Labels</h3>
+			</div>
+			<div style="">
+				<div id="navDivButtonHolder" class="scrollbar scrollbar-custom">
+					<button id='soloDivsOfCheckedClass' onclick="hideAllOtherExcept4DivsOfClass(this)" title="Show only labels belonging to the checked list item">Show&#10004;</button>
+					<button id='hideDivsOfCheckedClass' onclick="hideDivsOfClass(this)" title="Hide just the labels belonging to the checked list items">Hide&#10004;</button>
+					<button id='uncheckAll' onclick="uncheckAll()">&#10006;</button>
+				</div>
+				<ol id="labelList"></ol>
+			</div>
+		</nav>
+		<!--*****************************************-->
+		<!--***********************************************-->
 	</div>
 
 	<!--ACTUAL TABLE STORY LINE ************************-->
-	<!--<div>Heavne is real <br> heaven is so real people <br> heaven is so real people
-	</div>-->
-	<div id="divTableContainer" style="float: left">
+	<div id="divTableContainer">
 		<table id="masterTable">
 			<tr>
 				<td valign="top">
 					<button type="checkbox" class="tableHeadEqualHeights" id="masterEditButton" onclick="makeTableEditable()" title="Click to Edit StoryLineTable" for="editableRadio" checked="true">Edit StoryLine
-						<input id="editableRadio" type="checkbox" value="editableRadio" style="width: 20px">
+						<input id="editableRadio" type="checkbox" checked='true' value="editableRadio" style="width: 20px">
 					</button>
 					<svg id="svg"></svg>
 					<!--I POSITION THE SVG HERE SO THAT IT CAN SCROLL WITH THE TABLE WITHOUT HAVING TO BE REDRAWN-->
@@ -917,11 +870,11 @@
 				<button onclick="connectAllDraggableDivsWithSVGLines()">Connect Divs</button>
 			</div>
 		</div>
-				<!--Delete-->
+		<!--Delete-->
 		<div id="deleteButtons" class="vertical">
 			<span>Delete:</span>
 			<div class="vertical">
-				<button title="delete label" onclick="deleteDIV()">
+				<button id="divDeleteButton" title="delete label" onclick="deleteDIV()">
 					✘<br />Del<br />Label
 				</button><button title="delete label" onclick="destroyCell()">
 					✘<br />Del<br />Cell
@@ -1102,5 +1055,5 @@
 <script type="text/javascript" src="javascript/svgCurvedLinesConnectors.js"></script>
 <script type="text/javascript" src="javascript/preferredColors.js"></script>
 
-<script type="text/javascript" src="javascript/tableCreator-B.js"></script>
+<script type="text/javascript" src="javascript/tableCreator-D.js"></script>
 <script type="text/javascript" src="javascript/detailsSection.js"></script></html>

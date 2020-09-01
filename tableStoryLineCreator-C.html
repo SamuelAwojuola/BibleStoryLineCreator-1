@@ -25,30 +25,31 @@
 		body {
 			margin-left: 0;
 			margin-right: 0;
-			background-color: rgba(131, 128, 98, 0.87);/*Army green sort of*/
-			background-color: rgba(255, 255, 255, 0.87);/*White*/
-			background-color: rgba(129, 98, 131, 0.87);/*Purple*/
-			background-color: rgba(255, 237, 62, 0.87);/*Yellow*/
-			background-color: rgba(0, 0, 0, 0.87);/*Black*/
-			background-color: rgb(253, 255, 238);/*Light Beige*/
-			background-color: lemonchiffon;/*LemonChiffon*/
-			background-color: Beige;/*Beige*/
+			background-color: rgba(131, 128, 98, 0.87);
+			/*Army green sort of*/
+			background-color: rgba(255, 255, 255, 0.87);
+			/*White*/
+			background-color: rgba(129, 98, 131, 0.87);
+			/*Purple*/
+			background-color: rgba(255, 237, 62, 0.87);
+			/*Yellow*/
+			background-color: rgba(0, 0, 0, 0.87);
+			/*Black*/
+			background-color: rgb(253, 255, 238);
+			/*Light Beige*/
+			background-color: lemonchiffon;
+			/*LemonChiffon*/
+			background-color: Beige;
+			/*Beige*/
 		}
 
 		#svg {
 			pointer-events: none;
 			/*THIS MAKES IT POSSIBLE TO CLICK THROUGH THE SVG*/
 			position: absolute;
-
 			z-index: 1;
-
-			/*			background-color: rgba(0, 255, 255, 0.49);*/
-			/*THE BELOW STYLE ATTRIBUTES OF TOP AND LEFT ARE  NECESSARY BECAUSE OF THE SVG IS APPENDED TO THE DIV CONTAINER OF THE TABLES AND NOT THE BODY*/
-			top: -10px;
-			left: -10px;
 			width: 110%;
 			height: 110%;
-			/*THESE HAVE TO BE EQUAL TO THE TOP AND LEFT STYLE ATTRIBUTES OF THE DIV CONTAINER OF THE TABLES*/
 		}
 
 		.svg-connectors {}
@@ -631,8 +632,8 @@
 			font-weight: 1000;
 			align-items: flex-end;
 			position: absolute;
-			left: 10px;
-			bottom: 5px;
+			left: 20vw;
+			top: 35vh;
 			width: 900px;
 			height: 256px;
 			background-color: rgba(245, 245, 220, 0.9);
@@ -758,10 +759,11 @@
 			border-radius: 3px;
 		}
 	</style>
-	
+
 	<!--TIME MENU NAV-->
 	<style>
-		#timeMenuListDiv ol, #timeMenuListDiv ul {
+		#timeMenuListDiv ol,
+		#timeMenuListDiv ul {
 			padding-left: 20px;
 		}
 	</style>
@@ -772,7 +774,7 @@
 
 	<!--CONTROLS FOR THE LABELS ************************-->
 	<nav id="navSection4navDivButtonHolder" class="draggableSection">
-		<h3 class="titleBarH3"><button id="showLabelMenu" class="expandMinimizeButton">&#9776;</button>Labels</h3>
+		<h3 class="titleBarH3"><button id="showLabelMenu" class="expandMinimizeButton" title="Nodes Control">&#9776;</button>Labels</h3>
 		<div style="">
 			<!--			<hr>-->
 			<div id="navDivButtonHolder" class="scrollbar scrollbar-custom">
@@ -787,18 +789,19 @@
 	<!--*****************************************-->
 	<!--***********************************************-->
 
+	<!--TIME PERIODS MENU*******************************-->
 	<div id="timePeriodMenu" class="" style="float:left; <!--position: absolute; top:0; left:0-->">
 		<div style="display: flex; align-items: baseline">
 			<button id="showTimeMenu" class="" style="" onclick="toggleTimeMenu()" title="Times Menu">&#9776;</button>
 			<h3 id="timesMenuH3" class="titleBarH3" style="">Times</h3>
 		</div>
-		<div id="navDivButtonHolder" class="scrollbar scrollbar-custom">
-				<button id='soloAllColXOfCheckedTD' onclick="hideAllOtherColXsExcept4AllColXOfCheckedTD(this)" title="Show only labels belonging to the checked list item">Show&#10004;</button>
-				<button id='hideAllColXOfCheckedTD' onclick="hideAllColXOfCheckedTD(this)" title="Hide just the labels belonging to the checked list items">Hide&#10004;</button>
-				<button id='uncheckAlltimePeriodMenu' onclick="uncheckAlltimePeriodMenu()">&#10006;</button>
-			</div>
+		<div id="timeMenuDivButtonHolder" class="scrollbar scrollbar-custom">
+			<button id='soloAllColXOfCheckedTD' onclick="hideAllOtherColXsExcept4AllColXOfCheckedTD(this)" title="Show only labels belonging to the checked list item">Show&#10004;</button>
+			<button id='hideAllColXOfCheckedTD' onclick="hideAllColXOfCheckedTD(this)" title="Hide just the labels belonging to the checked list items">Hide&#10004;</button>
+			<button id='uncheckAlltimePeriodMenu' onclick="uncheckAlltimePeriodMenu()">&#10006;</button>
+		</div>
 		<div id="timeMenuListDiv" style="">
-<!--			<div id="navDivButtonHolder" class="scrollbar scrollbar-custom">
+			<!--			<div id="navDivButtonHolder" class="scrollbar scrollbar-custom">
 				<button id='soloDivsOfCheckedClass' onclick="hideAllOtherExcept4DivsOfClass(this)" title="Show only labels belonging to the checked list item">Show&#10004;</button>
 				<button id='hideDivsOfCheckedClass' onclick="hideDivsOfClass(this)" title="Hide just the labels belonging to the checked list items">Hide&#10004;</button>
 				<button id='uncheckAll' onclick="uncheckAll()">&#10006;</button>
@@ -807,6 +810,8 @@
 			<ol id="timeMenuList" style="margin-top: auto; padding-left: 20px"></ol>
 		</div>
 	</div>
+	<!--***********************************************-->
+	<!--***********************************************-->
 
 	<!--ACTUAL TABLE STORY LINE ************************-->
 	<!--<div>Heavne is real <br> heaven is so real people <br> heaven is so real people
@@ -917,11 +922,11 @@
 				<button onclick="connectAllDraggableDivsWithSVGLines()">Connect Divs</button>
 			</div>
 		</div>
-				<!--Delete-->
+		<!--Delete-->
 		<div id="deleteButtons" class="vertical">
 			<span>Delete:</span>
 			<div class="vertical">
-				<button title="delete label" onclick="deleteDIV()">
+				<button id="divDeleteButton" title="delete label" onclick="deleteDIV()">
 					✘<br />Del<br />Label
 				</button><button title="delete label" onclick="destroyCell()">
 					✘<br />Del<br />Cell
@@ -1102,5 +1107,5 @@
 <script type="text/javascript" src="javascript/svgCurvedLinesConnectors.js"></script>
 <script type="text/javascript" src="javascript/preferredColors.js"></script>
 
-<script type="text/javascript" src="javascript/tableCreator-B.js"></script>
+<script type="text/javascript" src="javascript/tableCreator-C.js"></script>
 <script type="text/javascript" src="javascript/detailsSection.js"></script></html>

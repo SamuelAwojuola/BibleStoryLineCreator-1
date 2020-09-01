@@ -1,35 +1,26 @@
+var documentHTML = document.querySelector('html');
 var documentBody = document.querySelector('body');
-var masterTable = document.getElementById('masterTable');
-
-var legendTable = document.querySelector('#legendTable');
-var onPageLoad_legendTable_Left_Coord;
-var resize_legendTable_Left_Coord;
-var onPageLoad_legendTable_Top_Coord;
-
-var onPageLoad_distanceBetweenLegendTable_and_StorylineTable;
 
 var divTableContainer = document.getElementById('divTableContainer');
-var onPageLoad_divTableContainer_Left_Coord;
-var onPageLoad_divTableContainer_Top_Coord;
+var masterTable = document.getElementById('masterTable');
+var svgMaster = document.getElementById('svg');
+var legendTable = document.querySelector('#legendTable');
 
 var storyLineTable = document.getElementById('storyLineTable');
-var onPageLoad_StoryLineTable_Left_Coord;
-var original_onPageLoad_StoryLineTable_Left_Coord;
-var onPageLoad_StoryLineTable_Top_Coord;
-var original_onPageLoad_StoryLineTable_Top_Coord;
-
 var alternateStoryLineEditorButtons = document.getElementById('alternateStoryLineEditorButtons');
 
 var storyLineTableTitleHeader = divTableContainer.querySelector('#storyLineTableTitleHeader');
-//var onPageLoad_storyLineTableTitleHeader_Top_Coord;
-//var original_onPageLoad_storyLineTableTitleHeader_Top_Coord;
 
 var storyLineTableTHead = storyLineTable.querySelector('thead');
 var storyLineTHeadRowz = storyLineTableTHead.getElementsByTagName('tr');
 
+var timePeriodMenu = document.getElementById('timePeriodMenu');
+var onPageLoadTimeMenuWidth;
 var timeMenuListDiv = document.getElementById('timeMenuListDiv');
 var timeMenuList = document.getElementById('timeMenuList');
 var timesMenuH3 = document.getElementById('timesMenuH3');
+
+var divDeleteButton = document.querySelector('#divDeleteButton');
 
 var TypeOfHtmlHeader = 'H4';
 var celldeselect;
@@ -85,7 +76,7 @@ onload = onloadAnalysis();
 
 function onloadAnalysis() {
 
-	alternateStoryLineEditorButtons.style.display = 'none';
+//	alternateStoryLineEditorButtons.style.display = 'none';
 
 	rowListeners();
 	cellListeners();
@@ -129,7 +120,16 @@ function onloadAnalysis() {
 		generateColumnClasses();
 	}
 
-	btn_buildLegendTable();
+	//////////////////////////////////////////////
+	//instead of btn_buildLegendTable() function;
+	dragDiv2TD();
+	divListeners();
+	if (clickedCell) {
+		deselectEmptyCell();
+	}
+	buildLegendTable();
+	resetClasses();
+	//////////////////////////////////////////////
 	buildLegendTable();
 
 	/****************************************************/
@@ -163,48 +163,11 @@ function onloadAnalysis() {
 	/****************************************************/
 	/****************************************************/
 
-	/****************************************************/
-	/*ORIGNAL COORDINATES OF THE STORYLINETABLE***************************************************/
-	/*(THESE WILL BE USED TO GET THE DISTANCES SCROLLED TO GET THE COORDINATES TO ASSIGN THE SVG CONNECTORS)*/
-	/****************************************************/
-	onPageLoad_StoryLineTable_Left_Coord = storyLineTable.getBoundingClientRect().left;
-	onPageLoad_StoryLineTable_Top_Coord = storyLineTable.getBoundingClientRect().top;
-	original_onPageLoad_StoryLineTable_Left_Coord = onPageLoad_StoryLineTable_Left_Coord; //for windowResize
-	original_onPageLoad_StoryLineTable_Top_Coord = onPageLoad_StoryLineTable_Top_Coord; //for windowResize
-
-	onPageLoad_divTableContainer_Left_Coord = divTableContainer.getBoundingClientRect().left;
-	onPageLoad_divTableContainer_Top_Coord = divTableContainer.getBoundingClientRect().top;
-
-	onPageLoad_legendTable_Left_Coord = legendTable.getBoundingClientRect().left;
-
-	onPageLoad_distanceBetweenLegendTable_and_StorylineTable = onPageLoad_StoryLineTable_Left_Coord - onPageLoad_legendTable_Left_Coord;
-
-	//	onPageLoad_legendTable_Top_Coord = legendTable.getBoundingClientRect().top;
-	/****************************************************/
-	/*these are put here at the end of the onLoad functions, to ensure that the table has been copletely built before the orginal coordinates of teh StoryLineTable are taken*/
-	/****************************************************/
-
 }
 
 /*BECAUSE COORDINATES CHANGE WHEN BROWSER WINDOW IS RESIZE*******************************/
 /****************************************************************************************/
 window.addEventListener("resize", function () {
-
-	resize_legendTable_Left_Coord = legendTable.getBoundingClientRect().left;
-	var resize_StoryLineTable_Left_Coord = storyLineTable.getBoundingClientRect().left;
-	var resize_StoryLineTable_Top_Coord = storyLineTable.getBoundingClientRect().top;
-
-	var newDistanceBetweenLegendTable_and_StorylineTable = resize_StoryLineTable_Left_Coord - resize_legendTable_Left_Coord;
-
-	var diffbtwOldAndNewDistances = onPageLoad_distanceBetweenLegendTable_and_StorylineTable - newDistanceBetweenLegendTable_and_StorylineTable;
-
-	onPageLoad_StoryLineTable_Left_Coord = original_onPageLoad_StoryLineTable_Left_Coord - diffbtwOldAndNewDistances;
-	//	onPageLoad_StoryLineTable_Top_Coord = original_onPageLoad_StoryLineTable_Top_Coord - diffbtwOldAndNewDistances;
-
-
-	//	onPageLoad_divTableContainer_Left_Coord = divTableContainer.getBoundingClientRect().left;
-	//	onPageLoad_divTableContainer_Top_Coord = divTableContainer.getBoundingClientRect().top;
-
 	btn_buildLegendTable();
 	connectAllDraggableDivsWithSVGLines();
 });
@@ -296,7 +259,7 @@ function cellHighlight(x) {
 			}
 		}
 
-		setTimeout(() => [x.style.backgroundColor = '', x.classList.remove('clicked'), shs(), connectAllDraggableDivsWithSVGLines()], 22000);
+		setTimeout(() => [x.style.backgroundColor = '', x.classList.remove('clicked'), shs(), connectAllDraggableDivsWithSVGLines()], 5000);
 		//	setTimeout(() => [], 22000);
 	}
 }
@@ -369,8 +332,14 @@ function divListeners() {
 				clickedDIV = this;
 				var initialColor = this.style.backgroundColor;
 				this.style.backgroundColor = "lightgrey";
-				setTimeout(() => [clickedDIV.style.backgroundColor = initialColor], 5000)
-				setTimeout(() => [clickedDIV = null], 2000)
+
+				initialdeleteDivBtnColor =
+					divDeleteButton.style.backgroundColor;
+				divDeleteButton.style.backgroundColor = 'pink';
+
+				setTimeout(() => [clickedDIV.style.backgroundColor = initialColor], 5000);
+				setTimeout(() => [divDeleteButton.style.backgroundColor = ''], 5000);
+				//				setTimeout(() => [clickedDIV = null], 2000)
 			}
 		}
 	}
@@ -1309,6 +1278,7 @@ function buildLegendTable() {
 /* SET HEIGHT OF LEGEND CELLS ************************************************************/
 
 function btn_buildLegendTable() {
+	uncheckAlltimePeriodMenu();
 	dragDiv2TD();
 	divListeners();
 	if (clickedCell) {
@@ -1706,16 +1676,71 @@ function makeTableEditable() {
 /******************************************************/
 /******************************************************/
 
-/*TOGGLE TIME MENU*************************************/
+
+/***************************************************************/
+/***************************************************************/
+/*TIME MENU FUNCTIONS*******************************************/
+/***************************************************************/
+/***************************************************************/
+
+/*HIDE OR SOLO TIME COLUMNS ON CHECKBOX CHECK/UNCHECK***********/
+/***************************************************************/
+var TDsOfCheckedClassHider = document.getElementById('hideAllColXOfCheckedTD');
+var TDsOfCheckedClassSoloer = document.getElementById('soloAllColXOfCheckedTD');
+var shouldIHideTD = 1;
+var shouldISoloTD = 0;
+
+function hideAllColXOfCheckedTD(x) {
+	shouldIHideTD = 1;
+	shouldISoloTD = 0;
+	x.style.backgroundColor = 'SpringGreen';
+	TDsOfCheckedClassSoloer.style.backgroundColor = 'rgba(254, 255, 251, 0.5)';
+};
+
+function hideAllOtherColXsExcept4AllColXOfCheckedTD(x) {
+	var classesToUncheck = document.querySelectorAll('.timeLINameCheckBox');
+	console.log(classesToUncheck);
+	for (i = (classesToUncheck.length - 1); i > -1; i--) {
+		if (classesToUncheck[i].checked) {
+			classesToUncheck[i].click();
+		}
+	}
+	shouldISoloTD = 1;
+	shouldIHideTD = 0;
+	x.style.backgroundColor = 'SpringGreen';
+	TDsOfCheckedClassHider.style.backgroundColor = 'rgba(254, 255, 251, 0.5)';
+};
+
+function uncheckAlltimePeriodMenu() {
+	var classesToUncheck = document.querySelectorAll('.timeLINameCheckBox');
+	console.log(classesToUncheck);
+//	for (i = (classesToUncheck.length - 1); i > -1; i--) {
+	for (i = 0; i < classesToUncheck.length ; i++) {
+		if (classesToUncheck[i].checked) {
+			classesToUncheck[i].click();
+		}
+	}
+}
+
+/******************************************************/
 /******************************************************/
 
+
+/*TOGGLE TIME MENU*************************************/
+/******************************************************/
+var timeMenuDivButtonHolder = document.querySelector('#timeMenuDivButtonHolder');
+
 function toggleTimeMenu() {
-	if (timeMenuList.style.display == 'none') {
+	if (timeMenuDivButtonHolder.style.display == 'none') {
 		timeMenuList.style.display = ''
 		timesMenuH3.style.display = ''
+		timeMenuDivButtonHolder.style.display = ''
+		timeMenuListDiv.style.display = ''
 	} else {
 		timeMenuList.style.display = 'none'
 		timesMenuH3.style.display = 'none'
+		timeMenuDivButtonHolder.style.display = 'none'
+		timeMenuListDiv.style.display = 'none'
 	}
 }
 
@@ -1773,8 +1798,7 @@ function createTimeMenu(ROWorCOL) {
 		removeAllChildNodesOf(timeMenuListDiv);
 		//GO THROUGH EACH ROW ONE AFTER ANOTHER
 		for (i = 0; i < storyLineTHeadRowz.length; i++) {
-			console.log("new Row " + i);
-			console.log("new Row " + i);
+			console.log("new Row is " + i);
 			//CREATE <LI> FOR EACH ROW
 			/*var elmLI_1 = document.createElement('LI');
 			elmLI_1.innerHTML = "Row " + (i + 1);*/
@@ -1816,20 +1840,136 @@ function createTimeMenu(ROWorCOL) {
 				if (col_x_CellHeader != null) {
 
 					addNewLI = "yes";
+					var cellId = 'cell.' + i + '.' + j;
 
 					//get the cell's content and append it to the timeMenu
+
 					var elmLI = document.createElement('LI');
-					
-					elmLI.innerHTML = col_x_CellHeader.innerHTML;
-					elmLI.setAttribute('targetRowIndex', i);
-					elmLI.setAttribute('targetCellIndex', j);
+
+					//CREATE LABEL ELEMENT
+					var labelListName = document.createElement('LABEL');
+					labelListName.innerHTML = col_x_CellHeader.innerHTML;
+					labelListName.setAttribute('for', cellId);
+
+
+					//APPEND INPUT (CHECKBOX) ELEMENT TO LIST
+					var labelListNameCheckBox = document.createElement('INPUT');
+					labelListNameCheckBox.setAttribute('type', 'checkbox');
+					labelListNameCheckBox.setAttribute('value', cellId);
+					labelListNameCheckBox.setAttribute('id', cellId);
+					//					labelListNameCheckBox.classList.add('labelListNameCheckBox');
+					labelListNameCheckBox.setAttribute('targetRowIndex', i);
+					labelListNameCheckBox.setAttribute('targetCellIndex', j);
+					labelListNameCheckBox.classList.add('timeLINameCheckBox');
+
+					/*************************************************/
+					/*ADD EVENTLISTNER TO INPUT ELEMENT***************/
+					/*************************************************/
+					labelListNameCheckBox.addEventListener('click', function () {
+
+						var targetRowI = this.getAttribute('targetRowIndex');
+
+						console.log("targetRowIndex: " + targetRowI);
+						var targetCellI = this.getAttribute('targetCellIndex');
+						console.log("targetCellIndex: " + targetCellI);
+						var targetedTD = storyLineTableTHead.rows[targetRowI].cells[targetCellI];
+						console.log("targetedTD:");
+						console.log(targetedTD);
+						
+
+						/*GET COL-X CLASSES AND ACT*********************/
+						var targetedTDClassList = targetedTD.classList;
+						console.log(targetedTDClassList);
+						var prefix = 'col-';
+						var prefixLength = prefix.length;
+
+						if (shouldIHideTD == 1) {
+
+							if (this.checked) {
+								
+								console.log('CHECKED');
+
+								for (k = 0; k < targetedTDClassList.length; k++) {
+									//GET THE COL-X CLASSES BELONGING TO THE TARGETED TD
+									if (targetedTDClassList[k].slice(0, prefixLength) == prefix) {
+										var col_xClass = targetedTDClassList[k];
+
+										//GET COLLECTION OF TDs BELONGING TO THIS COL-X CLASS
+										var tdsOfCheckedClass = storyLineTable.querySelectorAll('.' + col_xClass);
+										for (l = 0; l < tdsOfCheckedClass.length; l++) {
+											var TD = tdsOfCheckedClass[l];
+
+											var orgColSpan = Number(TD.getAttribute('originalcolspan'));
+											var hiddenColXCount = Number(TD.getAttribute('hiddencol_xs_count'));
+											
+											//IF COLSPAN OF TD OF THE COL-X CLASS IS 1, HIDE THE TD
+											if (TD.colSpan == 1) {
+												TD.style.display = 'none';
+											}
+
+											//ELSE IF COLSPAN OF TD OF THE COL-X CLASS IS GREATER THAN 1, THEN DON'T HIDE IT, RATHER JUST REDUCE THE COLSPAN BY 1
+											else {
+												TD.colSpan = Number(TD.colSpan) - 1;
+											}
+
+											//INCREASE HIDDENCOLXCOUNT ATTRIUBTE VALUE (THIS INDICATES HOW MANY COL-X CLASSES HAS BEEN HIDDEN)
+											
+											if(orgColSpan != hiddenColXCount){
+												console.log('hiddenColXCount: ' + hiddenColXCount);
+												TD.setAttribute('hiddencol_xs_count', hiddenColXCount + 1);
+											}
+										}
+									}
+								}
+								connectAllDraggableDivsWithSVGLines();
+
+							} else if (!this.checked) {
+								console.log('UN-CHECKED');
+
+								for (k = 0; k < targetedTDClassList.length; k++) {
+									//GET THE COL-X CLASSES BELONGING TO THE TARGETED TD
+									if (targetedTDClassList[k].slice(0, prefixLength) == prefix) {
+										var col_xClass = targetedTDClassList[k];
+
+										//GET COLLECTION OF TDs BELONGING TO THIS COL-X CLASS
+										var tdsOfCheckedClass = storyLineTable.querySelectorAll('.' + col_xClass);
+
+										/**************************************/
+										//COMPARE ORIGINALCOLSPAN ATTRIBUTE WITH HIDDENCOL-XCLASSESCOUNT
+										/**************************************/
+
+										for (l = 0; l < tdsOfCheckedClass.length; l++) {
+											
+											var TD = tdsOfCheckedClass[l];
+
+											//DECREASE THE HIDDENCOL-XCLASSESCOUNT BY 1
+											var hiddenColXCount = Number(TD.getAttribute('hiddencol_xs_count'));
+											TD.setAttribute('hiddencol_xs_count', hiddenColXCount - 1);
+											
+											var orgColSpan = Number(TD.getAttribute('originalcolspan'));
+											hiddenColXCount = Number(TD.getAttribute('hiddencol_xs_count'));
+											
+											TD.style.display = '';
+											TD.colSpan = orgColSpan - hiddenColXCount;
+										}
+									}
+								}
+								connectAllDraggableDivsWithSVGLines();
+							}
+						}
+					});
+					/*************************************************/
+					/*************************************************/
+
+					//APPEND LABEL ELEMENT TO LIST
+					elmLI.appendChild(labelListName);
+					//APPEND INPUT ELEMENT TO LIST
+					elmLI.appendChild(labelListNameCheckBox);
+					//APPEND LIST ELEMENT TO OL
 					elmUL.appendChild(elmLI);
 				}
 			}
 			if (addNewLI == "yes") {
-
-				//				elmLI_1.appendChild(elmUL);
-				//				timeMenuList.appendChild(elmLI_1);
 				timeMenuListDiv.appendChild(elmUL);
 			}
 		}
