@@ -17,7 +17,6 @@ function generateColumnClasses() {
 
 	var ArrayOfAllTds = storyLineTable.getElementsByTagName("td");
 	var customIndex = 0;
-	//	customIndex = customIndex++;
 
 	//TO ADD CUSTOM CLASSES TO THE <TD>
 	for (var i = 0; i < ArrayOfAllTds.length; i++) {
@@ -35,13 +34,24 @@ function generateColumnClasses() {
 		//			alert(customIndex);
 
 		//FOR IF THE OTHER <td>s APART FROM THE FIRST IN THE ROW HAS A "colspan" ATTRIBUTE
-		//			if (TD.hasAttribute("colspan")) {
-		var colSpan2 = TD.colSpan;
+		var colSpan2;
+		
+		//CHECK FOR ORIGNINALCOLSPAN ATTRIBUTE INSTEAD OF COLSPAN BECAUSE ON HIDING OF COLUMNS, THE COLSPAN IS CHANGED AND SO DOES NOT ACCURATELY REFLECT WHAT THE TRUE COLSPAN IS
+		if(TD.hasAttribute("originalcolspan")){
+			//THE FIRST TIME TDs ARE CREATED, ORIGINAL COLSPAN IS NOT AVAILABLE
+			colSpan2 = TD.getAttribute("originalcolspan");
+		   } else {
+			   colSpan2 = TD.colSpan;
+		   }
 
 		//TO SAVE THE ORGINAL COLSPAN AS ANOTHER MADE-UP ATTRIBUTE
-		TD.setAttribute("originalcolspan", colSpan2);
+		if (TD.hasAttribute("originalcolspan") == false) {
+			TD.setAttribute("originalcolspan", colSpan2);
+		} else {
+			TD.colSpan = TD.getAttribute("originalcolspan");
+		}
 		
-		if (!TD.hasAttribute("hiddencol_xs_count")) {
+		if (TD.hasAttribute("hiddencol_xs_count") == false) {
 			TD.setAttribute("hiddencol_xs_count", 0);
 		}
 
@@ -51,7 +61,6 @@ function generateColumnClasses() {
 			TD.classList.add(colClass);
 			customIndex = customIndex + 1;
 		}
-		//			}
 
 
 		if (arrayOfAllColClasses.indexOf(colClass) == -1) {
@@ -70,15 +79,3 @@ function generateColumnClasses() {
 		arrayOfAllColClasses.push("col-" + colClassesCount[i])
 	}
 }
-
-/*function deleteCol_xClasses() {
-	var ArrayOfAllTds = document.getElementsByTagName("td");
-	for (var i = 0; i < ArrayOfAllTds.length; i++) {
-		var classlist = ArrayOfAllTds[i].classList;
-		for (j = 0; j < classlist.length; j++) {
-			if (classlist[j].match(/^(col-\d+)$/)) {
-				classlist.remove(classlist[j])
-			}
-		}
-	}
-}*/

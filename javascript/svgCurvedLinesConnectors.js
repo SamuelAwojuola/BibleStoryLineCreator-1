@@ -21,7 +21,7 @@ function nodesconnector(pathXYcord, divClassLineConnects) {
 // var connector = document.querySelector("#connector");
 
 function drawConnector(X, Y, divClassforColor) {
-	
+
 	var svgMasterTop = svgMaster.getBoundingClientRect().top;
 	var svgMasterLeft = svgMaster.getBoundingClientRect().left;
 	var pageScrollX = documentHTML.scrollLeft;
@@ -105,12 +105,14 @@ var connectAllDraggableDivsWithSVGLines = function () {
 					if ((firstDivofClassFound == 0) && (divWithCurrentDivClassNameinColumn)) {
 						startElement = divWithCurrentDivClassNameinColumn;
 						firstDivofClassFound = 1;
+						break;
 					} else if ((firstDivofClassFound == 1) && (divWithCurrentDivClassNameinColumn)) {
 						endElement = divWithCurrentDivClassNameinColumn
 						////////////////////////////////////////
 						drawConnector(startElement, endElement, divClassAttributeArray[i]);
 						////////////////////////////////////////
 						startElement = divWithCurrentDivClassNameinColumn
+						break;
 					}
 				}
 			}

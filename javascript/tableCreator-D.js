@@ -76,7 +76,7 @@ onload = onloadAnalysis();
 
 function onloadAnalysis() {
 
-//	alternateStoryLineEditorButtons.style.display = 'none';
+	//	alternateStoryLineEditorButtons.style.display = 'none';
 
 	rowListeners();
 	cellListeners();
@@ -152,7 +152,6 @@ function onloadAnalysis() {
 
 					for (i = 0; i < allDivsofClassToHide.length; i++) {
 						allDivsofClassToHide[i].style.display = "";
-						console.log(i);
 					}
 					connectAllDraggableDivsWithSVGLines();
 				}
@@ -327,8 +326,6 @@ function divListeners() {
 			var divClickCounter = 0;
 
 			allDivs[j].onclick = function () {
-				//				var divHasBeenClicked;
-				//				console.log(divHasBeenClicked);
 				clickedDIV = this;
 				var initialColor = this.style.backgroundColor;
 				this.style.backgroundColor = "lightgrey";
@@ -455,7 +452,6 @@ function selectCells(dbtn) {
 	if (selectCellsToMerge == 1) {
 
 		dbtn.style.background = active;
-		console.log(125354);
 		selectCellsToMerge = 0
 		cellSelectBtn = dbtn;
 		shouldContentsBeMerged = 1;
@@ -473,14 +469,7 @@ function selectCells(dbtn) {
 					selectedCellsArray.push(this); //ADD THE CLICKED CELL TO THE SELECTED CELLS ARRAY
 					controlArray.push(this.cellIndex); //GET THE CELL INDEX OF THE CLICKED CELL AND ADD IT TO THE CONTROL ARRAY
 					var clickedCellRowIndex = this.getAttribute('rIndex'); //GET ROW INDEX FROM CUSTOM ATTRIBUTE 'rIndex'
-					console.log('clickedRow: ' + clickedCellRowIndex);
 					controlArray4RowIndex.push(clickedCellRowIndex); //GET THE INDEX OF THE CLICKED ROW
-
-					console.log('mergeColspan: ' + mergeColspan);
-					console.log(selectedCellsArray);
-					console.log(controlArray);
-					console.log('rowArray: ' + controlArray4RowIndex);
-					//					console.log(Math.min(...controlArray));
 
 				} else if (this.classList.contains('selected')) {
 					this.style.backgroundColor = '';
@@ -488,18 +477,11 @@ function selectCells(dbtn) {
 					mergeColspan = mergeColspan - cspan;
 
 					index2Remove = selectedCellsArray.indexOf(this);
-					console.log('index2Remove: ' + index2Remove);
 					selectedCellsArray.splice(index2Remove, 1);
 					controlArray.splice(index2Remove, 1);
 					controlArray4RowIndex.splice(index2Remove, 1);
 
 					this.classList.remove('selected')
-
-					console.log('mergeColspan: ' + mergeColspan);
-					console.log(selectedCellsArray);
-					console.log(controlArray);
-					console.log('rowArray: ' + controlArray4RowIndex);
-					console.log(Math.min(...controlArray));
 				}
 			}
 		}
@@ -559,6 +541,7 @@ function mergeCells() {
 			sca[s].remove()
 		}
 		sca[controlIndex].colSpan = mergeColspan;
+		sca[controlIndex].setAttribute('originalcolspan', mergeColspan);
 		sca[controlIndex].style.background = deactivated;
 		sca[controlIndex].classList.remove('selected');
 	}
@@ -593,6 +576,7 @@ function splitCell() {
 				//				cell.innerHTML = 'splitCell';
 			}
 			sca[i].colSpan = 1;
+			sca[i].setAttribute('originalcolspan', 1);
 		}
 		sca[i].style.background = deactivated;
 		sca[i].classList.remove('selected');
@@ -613,8 +597,6 @@ var x = 0;
 
 function createRowAbove() {
 	var cellZ2deselect = storyLineTable.querySelectorAll('.clicked');
-	//	analyzeTable();
-	console.log("CELLZ-LENGTH: " + cellZ2deselect.length);
 	for (i = 0; i < cellZ2deselect.length; i++) {
 
 		celldeselect = cellZ2deselect[i];
@@ -649,8 +631,6 @@ function createRowAbove() {
 //CREATE ROW BELOW CLICKED ROW
 function createRowBelow() {
 	var cellZ2deselect = storyLineTable.querySelectorAll('.clicked');
-	//	analyzeTable();
-	console.log("CELLZ-LENGTH: " + cellZ2deselect.length);
 	for (i = 0; i < cellZ2deselect.length; i++) {
 
 		celldeselect = cellZ2deselect[i];
@@ -704,8 +684,6 @@ function cloneRowAbove() {
 	newIrow = (newIrow || aboveRow) + 1;
 
 	var cellZ2deselect = storyLineTable.querySelectorAll('.clicked');
-	//	analyzeTable();
-	console.log("CELLZ-LENGTH: " + cellZ2deselect.length);
 	for (i = 0; i < cellZ2deselect.length; i++) {
 
 		celldeselect = cellZ2deselect[i];
@@ -819,23 +797,17 @@ function createColumnBefore() {
 	if (colSpanOfClickedCell > 1) {
 		trueIndex = trueIndex - colSpanOfClickedCell + 1;
 	}
-	console.log("trueIndex: " + trueIndex);
 
 	var colClass2query = 'col-' + (trueIndex + 1);
-	console.log("colClass2query: " + colClass2query);
 	var lessThanColClass2query = 'col-' + (trueIndex);
-	console.log("lessThanColClass2query: " + lessThanColClass2query);
 	var greaterThanColClass2query = 'col-' + (trueIndex + 2);
 	//in each row, add cell before cell with the class of colClass2query
 
 	/***********************************************************/
 	for (j = 0; j < row.length; j++) {
-		console.log("querySelector: " + row[j]);
 		beforeCell = row[j].querySelector('.' + colClass2query).cellIndex; //getting index of cell with class of colClass2query. this is for insertion before
-		console.log("ContainsLessThanClass: " + row[j].querySelector('.' + colClass2query).classList.contains(lessThanColClass2query));
 
 		if (row[j].querySelector('.' + colClass2query).classList.contains(lessThanColClass2query)) {
-			console.log("colspan to expand");
 			row[j].cells[beforeCell].colSpan = row[j].cells[beforeCell].colSpan + 1;
 		} else {
 			row[j].insertCell(newIcell || beforeCell);
@@ -868,24 +840,18 @@ function createColumnAfter() {
 	for (i = 0; i < (clickedCell + 1); i++) {
 		var cellsUp2clickedCell = row[clickedRow].cells[i];
 		trueIndex = trueIndex + row[clickedRow].cells[i].colSpan; //all colspans minus 1 will give the trueindex
-		console.log("trueIndex: " + trueIndex);
 	}
 	var colClass2query = 'col-' + (trueIndex + 1);
-	console.log("colClass2query: " + colClass2query);
 	var lessThanColClass2query = 'col-' + (trueIndex);
-	console.log("lessThanColClass2query: " + lessThanColClass2query);
 	var greaterThanColClass2query = 'col-' + (trueIndex + 2);
 	//in each row, add cell before cell with the class of colClass2query
 
 	/***********************************************************/
 	for (j = 0; j < row.length; j++) {
-		console.log("querySelector: " + row[j]);
 		beforeCell = row[j].querySelector('.' + colClass2query).cellIndex; //getting index of cell with class of colClass2query. this is for insertion before
-		console.log("ContainsLessThanClass: " + row[j].querySelector('.' + colClass2query).classList.contains(lessThanColClass2query));
 		afterCell = beforeCell + 1;
 
 		if (row[j].querySelector('.' + colClass2query).classList.contains(greaterThanColClass2query)) {
-			console.log("colspan to expand");
 			row[j].cells[beforeCell].colSpan = row[j].cells[beforeCell].colSpan + 1;
 		} else {
 			row[j].insertCell(newIcell || afterCell);
@@ -929,6 +895,27 @@ function showAll() {
 	}
 }
 
+
+/************************************************************/
+/* HIDE ELEMENT FAMILY--SIBLINGS & PARENT*******************/
+/************************************************************/
+function toggleBtnzFamily(a) {
+
+	var b = a.parentNode;
+
+	if (b.nextElementSibling.style.display == 'none') {
+		//			a.innerHTML = '&#9866;';
+		//			a.nextElementSibling.style.display = '';
+		b.nextElementSibling.style.display = '';
+	} else {
+		//			a.innerHTML = '&#9776;';
+		//			a.nextElementSibling.style.display = 'none';
+		b.nextElementSibling.style.display = 'none';
+	}
+}
+
+/************************************************************/
+/************************************************************/
 
 /************************************************************/
 /* CONTROL BUTTONS ACCORDION ********************************/
@@ -975,7 +962,6 @@ for (i = 0; i < tableBuilderSections.length; i++) {
 		for (let j = 0, hSib2 = h3clicked.nextElementSibling;
 			((hSib2 != null) && (hSib2.tagName != 'H3')); j++, hSib2 = hSib2.nextElementSibling) {
 			setTimeout(() => {
-				//				console.log(j, hSib2, h3clicked);
 				if (hSib2.style.display == 'none') {
 					hSib2.style.display = ''
 				} else if (hSib2.style.display != 'none') {
@@ -1004,7 +990,6 @@ for (i = 0; i < h3.length; i++) {
 		var hSib2 = h3clicked.nextElementSibling;
 		for (let j = 0, hSib2 = h3clicked.nextElementSibling; hSib2 != null; j++, hSib2 = hSib2.nextElementSibling) {
 			setTimeout(() => {
-				//				console.log(j, hSib2, h3clicked);
 				if (hSib2.style.display == 'none') {
 					hSib2.style.display = ''
 				} else if (hSib2.style.display != 'none') {
@@ -1564,9 +1549,9 @@ function deleteDIV() {
 /******************************************************/
 /*FOR LABEL CONSOLE************************************/
 
-var showLabelMenu = document.getElementById('showLabelMenu');
-var showLabelMenuParent = showLabelMenu.parentNode;
-minimizeMaximize(showLabelMenu, showLabelMenuParent);
+//var showLabelMenu = document.getElementById('showLabelMenu');
+//var showLabelMenuParent = showLabelMenu.parentNode;
+//minimizeMaximize(showLabelMenu, showLabelMenuParent);
 
 /******************************************************/
 /******************************************************/
@@ -1587,7 +1572,6 @@ function hideDivsOfClass(x) {
 
 function hideAllOtherExcept4DivsOfClass(x) {
 	var classesToUncheck = document.querySelectorAll('.labelListNameCheckBox');
-	console.log(classesToUncheck);
 	for (i = (classesToUncheck.length - 1); i > -1; i--) {
 		if (classesToUncheck[i].checked) {
 			classesToUncheck[i].click();
@@ -1601,7 +1585,6 @@ function hideAllOtherExcept4DivsOfClass(x) {
 
 function uncheckAll() {
 	var classesToUncheck = document.querySelectorAll('.labelListNameCheckBox');
-	console.log(classesToUncheck);
 	for (i = (classesToUncheck.length - 1); i > -1; i--) {
 		if (classesToUncheck[i].checked) {
 			classesToUncheck[i].click();
@@ -1623,13 +1606,10 @@ function makeInputSelectable() {
 
 function fillDivNameInput() {
 	input4divName.value = divNameOptionsDropdown.value;
-	console.log(divNameOptionsDropdown.value);
-	console.log("Hello there");
 };
 
 function fillDivClassInput() {
 	input4divClass.value = divClassOptionsDropdown.value;
-	console.log(divClassOptionsDropdown.value);
 };
 
 /******************************************************/
@@ -1699,7 +1679,6 @@ function hideAllColXOfCheckedTD(x) {
 
 function hideAllOtherColXsExcept4AllColXOfCheckedTD(x) {
 	var classesToUncheck = document.querySelectorAll('.timeLINameCheckBox');
-	console.log(classesToUncheck);
 	for (i = (classesToUncheck.length - 1); i > -1; i--) {
 		if (classesToUncheck[i].checked) {
 			classesToUncheck[i].click();
@@ -1713,9 +1692,8 @@ function hideAllOtherColXsExcept4AllColXOfCheckedTD(x) {
 
 function uncheckAlltimePeriodMenu() {
 	var classesToUncheck = document.querySelectorAll('.timeLINameCheckBox');
-	console.log(classesToUncheck);
-//	for (i = (classesToUncheck.length - 1); i > -1; i--) {
-	for (i = 0; i < classesToUncheck.length ; i++) {
+	//	for (i = (classesToUncheck.length - 1); i > -1; i--) {
+	for (i = 0; i < classesToUncheck.length; i++) {
 		if (classesToUncheck[i].checked) {
 			classesToUncheck[i].click();
 		}
@@ -1728,21 +1706,21 @@ function uncheckAlltimePeriodMenu() {
 
 /*TOGGLE TIME MENU*************************************/
 /******************************************************/
-var timeMenuDivButtonHolder = document.querySelector('#timeMenuDivButtonHolder');
-
-function toggleTimeMenu() {
-	if (timeMenuDivButtonHolder.style.display == 'none') {
-		timeMenuList.style.display = ''
-		timesMenuH3.style.display = ''
-		timeMenuDivButtonHolder.style.display = ''
-		timeMenuListDiv.style.display = ''
-	} else {
-		timeMenuList.style.display = 'none'
-		timesMenuH3.style.display = 'none'
-		timeMenuDivButtonHolder.style.display = 'none'
-		timeMenuListDiv.style.display = 'none'
-	}
-}
+//var timeMenuDivButtonHolder = document.querySelector('#timeMenuDivButtonHolder');
+//
+//function toggleTimeMenu() {
+//	if (timeMenuDivButtonHolder.style.display == 'none') {
+//		timeMenuList.style.display = ''
+//		timesMenuH3.style.display = ''
+//		timeMenuDivButtonHolder.style.display = ''
+//		timeMenuListDiv.style.display = ''
+//	} else {
+//		timeMenuList.style.display = 'none'
+//		timesMenuH3.style.display = 'none'
+//		timeMenuDivButtonHolder.style.display = 'none'
+//		timeMenuListDiv.style.display = 'none'
+//	}
+//}
 
 /*BUILD TIME MENU**************************************/
 /******************************************************/
@@ -1798,7 +1776,6 @@ function createTimeMenu(ROWorCOL) {
 		removeAllChildNodesOf(timeMenuListDiv);
 		//GO THROUGH EACH ROW ONE AFTER ANOTHER
 		for (i = 0; i < storyLineTHeadRowz.length; i++) {
-			console.log("new Row is " + i);
 			//CREATE <LI> FOR EACH ROW
 			/*var elmLI_1 = document.createElement('LI');
 			elmLI_1.innerHTML = "Row " + (i + 1);*/
@@ -1810,31 +1787,6 @@ function createTimeMenu(ROWorCOL) {
 
 			for (j = 0; j < cellsInTheadRow.length; j++) {
 				col_x_CellHeader = cellsInTheadRow[j].querySelector(TypeOfHtmlHeader);
-
-				console.log('i: ' + i + ",j: " + j + ':');
-
-				/*GET CLASS BY PREFIX*******************************/
-				/***************************************************/
-				/*function getClassesWithPrefix(node, prefix) {
-					var cellColClassesArray = [];
-					var col_xClass;
-					var nodeClassList = node.classList;
-					var prefixLength = prefix.length;
-					for (i = 0; i < nodeClassList.length; i++) {
-						if (nodeClassList[i].slice(0, prefixLength) == prefix) {
-							col_xClass = nodeClassList[i];
-							console.log('col_xClass is ' + col_xClass);
-							cellColClassesArray.push(col_xClass);
-							console.log(cellColClassesArray);
-						}
-					}
-					//	return cellColClassesArray;
-				}
-
-				getClassesWithPrefix(cellsInTheadRow[j], "col-");*/
-				/***************************************************/
-				/***************************************************/
-				console.log('cellsInTheadRow[j]: ' + cellsInTheadRow[j]);
 
 				//check for which ones have h1 with content in it
 				if (col_x_CellHeader != null) {
@@ -1862,61 +1814,62 @@ function createTimeMenu(ROWorCOL) {
 					labelListNameCheckBox.setAttribute('targetCellIndex', j);
 					labelListNameCheckBox.classList.add('timeLINameCheckBox');
 
-					/*************************************************/
-					/*ADD EVENTLISTNER TO INPUT ELEMENT***************/
-					/*************************************************/
+					/***************************************************************************************/
+					/*ADD EVENTLISTNER TO INPUT ELEMENT TO SHOW/HIDE RESPECTIVE COL-X COLUMNS***************/
+					/***************************************************************************************/
 					labelListNameCheckBox.addEventListener('click', function () {
 
 						var targetRowI = this.getAttribute('targetRowIndex');
-
-						console.log("targetRowIndex: " + targetRowI);
 						var targetCellI = this.getAttribute('targetCellIndex');
-						console.log("targetCellIndex: " + targetCellI);
 						var targetedTD = storyLineTableTHead.rows[targetRowI].cells[targetCellI];
-						console.log("targetedTD:");
-						console.log(targetedTD);
-						
 
 						/*GET COL-X CLASSES AND ACT*********************/
+						/***********************************************/
 						var targetedTDClassList = targetedTD.classList;
-						console.log(targetedTDClassList);
 						var prefix = 'col-';
 						var prefixLength = prefix.length;
 
 						if (shouldIHideTD == 1) {
 
 							if (this.checked) {
-								
-								console.log('CHECKED');
 
 								for (k = 0; k < targetedTDClassList.length; k++) {
-									//GET THE COL-X CLASSES BELONGING TO THE TARGETED TD
+
+									//GET THE COL-X CLASSES ONE AFTER ANOTHER BELONGING TO THE TARGETED TD
 									if (targetedTDClassList[k].slice(0, prefixLength) == prefix) {
 										var col_xClass = targetedTDClassList[k];
 
+										/*
+										What it does:
+										1a. reduce colspan if it is greater than 2
+										1b. hide td if colspan is equal to 1
+										2. increase the count of hidden columns
+										*/
+
 										//GET COLLECTION OF TDs BELONGING TO THIS COL-X CLASS
 										var tdsOfCheckedClass = storyLineTable.querySelectorAll('.' + col_xClass);
+
+										//GO THROUGH EACH CELL BELONGING TO THIS CLASS
 										for (l = 0; l < tdsOfCheckedClass.length; l++) {
 											var TD = tdsOfCheckedClass[l];
 
 											var orgColSpan = Number(TD.getAttribute('originalcolspan'));
 											var hiddenColXCount = Number(TD.getAttribute('hiddencol_xs_count'));
-											
-											//IF COLSPAN OF TD OF THE COL-X CLASS IS 1, HIDE THE TD
-											if (TD.colSpan == 1) {
-												TD.style.display = 'none';
-											}
 
-											//ELSE IF COLSPAN OF TD OF THE COL-X CLASS IS GREATER THAN 1, THEN DON'T HIDE IT, RATHER JUST REDUCE THE COLSPAN BY 1
-											else {
-												TD.colSpan = Number(TD.colSpan) - 1;
-											}
+											//ONLY ACT IF THE TD HAS NOT BEEN HIDDEN (I.E., IF ORIGINAL COLSPAN AND HIDDEN COL COUNT ARE THE SAME)
+											if ((orgColSpan != hiddenColXCount)) {
+												//IF COLSPAN OF TD OF THE COL-X CLASS IS 1, HIDE THE TD
+												if ((orgColSpan - hiddenColXCount == 1)) {
+													TD.style.display = 'none';
+												}
 
-											//INCREASE HIDDENCOLXCOUNT ATTRIUBTE VALUE (THIS INDICATES HOW MANY COL-X CLASSES HAS BEEN HIDDEN)
-											
-											if(orgColSpan != hiddenColXCount){
-												console.log('hiddenColXCount: ' + hiddenColXCount);
+												//ELSE IF COLSPAN OF TD OF THE COL-X CLASS IS GREATER THAN 1, THEN DON'T HIDE IT, RATHER JUST REDUCE THE COLSPAN BY 1
+												if(TD.colSpan != 1){
+													TD.colSpan = Number(TD.colSpan) - 1;
+												}
+												
 												TD.setAttribute('hiddencol_xs_count', hiddenColXCount + 1);
+												
 											}
 										}
 									}
@@ -1924,12 +1877,18 @@ function createTimeMenu(ROWorCOL) {
 								connectAllDraggableDivsWithSVGLines();
 
 							} else if (!this.checked) {
-								console.log('UN-CHECKED');
 
 								for (k = 0; k < targetedTDClassList.length; k++) {
 									//GET THE COL-X CLASSES BELONGING TO THE TARGETED TD
 									if (targetedTDClassList[k].slice(0, prefixLength) == prefix) {
 										var col_xClass = targetedTDClassList[k];
+
+										/*
+										What it does:
+										1a. increase colspan if it is less than originalColsapn
+										1b. show td if originalColsapn is greater than hiddenColXCount, which means that at least one of the col-x classe is to be shown
+										2. decrease the count of hidden columns if it is not zero
+										*/
 
 										//GET COLLECTION OF TDs BELONGING TO THIS COL-X CLASS
 										var tdsOfCheckedClass = storyLineTable.querySelectorAll('.' + col_xClass);
@@ -1939,18 +1898,31 @@ function createTimeMenu(ROWorCOL) {
 										/**************************************/
 
 										for (l = 0; l < tdsOfCheckedClass.length; l++) {
-											
+
 											var TD = tdsOfCheckedClass[l];
 
-											//DECREASE THE HIDDENCOL-XCLASSESCOUNT BY 1
-											var hiddenColXCount = Number(TD.getAttribute('hiddencol_xs_count'));
-											TD.setAttribute('hiddencol_xs_count', hiddenColXCount - 1);
-											
 											var orgColSpan = Number(TD.getAttribute('originalcolspan'));
-											hiddenColXCount = Number(TD.getAttribute('hiddencol_xs_count'));
-											
-											TD.style.display = '';
-											TD.colSpan = orgColSpan - hiddenColXCount;
+											var hiddenColXCount = Number(TD.getAttribute('hiddencol_xs_count'));
+
+												//SHOW TD IF HIDDEN COL-X COUNT IS EQUAL TO THE ORGINAL COLSPAN
+												if ((orgColSpan == hiddenColXCount)) {
+
+													//SHOW THE TD
+													TD.style.display = '';
+
+												}
+											//ONLY ACT IF THE TD HAS NOT BEEN HIDDEN (I.E., IF ORIGINAL COLSPAN AND HIDDEN COL COUNT ARE THE SAME)
+
+											if (hiddenColXCount > 0) {
+
+
+												//DECREASE THE HIDDENCOL-XCLASSESCOUNT BY 1
+												TD.setAttribute('hiddencol_xs_count', hiddenColXCount - 1);
+												var hiddenColXCount = Number(TD.getAttribute('hiddencol_xs_count'));
+
+												//SET TDs COLSPAN (BECAUSE COLSPAN IS NEVER S0 SIMPLY ADDING ONE WILL PRODUCE IN ACCURACIES)
+												TD.colSpan = orgColSpan - hiddenColXCount;
+											}
 										}
 									}
 								}

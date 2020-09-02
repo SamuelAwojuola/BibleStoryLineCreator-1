@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Table Creator & Modifier</title>
+	<title>Table Creator & Modifier - D</title>
 
 	<style id="divColorStyles"></style>
 	<!--THIS STYLE WILL BE POPULLATED AS DIVS ARE CREATED-->
@@ -33,14 +33,15 @@
 			/*Purple*/
 			background-color: rgba(255, 237, 62, 0.87);
 			/*Yellow*/
-			background-color: rgba(0, 0, 0, 0.87);
-			/*Black*/
 			background-color: rgb(253, 255, 238);
 			/*Light Beige*/
-			background-color: lemonchiffon;
-			/*LemonChiffon*/
+			background-color: rgba(0, 0, 0, 0.87);
+			/*Black*/
 			background-color: Beige;
 			/*Beige*/
+			background-color: lemonchiffon;
+			/*LemonChiffon*/
+/*			color: white;*/
 		}
 
 		#svg {
@@ -729,7 +730,7 @@
 		<!--TIME PERIODS MENU*******************************-->
 		<div id="timePeriodMenu" class="">
 			<div class="titleDiv">
-				<button id="showTimeMenu" class="" style="" onclick="toggleTimeMenu()" title="Times Menu">&#9776;</button>
+				<button id="showTimeMenu" class="" style="" onclick="toggleBtnzFamily(this)<!--toggleTimeMenu()-->" title="Times Menu">&#9776;</button>
 				<h3 id="timesMenuH3" class="titleBarH3" style="">Times</h3>
 			</div>
 			<div id="timeMenuDivButtonHolder" class="scrollbar scrollbar-custom">
@@ -747,7 +748,7 @@
 		<!--CONTROLS FOR THE LABELS ************************-->
 		<nav id="navSection4navDivButtonHolder" class="draggableSection">
 			<div class="titleDiv">
-				<button id="showLabelMenu" class="expandMinimizeButton" title="Nodes Control">&#9776;</button>
+				<button id="showLabelMenu" class="expandMinimizeButton" title="Nodes Control" onclick="toggleBtnzFamily(this)">&#9776;</button>
 				<h3 class="titleBarH3">Labels</h3>
 			</div>
 			<div style="">
@@ -1052,7 +1053,7 @@
 
 <script type="text/javascript" src="javascript/draggableHtmlElement.js"></script>
 <script type="text/javascript" src="javascript/dragdCloneDivs.js"></script>
-<script type="text/javascript" src="javascript/svgCurvedLinesConnectors.js"></script>
+<script type="text/javascript" src="javascript/svgCurvedLinesConnectors-D.js"></script>
 <script type="text/javascript" src="javascript/preferredColors.js"></script>
 
 <script type="text/javascript" src="javascript/tableCreator-D.js"></script>
