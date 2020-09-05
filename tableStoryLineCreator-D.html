@@ -5,8 +5,7 @@
 	<title>Table Creator & Modifier - D</title>
 
 	<style id="divColorStyles"></style>
-	<!--THIS STYLE WILL BE POPULLATED AS DIVS ARE CREATED-->
-	<link type="text/css" href="style/customCheckBox.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
 	<style>
@@ -27,21 +26,21 @@
 			margin-right: 0;
 			background-color: rgba(131, 128, 98, 0.87);
 			/*Army green sort of*/
-			background-color: rgba(255, 255, 255, 0.87);
-			/*White*/
-			background-color: rgba(129, 98, 131, 0.87);
-			/*Purple*/
 			background-color: rgba(255, 237, 62, 0.87);
 			/*Yellow*/
 			background-color: rgb(253, 255, 238);
 			/*Light Beige*/
-			background-color: rgba(0, 0, 0, 0.87);
-			/*Black*/
-			background-color: Beige;
-			/*Beige*/
 			background-color: lemonchiffon;
 			/*LemonChiffon*/
-/*			color: white;*/
+			background-color: rgba(255, 255, 255, 0.87);
+			/*White*/
+			background-color: rgba(0, 0, 0, 0.87);
+			/*Black*/
+			background-color: rgba(129, 98, 131, 0.87);
+			/*Purple*/
+			background-color: Beige;
+			/*Beige*/
+			/*			color: white;*/
 		}
 
 		#svg {
@@ -140,6 +139,7 @@
 		#legendTable th,
 		#storyLineTable td,
 		#storyLineTable th {
+			position: relative;
 			min-width: 100px;
 			height: 55px;
 			border: 0.5px solid rgba(208, 164, 171, 0.48);
@@ -178,14 +178,34 @@
 			box-shadow: 0 0 transparent;
 		}
 
-		#legendTable th div:not(:first-child),
-		#legendTable thead td div:not(:first-child),
+		.locationspan {
+			position: absolute;
+			top: 0;
+			right: 0;
+			font-style: italic;
+		}
+
 		#storyLineTable th div:not(:first-child),
 		#storyLineTable td div:not(:first-child) {
 			margin-top: 5px;
 			padding: 5px 0;
 			border: 1px solid #acacac;
 			border-radius: 3px;
+		}
+
+		#storyLineTable th div:first-of-type,
+		#storyLineTable td div:first-of-type {
+			margin-top: 20px;
+		}
+
+		#storyLineTable th div:first-child,
+		#storyLineTable td div:first-child {
+			margin-top: 10px;
+		}
+
+		#storyLineTable th div:last-child,
+		#storyLineTable td div:last-child {
+			margin-bottom: 10px;
 		}
 
 		#legendTable th div,
@@ -669,12 +689,10 @@
 
 	<!--TIME MENU NAV-->
 	<style>
-		#timePeriodMenu {
-		}
+		#timePeriodMenu {}
 
 		#timeMenuListDiv ol,
-		#timeMenuListDiv ul {
-		}
+		#timeMenuListDiv ul {}
 	</style>
 
 	<!--MASTER-NAV-->
@@ -721,48 +739,177 @@
 		li>input {
 			width: 20px;
 		}
+
+		#moveButtonsMenu,
+		#timePeriodMenu,
+		#navSection4navDivButtonHolder,
+		#locationsMenu {
+			border-bottom: 1px solid black;
+		}
+	</style>
+
+	<!--MOVE ROWS AND CELLS-->
+	<style>
+		#moveButtonsMenu {
+			padding-bottom: 10px;
+		}
+
+		#tdandtrDrag button {
+			display: inline-block;
+			font-size: 2rem;
+		}
+
+		#tdandtrDrag>div:first-child {
+			/*			border-bottom: 1px solid black;*/
+			margin-bottom: 10px;
+		}
+	</style>
+
+	<!--CUSTOM ALERTS-->
+	<style>
+		#customAlertBack {
+			position: fixed;
+			display: none;
+			justify-content: space-evenly;
+			align-items: center;
+			top: 0;
+			left: 0;
+			width: 100vw;
+			height: 100vh;
+			background-color: rgba(128, 128, 128, 0.25);
+			z-index: 99;
+		}
+
+		#customAlert {
+			position: relative;
+			flex-direction: column;
+			display: flex;
+			justify-content: space-evenly;
+			align-items: center;
+			max-width: 40vw;
+			/*			max-height: 40vh;*/
+			margin-left: auto;
+			margin-right: auto;
+			margin-top: 100px;
+			margin-bottom: auto;
+			background-color: white;
+			border-radius: 5px;
+			border: 4px solid darkred;
+		}
+
+		#customAlertContent {
+			word-wrap: break-word;
+			width: 90%;
+			max-height: 80%;
+			text-align: center;
+		}
+
+		#customAlertClose {
+			position: absolute;
+			top: 0;
+			right: 0;
+			background-color: transparent;
+			border: 0;
+		}
+
+		#customAlertClose:hover {
+			color: darkred;
+		}
+	</style>
+
+	<style>		
+		.yellow {
+			background-color: rgba(255, 231, 0, 0.56);
+			border: 3px solid black;
+		}
 	</style>
 </head>
 
 <body>
 
+	<!--*ALERTS*********************************************-->
+	<!--****************************************************-->
+	<div id="customAlertBack" onclick="customAlertClose()">
+		<div id="customAlert">
+			<!--			<button id="customAlertClose" onclick="customAlertClose()">X</button>-->
+			<p id="customAlertContent"></p>
+
+		</div>
+	</div>
+	<!--****************************************************-->
+
+	<!--* MENUS ********************************************-->
 	<div id="masterNav">
-		<!--TIME PERIODS MENU*******************************-->
-		<div id="timePeriodMenu" class="">
+		<!--BUTTONS MENU FOR MOVING ROWS AND CELLS*********-->
+		<div id="moveButtonsMenu" class="">
 			<div class="titleDiv">
-				<button id="showTimeMenu" class="" style="" onclick="toggleBtnzFamily(this)<!--toggleTimeMenu()-->" title="Times Menu">&#9776;</button>
+				<button id="showMoveButtons" class="" style="" onclick="toggleBtnzFamily(this)" title="Move Events & Sections">&#9776;</button>
+				<h3 id="moveMenuH3" class="titleBarH3" style="">Move</h3>
+			</div>
+			<div id="tdandtrDrag">
+				<div>
+					<button class="fa fa-arrow-circle-up" onclick="moveRowUp()" title="Move Row Up">
+					</button>
+					<button class="fa fa-arrow-circle-down" onclick="moveRowDown()" title="Move Row Down"></button>
+				</div>
+
+				<div>
+					<button class="fa fa-arrow-circle-left" onclick="moveCellLeft()" title="Move Event Backward"></button>
+					<button class="fa fa-arrow-circle-right" onclick="moveCellRight()" title="Move Event Forward"></button></div>
+			</div>
+		</div>
+		<!--***********************************************-->
+		<!--TIME PERIODS MENU******************************-->
+		<div id="timePeriodMenu" lass="">
+			<div class="titleDiv">
+				<button id="showTimeMenu" class="" style="" onclick="toggleBtnzFamily(this)" title="Times Menu">&#9776;</button>
 				<h3 id="timesMenuH3" class="titleBarH3" style="">Times</h3>
 			</div>
 			<div id="timeMenuDivButtonHolder" class="scrollbar scrollbar-custom">
 				<button id='soloAllColXOfCheckedTD' onclick="hideAllOtherColXsExcept4AllColXOfCheckedTD(this)" title="Show only labels belonging to the checked list item">Show&#10004;</button>
 				<button id='hideAllColXOfCheckedTD' onclick="hideAllColXOfCheckedTD(this)" title="Hide just the labels belonging to the checked list items">Hide&#10004;</button>
-				<button id='uncheckAlltimePeriodMenu' onclick="uncheckAlltimePeriodMenu()">&#10006;</button>
+				<button id='uncheckAlltimePeriodMenu' onclick="uncheckAllBoxes('.timeLINameCheckBox')">&#10006;</button>
 			</div>
 			<div id="timeMenuListDiv" style="">
 				<ol id="timeMenuList" style="margin-top: auto; padding-left: 20px"></ol>
 			</div>
 		</div>
 		<!--***********************************************-->
-		<!--***********************************************-->
-
-		<!--CONTROLS FOR THE LABELS ************************-->
-		<nav id="navSection4navDivButtonHolder" class="draggableSection">
+		<!--CONTROLS FOR THE LABELS ***********************-->
+		<div id="navSection4navDivButtonHolder" class="draggableSection">
 			<div class="titleDiv">
-				<button id="showLabelMenu" class="expandMinimizeButton" title="Nodes Control" onclick="toggleBtnzFamily(this)">&#9776;</button>
-				<h3 class="titleBarH3">Labels</h3>
+				<button id="showLabelMenu" class="expandMinimizeButton" title="Actors Control" onclick="toggleBtnzFamily(this)">&#9776;</button>
+				<h3 class="titleBarH3">Actors</h3>
 			</div>
 			<div style="">
 				<div id="navDivButtonHolder" class="scrollbar scrollbar-custom">
 					<button id='soloDivsOfCheckedClass' onclick="hideAllOtherExcept4DivsOfClass(this)" title="Show only labels belonging to the checked list item">Show&#10004;</button>
 					<button id='hideDivsOfCheckedClass' onclick="hideDivsOfClass(this)" title="Hide just the labels belonging to the checked list items">Hide&#10004;</button>
-					<button id='uncheckAll' onclick="uncheckAll()">&#10006;</button>
+					<button id='uncheckAll' onclick="uncheckAllBoxes('.labelListNameCheckBox')">&#10006;</button>
 				</div>
 				<ol id="labelList"></ol>
 			</div>
-		</nav>
-		<!--*****************************************-->
+		</div>
+		<!--***********************************************-->
+		<!--TERRITORIES************************************-->
+		<div id="locationsMenu" class="">
+			<div class="titleDiv">
+				<button id="showLocationsMenu" class="" style="" onclick="toggleBtnzFamily(this)" title="Locations Menu">&#9776;</button>
+				<h3 id="locationsMenuH3" class="titleBarH3" style="">Location</h3>
+			</div>
+			<div id="locationsMenuDivButtonHolder" class="scrollbar scrollbar-custom">
+				<button id='soloAllCheckedLocations' onclick="hideAllOtherLocationsExcept4checkedLocations(this)" title="Show only labels belonging to the checked list item">Show&#10004;</button>
+				<button id='hideAllCheckedLocations' onclick="hideAllCheckedLocations(this)" title="Hide just the labels belonging to the checked list items">Hide&#10004;</button>
+				<button id='uncheckAllLocationsMenu' onclick="uncheckAllBoxes('.locationsLINameCheckBox')">&#10006;</button>
+			</div>
+			<div id="locationsMenuListDiv" style="">
+				<ol id="locationsMenuList" style="margin-top: auto; padding-left: 20px"></ol>
+			</div>
+		</div>
 		<!--***********************************************-->
 	</div>
+	<!--***********************************************-->
+	<!--****************************************************-->
 
 	<!--ACTUAL TABLE STORY LINE ************************-->
 	<div id="divTableContainer">
@@ -782,8 +929,8 @@
 					</table>
 				</td>
 
-				<td valign="top" style="position: relative">
-					<h1 class="tableHeadEqualHeights" id="storyLineTableTitleHeader" style="padding: 0; margin: 0;"></h1>
+				<td id="legendNstoryLineHolder" valign="top" style="position: relative">
+					<h1 class="tableHeadEqualHeights" id="storyLineTableTitleHeader" style="padding: 0; padding-left: 25px; margin: 0;" contenteditable="true"></h1>
 					<table id="storyLineTable">
 						<thead>
 							<tr rowname='Time'>
@@ -817,8 +964,6 @@
 		</table>
 
 	</div>
-
-
 	<!--***********************************************-->
 
 	<!--DETAILS SECTION (SHOWS DETAILS FOR THE CELlS) **-->
@@ -1008,26 +1153,6 @@
 				</div>
 			</div>
 		</div>
-		<!--Label-->
-		<div class="vertical">
-			<span>Label:</span>
-			<div class="vertical">
-				<span style="font-style: italic">Div Name:</span>
-				<div class="vertical3">
-					<input type="text" id="divName" value="" draggable="false">
-					<select id="divNameOptionsDropdown">
-					</select>
-				</div>
-				<span style="font-style: italic">Div Class:</span>
-				<div class="vertical3">
-					<input type="text" id="divClass" value="" draggable="false">
-					<select id="divClassOptionsDropdown">
-					</select><br>
-				</div>
-				<div class="vertical2">
-					<button onclick="createDIV()">Create Div</button></div>
-			</div>
-		</div>
 
 		<!--Land/Region-->
 		<div class="vertical">
@@ -1043,6 +1168,28 @@
 			</div>
 		</div>
 
+		<!--Label/Actors-->
+		<div class="vertical">
+			<span>Actors:</span>
+			<div class="vertical">
+				<span style="font-style: italic">Main Name:</span>
+				<div class="vertical3">
+					<input type="text" id="divClass" value="" draggable="false">
+					<select id="divClassOptionsDropdown">
+					</select><br>
+				</div>
+				<span style="font-style: italic">Alias:</span>
+				<div class="vertical3">
+					<input type="text" id="divName" value="" draggable="false">
+					<select id="divNameOptionsDropdown">
+					</select>
+				</div>
+				<div class="vertical2">
+					<button onclick="createDIV()">Create Div</button></div>
+			</div>
+		</div>
+
+
 
 	</section>
 	<!--***********************************************-->
@@ -1057,4 +1204,6 @@
 <script type="text/javascript" src="javascript/preferredColors.js"></script>
 
 <script type="text/javascript" src="javascript/tableCreator-D.js"></script>
-<script type="text/javascript" src="javascript/detailsSection.js"></script></html>
+<script type="text/javascript" src="javascript/detailsSection.js"></script>
+
+<script type="text/javascript" src="javascript/dragDropRows&Cells.js"></script></html>

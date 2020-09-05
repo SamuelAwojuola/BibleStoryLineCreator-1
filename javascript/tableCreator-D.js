@@ -7,6 +7,12 @@ var svgMaster = document.getElementById('svg');
 var legendTable = document.querySelector('#legendTable');
 
 var storyLineTable = document.getElementById('storyLineTable');
+var stLtBody = document.getElementsByTagName('tbody');
+var rows = storyLineTable.getElementsByTagName('tr');
+var allRowz = rows;
+var allCells = storyLineTable.getElementsByTagName('td');
+var cells = allCells;
+
 var alternateStoryLineEditorButtons = document.getElementById('alternateStoryLineEditorButtons');
 
 var storyLineTableTitleHeader = divTableContainer.querySelector('#storyLineTableTitleHeader');
@@ -19,6 +25,8 @@ var onPageLoadTimeMenuWidth;
 var timeMenuListDiv = document.getElementById('timeMenuListDiv');
 var timeMenuList = document.getElementById('timeMenuList');
 var timesMenuH3 = document.getElementById('timesMenuH3');
+
+var customAlertBack = document.getElementById('customAlertBack');
 
 var divDeleteButton = document.querySelector('#divDeleteButton');
 
@@ -37,6 +45,7 @@ var opacityCounter = 0;
 var divNameOptionsDropdown = document.getElementById('divNameOptionsDropdown');
 var divClassOptionsDropdown = document.getElementById('divClassOptionsDropdown');
 var addDetailKeys;
+var locationsArray = [];
 
 /*FUNCTION TO REMOVE ALL CHILDREN OF PARENT*/
 function removeAllChildNodesOf(parent) {
@@ -159,6 +168,20 @@ function onloadAnalysis() {
 		}
 		connectAllDraggableDivsWithSVGLines();
 	}
+
+	/****************************************************/
+	/*GENERATE LOCATIONS ARRAY***************************/
+	/****************************************************/
+	//	var locationsMenuList = document.getElementById('locationsMenuList');
+	var locationsLabels = locationsMenuList.querySelectorAll('label');
+	if (locationsLabels) {
+		for (i = 0; i = locationsLabels.length; i++) {
+			var location = locationsLabels[i].getAttribute('for');
+			if (locationsArray.indexOf(location) == -1) {
+				locationsArray.push(location);
+			};
+		}
+	}
 	/****************************************************/
 	/****************************************************/
 
@@ -207,14 +230,14 @@ function emptyCellDeselect(v) {
 
 function resetClasses() {
 	//REMOVE ALL CLASSES PREFIXED WITH 'COL-'
-	var allCells = storyLineTable.getElementsByTagName('td');
+	//	var allCells = storyLineTable.getElementsByTagName('td');
 	for (i = 0; i < allCells.length; i++) {
 		removeClassByPrefix(allCells[i], 'col-');
 	}
 	//RESET ALL THE COL-X CLASSES
 	generateColumnClasses();
 
-	var allRowz = storyLineTable.querySelectorAll('tr');
+	//	var allRowz = storyLineTable.querySelectorAll('tr');
 	for (i = 0; i < allRowz.length; i++) {
 		var allTdzInRow = allRowz[i].querySelectorAll('td');
 		for (j = 0; j < allTdzInRow.length; j++) {
@@ -227,39 +250,41 @@ function resetClasses() {
 var prev_x = null;
 
 function cellHighlight(x) {
+	if (makeEditableCheckbox.checked == true) {
 
-	var heading = document.createElement(TypeOfHtmlHeader);
-	var hdtxt = '';
+		var heading = document.createElement(TypeOfHtmlHeader);
+		var hdtxt = '';
 
-	if (prev_x != null) {
-		prev_x.classList.remove('clicked');
-		prev_x.style.backgroundColor = '';
+		if (prev_x != null) {
+			prev_x.classList.remove('clicked');
+			prev_x.style.backgroundColor = '';
 
-		//REMOVE HEADING FROM THE PREVIOUSLY CLICKED ELEMENT IF IT WAS NOT MODIFIED
-		if ((prev_x.querySelector(TypeOfHtmlHeader)) && (prev_x.querySelector(TypeOfHtmlHeader).innerHTML == hdtxt)) {
-			prev_x.querySelector(TypeOfHtmlHeader).remove();
-		}
-	}
-	prev_x = x;
-
-	x.style.backgroundColor = 'white';
-	x.classList.add('clicked');
-
-	//IF THERE IS NO HEADING CREATE ONE
-	if (!x.querySelector(TypeOfHtmlHeader)) {
-		heading.setAttribute('contentEditable', 'true');
-		heading.innerHTML = hdtxt;
-		x.prepend(heading);
-		var h2r = x.querySelector(TypeOfHtmlHeader);
-
-		function shs() {
-			if (h2r.innerHTML == hdtxt) {
-				h2r.remove()
+			//REMOVE HEADING FROM THE PREVIOUSLY CLICKED ELEMENT IF IT WAS NOT MODIFIED
+			if ((prev_x.querySelector(TypeOfHtmlHeader)) && (prev_x.querySelector(TypeOfHtmlHeader).innerHTML == hdtxt)) {
+				prev_x.querySelector(TypeOfHtmlHeader).remove();
 			}
 		}
+		prev_x = x;
 
-		setTimeout(() => [x.style.backgroundColor = '', x.classList.remove('clicked'), shs(), connectAllDraggableDivsWithSVGLines()], 5000);
-		//	setTimeout(() => [], 22000);
+		x.style.backgroundColor = 'white';
+		x.classList.add('clicked');
+
+		//IF THERE IS NO HEADING CREATE ONE
+		if (!x.querySelector(TypeOfHtmlHeader)) {
+			heading.setAttribute('contentEditable', 'true');
+			heading.innerHTML = hdtxt;
+			x.prepend(heading);
+			var h2r = x.querySelector(TypeOfHtmlHeader);
+
+			function shs() {
+				if (h2r.innerHTML == hdtxt) {
+					h2r.remove()
+				}
+			}
+
+			setTimeout(() => [x.style.backgroundColor = '', x.classList.remove('clicked'), shs(), connectAllDraggableDivsWithSVGLines()], 5000);
+			//	setTimeout(() => [], 22000);
+		}
 	}
 }
 
@@ -279,13 +304,15 @@ var newIcell;
 //FIND ROW INDEX OF CLICKED CELL/ROW
 
 function rowListeners() {
-	var rows = storyLineTable.getElementsByTagName('tr');
+
 	for (i = 0; i < rows.length; i++) {
 		rows[i].onclick = function () {
 			newIrow = null;
 			clickedRow = this.rowIndex;
 			aboveRow = newIrow || clickedRow;
 			belowRow = (newIrow || clickedRow) + 1;
+
+			aRowIsClicked = 1;
 
 			rowListeners();
 		}
@@ -294,11 +321,12 @@ function rowListeners() {
 
 //FIND INDEX OF CLICKED CELL
 function cellListeners() {
-	var cells = storyLineTable.querySelectorAll('td');
+	//	var cells = storyLineTable.querySelectorAll('td');
 	for (i = 0; i < cells.length; i++) {
 		cells[i].onclick = function () {
 			newIcell = null;
 			clickedCell = this.cellIndex;
+
 			beforeCell = newIcell || clickedCell;
 			afterCell = (newIcell || clickedCell) + 1;
 
@@ -311,13 +339,15 @@ function cellListeners() {
 			connectAllDraggableDivsWithSVGLines();
 			//CREATE DETAILS KEY WHEN CELL IS CLICKED
 			addDetailKeys();
+
+			aCellIsClicked = 1;
 		}
 	}
 }
 
 //FIND INDEX OF CLICKED DIV
 function divListeners() {
-	var cells = storyLineTable.querySelectorAll('td');
+	//	var cells = storyLineTable.querySelectorAll('td');
 	var allDivs;
 	for (i = 0; i < cells.length; i++) {
 		allDivs = cells[i].querySelectorAll('div');
@@ -348,17 +378,65 @@ function divListeners() {
 function createRegionAttribute() {
 	var x = document.getElementById('locationInput').value;
 
-	var row = storyLineTable.querySelectorAll('tr');
-	var cell = row[clickedRow].querySelectorAll('td')[clickedCell];
+	//	var row = storyLineTable.querySelectorAll('tr');
+	var cell = rows[clickedRow].querySelectorAll('td')[clickedCell];
 
-	cell.setAttribute('location', x);
-	if (cell.hasAttribute('title')) {
+	if (cell.querySelector('.locationspan')) {
+		var locationSpanElm = cell.querySelector('.locationspan');
+		var formerAssignedLocation = locationSpanElm.innerHTML;
+		//Remove Former LocationSpan Element
+		locationSpanElm.remove();
 
-		x = cell.getAttribute('title') + x;
-		cell.setAttribute('title', x);
+		//Check if there is any other LocationSpan with the same removed location
+		//If none, then remove from the location menu list
+		var newAssignedLocation = x;
+		var allLocationSpanElm = storyLineTable.querySelectorAll('.locationspan');
+		var doesLocationExist = 'no';
+
+		for (i = 0; i < allLocationSpanElm.length; i++) {
+			if (allLocationSpanElm[i].innerHTML == formerAssignedLocation) {
+				doesLocationExist = 'yes';
+				break;
+			}
+		}
+		if (doesLocationExist == 'no') {
+			console.log(document.getElementById('location_' + formerAssignedLocation));
+			document.getElementById('location_' + formerAssignedLocation).remove();
+			document.getElementById('locopt_' + formerAssignedLocation.toLowerCase()).remove();
+			var indexOfLocation2Remove = locationsArray.indexOf(formerAssignedLocation);
+			locationsArray.splice(indexOfLocation2Remove);
+		}
+
 	}
 
-	analyzeTable();
+	if (x != '') {
+		cell.setAttribute('location', x.toLowerCase());
+		var locationSpan = document.createElement('SPAN');
+		locationSpan.classList.add('locationspan');
+		locationSpan.innerHTML = x;
+		cell.prepend(locationSpan);
+
+		var xLowerCase = x.toLowerCase();
+
+		if (locationsArray.indexOf(xLowerCase) == -1) {
+			locationsArray.push(xLowerCase);
+			locationsMenuGenerate(x);
+
+			//LOCATIONS OPTIONS
+			var locationOption = document.createElement('OPTION');
+			locationOption.text = x;
+			locationOptionsDropdown.append(locationOption);
+			locationOption.setAttribute('id', 'locopt_' + xLowerCase)
+		};
+
+		if (cell.hasAttribute('title')) {
+
+			x = cell.getAttribute('title') + x;
+			cell.setAttribute('title', x);
+		}
+
+		analyzeTable();
+	}
 }
 
 //CREATE CELL BEFORE CLICKED CELL
@@ -626,6 +704,7 @@ function createRowAbove() {
 	//	generateColumnClasses();
 	dragDiv2TD();
 	divListeners();
+	connectAllDraggableDivsWithSVGLines();
 }
 
 //CREATE ROW BELOW CLICKED ROW
@@ -660,6 +739,7 @@ function createRowBelow() {
 	//	generateColumnClasses();
 	dragDiv2TD();
 	divListeners();
+	connectAllDraggableDivsWithSVGLines();
 }
 
 //CLONE ROW ABOVE CLICKED ROW
@@ -701,6 +781,7 @@ function cloneRowAbove() {
 	//	generateColumnClasses();
 	dragDiv2TD();
 	divListeners();
+	connectAllDraggableDivsWithSVGLines();
 }
 
 //CLONE ROW BELOW CLICKED ROW
@@ -743,6 +824,7 @@ function cloneRowBelow() {
 	//	generateColumnClasses();
 	dragDiv2TD();
 	divListeners();
+	connectAllDraggableDivsWithSVGLines();
 
 }
 
@@ -895,6 +977,215 @@ function showAll() {
 	}
 }
 
+/************************************************************************************************/
+/*CHANGEING POSITION OF ROWS AND CELLS***********************************************************/
+/************************************************************************************************/
+var aRowIsClicked;
+var iOfR2move;
+
+//MOVE ROW UP
+function moveRowUp() {
+	var rowAboveClickedRow;
+
+	if (clickedRow) {
+		if (aRowIsClicked == 1) {
+			iOfR2move = clickedRow;
+		}
+
+		if (iOfR2move > 0) {
+			var clonedRow = rows[iOfR2move].cloneNode(true);
+			var parentTable = rows[iOfR2move].parentNode;
+			rowAboveClickedRow = iOfR2move - 1;
+			rows[iOfR2move].remove();
+			rows[rowAboveClickedRow].before(clonedRow);
+
+			/*TO REMOVE THE DRAGOVER CLASSES USED TO PREVENT ADDITION OF DTAGOVER RELATED EVENT-LISTNERS SO THAT THOSE EVENT-LISTNERS CAN BE ADDED****************************************/
+			var clonedRowTds = clonedRow.querySelectorAll('.dragOverELAdded');
+			if (clonedRowTds) {
+				for (i = 0; i < clonedRowTds.length; i++) {
+					clonedRowTds[i].classList.remove('dragOverELAdded');
+				}
+			}
+			var divsInClonedRow = clonedRow.querySelectorAll('.dragEventListnerAdded');
+			if (divsInClonedRow) {
+				for (i = 0; i < divsInClonedRow.length; i++) {
+					divsInClonedRow[i].classList.remove('dragEventListnerAdded')
+				}
+			}
+			/*****************************************/
+
+
+			//CLONED ELEMENT LOOSES EVENTLISTNERS SO RE-ADD THEM
+			rowListeners();
+			cellListeners();
+			divListeners();
+			dragDiv2TD();
+			connectAllDraggableDivsWithSVGLines();
+
+
+			aRowIsClicked = 0;
+			iOfR2move = iOfR2move - 1;
+		}
+	} else {
+		customAlert('Please select a Row to move')
+	}
+}
+
+//MOVE ROW DOWN
+function moveRowDown() {
+	var rowBelowClickedRow;
+	if (clickedRow) {
+		var rowLength = rows.length - 1;
+
+		if (aRowIsClicked == 1) {
+			iOfR2move = clickedRow;
+		}
+
+		if (iOfR2move < rowLength) {
+			var clonedRow = rows[iOfR2move].cloneNode(true);
+			var parentTable = rows[iOfR2move].parentNode;
+			rowBelowClickedRow = iOfR2move + 1;
+			rows[rowBelowClickedRow].after(clonedRow);
+			rows[iOfR2move].remove();
+
+			/*TO REMOVE THE DRAGOVER CLASSES USED TO PREVENT ADDITION OF DTAGOVER RELATED EVENT-LISTNERS SO THAT THOSE EVENT-LISTNERS CAN BE ADDED****************************************/
+			var clonedRowTds = clonedRow.querySelectorAll('.dragOverELAdded');
+			if (clonedRowTds) {
+				for (i = 0; i < clonedRowTds.length; i++) {
+					clonedRowTds[i].classList.remove('dragOverELAdded');
+				}
+			}
+			var divsInClonedRow = clonedRow.querySelectorAll('.dragEventListnerAdded');
+			if (divsInClonedRow) {
+				for (i = 0; i < divsInClonedRow.length; i++) {
+					divsInClonedRow[i].classList.remove('dragEventListnerAdded')
+				}
+			}
+			/*****************************************/
+
+			//CLONED ELEMENT LOOSES EVENTLISTNERS SO RE-ADD THEM
+			rowListeners();
+			cellListeners();
+			divListeners();
+			dragDiv2TD();
+			connectAllDraggableDivsWithSVGLines();
+
+
+			aRowIsClicked = 0;
+			iOfR2move = iOfR2move + 1;
+		}
+	} else {
+		customAlert('Please select a Row to move')
+	}
+}
+
+var iOfCELL2move;
+
+//MOVE CELL LEFT
+function moveCellLeft() {
+	var cellBeforeClickedCell;
+	if (clickedCell != null) {
+		if (aRowIsClicked == 1) {
+			iOfR2move = clickedRow;
+		}
+		var parentRow = rows[iOfR2move];
+		var tdsInClickedRow = parentRow.querySelectorAll('td');
+
+		if (aCellIsClicked == 1) {
+			iOfCELL2move = clickedCell;
+		}
+
+		if (iOfCELL2move > 0) {
+			var clonedCELL = tdsInClickedRow[iOfCELL2move].cloneNode(true);
+			cellBeforeClickedCell = iOfCELL2move - 1;
+			tdsInClickedRow[iOfCELL2move].remove();
+			tdsInClickedRow[cellBeforeClickedCell].before(clonedCELL);
+
+			/*TO REMOVE THE DRAGOVER CLASSES USED TO PREVENT ADDITION OF DRAGOVER RELATED EVENT-LISTNERS SO THAT THOSE EVENT-LISTNERS CAN BE ADDED****************************************/
+			clonedCELL.classList.remove('dragOverELAdded');
+
+			var divsInClonedCell = clonedCELL.querySelectorAll('.dragEventListnerAdded');
+			if (divsInClonedCell) {
+				for (i = 0; i < divsInClonedCell.length; i++) {
+					divsInClonedCell[i].classList.remove('dragEventListnerAdded')
+				}
+			}
+			/*****************************************/
+
+
+			//CLONED ELEMENT LOOSES EVENTLISTNERS SO RE-ADD THEM
+			resetClasses();
+			cellListeners();
+			divListeners();
+			dragDiv2TD();
+			connectAllDraggableDivsWithSVGLines();
+			if (clickedCell) {
+				deselectEmptyCell();
+			}
+			buildLegendTable();
+
+
+			aCellIsClicked = 0;
+			iOfCELL2move = iOfCELL2move - 1;
+		}
+	} else {
+		customAlert('Please select an <strong>event/region</strong> to move')
+	}
+}
+
+//MOVE CELL RIGHT
+function moveCellRight() {
+	var cellAfterClickedCell;
+	if (clickedCell != null) {
+		if (aRowIsClicked == 1) {
+			iOfR2move = clickedRow;
+		}
+		var parentRow = rows[iOfR2move];
+		var tdsInClickedRow = parentRow.querySelectorAll('td');
+		var cellsInRowLength = tdsInClickedRow.length - 1;
+
+		if (aCellIsClicked == 1) {
+			iOfCELL2move = clickedCell;
+		}
+
+		if (iOfCELL2move < cellsInRowLength) {
+			var clonedCELL = tdsInClickedRow[iOfCELL2move].cloneNode(true);
+			cellAfterClickedCell = iOfCELL2move + 1;
+			tdsInClickedRow[cellAfterClickedCell].after(clonedCELL);
+			tdsInClickedRow[iOfCELL2move].remove();
+
+			/*TO REMOVE THE DRAGOVER CLASSES USED TO PREVENT ADDITION OF DRAGOVER RELATED EVENT-LISTNERS SO THAT THOSE EVENT-LISTNERS CAN BE ADDED****************************************/
+			clonedCELL.classList.remove('dragOverELAdded');
+
+			var divsInClonedCell = clonedCELL.querySelectorAll('.dragEventListnerAdded');
+			if (divsInClonedCell) {
+				for (i = 0; i < divsInClonedCell.length; i++) {
+					divsInClonedCell[i].classList.remove('dragEventListnerAdded')
+				}
+			}
+			/*****************************************/
+
+			//CLONED ELEMENT LOOSES EVENTLISTNERS SO RE-ADD THEM
+			resetClasses();
+			cellListeners();
+			divListeners();
+			dragDiv2TD();
+			connectAllDraggableDivsWithSVGLines();
+			if (clickedCell) {
+				deselectEmptyCell();
+			}
+			buildLegendTable();
+			////////////////////////////
+			aCellIsClicked = 0;
+			iOfCELL2move = iOfCELL2move + 1;
+		}
+	} else {
+		customAlert('Please select an <strong>event/region</strong> to move')
+	}
+}
+/************************************************************************************************/
+
+
 
 /************************************************************/
 /* HIDE ELEMENT FAMILY--SIBLINGS & PARENT*******************/
@@ -905,12 +1196,18 @@ function toggleBtnzFamily(a) {
 
 	if (b.nextElementSibling.style.display == 'none') {
 		//			a.innerHTML = '&#9866;';
-		//			a.nextElementSibling.style.display = '';
-		b.nextElementSibling.style.display = '';
+		a.nextElementSibling.style.display = '';
+		while (b.nextElementSibling) {
+			b.nextElementSibling.style.display = '';
+			b = b.nextElementSibling;
+		}
 	} else {
 		//			a.innerHTML = '&#9776;';
-		//			a.nextElementSibling.style.display = 'none';
-		b.nextElementSibling.style.display = 'none';
+		a.nextElementSibling.style.display = 'none';
+		while (b.nextElementSibling) {
+			b.nextElementSibling.style.display = 'none';
+			b = b.nextElementSibling;
+		}
 	}
 }
 
@@ -1064,9 +1361,9 @@ function insertTextIntoTD() {
 	if (x) {
 		var cell_p_text = document.createElement('p');
 		cell_p_text.innerHTML = x;
+		cell_p_text.setAttribute('contentEditable', 'true');
 
 		var heading = cell.querySelector(TypeOfHtmlHeader);
-		//		heading.setAttribute('contentEditable', 'true');
 		heading.after(cell_p_text);
 
 		input4text.value = ''; //THIS CLEARS THE INPUT BOX
@@ -1263,7 +1560,7 @@ function buildLegendTable() {
 /* SET HEIGHT OF LEGEND CELLS ************************************************************/
 
 function btn_buildLegendTable() {
-	uncheckAlltimePeriodMenu();
+	uncheckAllBoxes('.timeLINameCheckBox');
 	dragDiv2TD();
 	divListeners();
 	if (clickedCell) {
@@ -1286,210 +1583,222 @@ var input4divClass = document.getElementById('divClass'); //GETS INPUT BOX
 function createDIV() {
 	var dName = input4divName.value;
 	var dClass = input4divClass.value;
-
-	var dIVwtLabel = document.createElement('DIV');
-	dIVwtLabel.classList.add('opt_' + dClass);
-	dIVwtLabel.classList.add('draggableDiv');
-	dIVwtLabel.classList.add('nameLabelDiv');
-	dIVwtLabel.setAttribute('divClassName', dClass);
-	dIVwtLabel.setAttribute('title', dClass);
-	dIVwtLabel.innerHTML = dName;
-	//	dIVwtLabel.style.backgroundColor = 'pink';
-	dIVwtLabel.setAttribute('draggable', 'true');
-	//	dIVwtLabel.onclick = dragDiv2TD;
-
-
-	selectedCell.appendChild(dIVwtLabel);
-
-	analyzeTable();
-
-	//ARRAYS FOR DIV'S & THEIR CLASSES
-	divClassArray.push(dClass)
-	divNameArray.push(dName);
-
-	/******************************************************************************************/
-	/*SOME VARIBLES FOR CREATING THE OPTIONS FOR THE SELECT ELEMENTS***************************/
-	/******************************************************************************************/
-	//	var divNameOptionsDropdown = document.getElementById('divNameOptionsDropdown');
-	var divNameOptions = divNameOptionsDropdown.getElementsByTagName('option');
-	//	var divClassOptionsDropdown = document.getElementById('divClassOptionsDropdown');
-	/******************************************************************************************/
+	if (dName && dClass) {
+		var c = dClass.slice(0, 1);
+		if (isNaN(parseInt(c))) {
+			var dIVwtLabel = document.createElement('DIV');
+			dIVwtLabel.classList.add('opt_' + dClass);
+			dIVwtLabel.classList.add('draggableDiv');
+			dIVwtLabel.classList.add('nameLabelDiv');
+			dIVwtLabel.setAttribute('divClassName', dClass);
+			dIVwtLabel.setAttribute('title', dClass);
+			dIVwtLabel.innerHTML = dName;
+			//	dIVwtLabel.style.backgroundColor = 'pink';
+			dIVwtLabel.setAttribute('draggable', 'true');
+			//	dIVwtLabel.onclick = dragDiv2TD;
 
 
-	/******************************************************************************************/
-	/*WHAT TO DO THE FIRST TIME DIV-CLASS IS CREATED*******************************************/
-	/******************************************************************************************/
-	//ADD THE CLASS TO THE ARRAY (divClassAttributeArray) IF IT DOESN'T ALREADY EXIST IN IT
-	if (divClassAttributeArray.indexOf(dClass) == -1) {
-		divClassAttributeArray.push(dClass);
-		divopt_ClassArray.push('opt_' + dClass);
+			if (selectedCell) {
+				selectedCell.appendChild(dIVwtLabel);
 
-		/****************************************/
-		/* ASSIGN COLOR TO DIV CLASS ************/
-		var colorFromArray = preferredColors[Math.floor(Math.random() * preferredColors.length)];
-		var headerStyles = document.getElementById('divColorStyles');
-		var styles = `.opt_` + dClass + `{ background-color: ` + colorFromArray + `;
+
+				analyzeTable();
+
+				//ARRAYS FOR DIV'S & THEIR CLASSES
+				divClassArray.push(dClass)
+				divNameArray.push(dName);
+
+				/******************************************************************************************/
+				/*SOME VARIBLES FOR CREATING THE OPTIONS FOR THE SELECT ELEMENTS***************************/
+				/******************************************************************************************/
+				//	var divNameOptionsDropdown = document.getElementById('divNameOptionsDropdown');
+				var divNameOptions = divNameOptionsDropdown.getElementsByTagName('option');
+				//	var divClassOptionsDropdown = document.getElementById('divClassOptionsDropdown');
+				/******************************************************************************************/
+				/******************************************************************************************/
+				/*WHAT TO DO THE FIRST TIME DIV-CLASS IS CREATED*******************************************/
+				/******************************************************************************************/
+				//ADD THE CLASS TO THE ARRAY (divClassAttributeArray) IF IT DOESN'T ALREADY EXIST IN IT
+				if (divClassAttributeArray.indexOf(dClass) == -1) {
+					divClassAttributeArray.push(dClass);
+					divopt_ClassArray.push('opt_' + dClass);
+
+					/****************************************/
+					/* ASSIGN COLOR TO DIV CLASS ************/
+					var colorFromArray = preferredColors[Math.floor(Math.random() * preferredColors.length)];
+					var headerStyles = document.getElementById('divColorStyles');
+					var styles = `.opt_` + dClass + `{ background-color: ` + colorFromArray + `;
         stroke: ` + colorFromArray + ` }`;
-		headerStyles.appendChild(document.createTextNode(styles));
-		/****************************************/
+					headerStyles.appendChild(document.createTextNode(styles));
+					/****************************************/
 
-		/*CREATE DIV MANIPULATOR*****************/
-		var labelNavSectionOL = document.querySelector('#labelList');
-		//CREATE LI ELEMENT
-		var liToHoldLabelListName = document.createElement('LI');
+					/*CREATE DIV MANIPULATOR*****************/
+					var labelNavSectionOL = document.querySelector('#labelList');
+					//CREATE LI ELEMENT
+					var liToHoldLabelListName = document.createElement('LI');
 
-		//CREATE LABEL ELEMENT
-		var labelListName = document.createElement('LABEL');
-		labelListName.innerHTML = dClass;
-		labelListName.setAttribute('for', 'opt_' + dClass);
-		//APPEND LABEL ELEMENT TO LIST
-		liToHoldLabelListName.appendChild(labelListName);
+					//CREATE LABEL ELEMENT
+					var labelListName = document.createElement('LABEL');
+					labelListName.innerHTML = dClass;
+					labelListName.setAttribute('for', 'opt_' + dClass);
+					//APPEND LABEL ELEMENT TO LIST
+					liToHoldLabelListName.appendChild(labelListName);
 
-		//APPEND INPUT (CHECKBOX) ELEMENT TO LIST
-		var labelListNameCheckBox = document.createElement('INPUT');
-		labelListNameCheckBox.setAttribute('type', 'checkbox');
-		labelListNameCheckBox.setAttribute('value', 'opt_' + dClass);
-		labelListNameCheckBox.setAttribute('id', 'opt_' + dClass);
-		labelListNameCheckBox.classList.add('labelListNameCheckBox');
+					//APPEND INPUT (CHECKBOX) ELEMENT TO LIST
+					var labelListNameCheckBox = document.createElement('INPUT');
+					labelListNameCheckBox.setAttribute('type', 'checkbox');
+					labelListNameCheckBox.setAttribute('value', 'opt_' + dClass);
+					labelListNameCheckBox.setAttribute('id', 'opt_' + dClass);
+					labelListNameCheckBox.classList.add('labelListNameCheckBox');
 
-		//ADD EVENTLISTNER TO INPUT ELEMENT
-		labelListNameCheckBox.addEventListener('click', function () {
-			if (shouldIHideDiv == 1) {
-				if (this.checked) {
-					var classOfDivsToHide = this.value;
-					var allDivsofClassToHide = masterTable.getElementsByClassName(classOfDivsToHide);
-					for (i = 0; i < allDivsofClassToHide.length; i++) {
-						allDivsofClassToHide[i].style.display = "none";
-					}
-					connectAllDraggableDivsWithSVGLines();
-				} else if (!this.checked) {
-					var classToShow = this.value;
-					var allDivsofClassToHide = masterTable.getElementsByClassName(classToShow);
+					//ADD EVENTLISTNER TO INPUT ELEMENT
+					labelListNameCheckBox.addEventListener('click', function () {
+						if (shouldIHideDiv == 1) {
+							if (this.checked) {
+								var classOfDivsToHide = this.value;
+								var allDivsofClassToHide = masterTable.getElementsByClassName(classOfDivsToHide);
+								for (i = 0; i < allDivsofClassToHide.length; i++) {
+									allDivsofClassToHide[i].style.display = "none";
+								}
+								connectAllDraggableDivsWithSVGLines();
+							} else if (!this.checked) {
+								var classToShow = this.value;
+								var allDivsofClassToHide = masterTable.getElementsByClassName(classToShow);
 
-					for (i = 0; i < allDivsofClassToHide.length; i++) {
-						allDivsofClassToHide[i].style.display = "";
-					}
-					/*REMOVE OPACITY CLASS****************************************/
-					var index2exempt = divopt_ClassArray.indexOf(this.value);
-					for (i = 0; i < divopt_ClassArray.length; i++) {
-						if (i != index2exempt) {
-							var classToMakeOpaque = document.getElementsByClassName(divopt_ClassArray[i]);
-							for (j = 0; j < classToMakeOpaque.length; j++) {
-								classToMakeOpaque[j].classList.remove('opacityClass');
+								for (i = 0; i < allDivsofClassToHide.length; i++) {
+									allDivsofClassToHide[i].style.display = "";
+								}
+								/*REMOVE OPACITY CLASS****************************************/
+								var index2exempt = divopt_ClassArray.indexOf(this.value);
+								for (i = 0; i < divopt_ClassArray.length; i++) {
+									if (i != index2exempt) {
+										var classToMakeOpaque = document.getElementsByClassName(divopt_ClassArray[i]);
+										for (j = 0; j < classToMakeOpaque.length; j++) {
+											classToMakeOpaque[j].classList.remove('opacityClass');
+										}
+									}
+								}
+								/*************************************************************/
+								connectAllDraggableDivsWithSVGLines();
+							}
+						} else if (shouldISoloDiv == 1) {
+							if (this.checked) {
+								/*FIRST TIME*************************/
+								var index2exempt = divopt_ClassArray.indexOf(this.value);
+								lastSoloedClass = this.value;
+								/************************************/
+								for (i = 0; i < divopt_ClassArray.length; i++) {
+									if (i == index2exempt) {
+										var classToMakeOpaque = document.getElementsByClassName(divopt_ClassArray[i]);
+										for (j = 0; j < classToMakeOpaque.length; j++) {
+											classToMakeOpaque[j].classList.remove('opacityClass');
+										}
+									}
+									if (i != index2exempt) {
+										var classToMakeOpaque = document.getElementsByClassName(divopt_ClassArray[i]);
+										for (j = 0; j < classToMakeOpaque.length; j++) {
+											classToMakeOpaque[j].classList.add('opacityClass');
+										}
+									}
+								}
+							} else if (!this.checked) {
+								var index2exempt = divopt_ClassArray.indexOf(this.value);
+								for (i = 0; i < divopt_ClassArray.length; i++) {
+									if (i != index2exempt) {
+										var classToMakeOpaque = document.getElementsByClassName(divopt_ClassArray[i]);
+										for (j = 0; j < classToMakeOpaque.length; j++) {
+											classToMakeOpaque[j].classList.remove('opacityClass');
+										}
+									}
+								}
+
+								/*var classOfDivsToHide = this.value;
+								var allDivsofClassToHide = masterTable.getElementsByClassName(classOfDivsToHide);
+								for (i = 0; i < allDivsofClassToHide.length; i++) {
+									allDivsofClassToHide[i].style.display = "none";
+								}*/
 							}
 						}
-					}
-					/*************************************************************/
-					connectAllDraggableDivsWithSVGLines();
+					});
+
+					//APPEND INPUT ELEMENT TO LIST
+					liToHoldLabelListName.appendChild(labelListNameCheckBox);
+
+					//APPEND LIST ELEMENT TO OL
+					labelNavSectionOL.appendChild(liToHoldLabelListName);
+					/****************************************/
+
+
+					/******************************************************************************************/
+					/*CREATING THE OPTIONS FOR THE DIVCLASS SELECT ELEMENTS************************************/
+					/******************************************************************************************/
+					var divClassOption = document.createElement('OPTION');
+					divClassOption.text = dClass;
+
+					divClassOption.setAttribute('optCounter', 1);
+					divClassOptionsDropdown.append(divClassOption);
 				}
-			} else if (shouldISoloDiv == 1) {
-				if (this.checked) {
-					/*FIRST TIME*************************/
-					var index2exempt = divopt_ClassArray.indexOf(this.value);
-					lastSoloedClass = this.value;
-					/************************************/
-					for (i = 0; i < divopt_ClassArray.length; i++) {
-						if (i == index2exempt) {
-							var classToMakeOpaque = document.getElementsByClassName(divopt_ClassArray[i]);
-							for (j = 0; j < classToMakeOpaque.length; j++) {
-								classToMakeOpaque[j].classList.remove('opacityClass');
-							}
-						}
-						if (i != index2exempt) {
-							var classToMakeOpaque = document.getElementsByClassName(divopt_ClassArray[i]);
-							for (j = 0; j < classToMakeOpaque.length; j++) {
-								classToMakeOpaque[j].classList.add('opacityClass');
-							}
-						}
-					}
-				} else if (!this.checked) {
-					var index2exempt = divopt_ClassArray.indexOf(this.value);
-					for (i = 0; i < divopt_ClassArray.length; i++) {
-						if (i != index2exempt) {
-							var classToMakeOpaque = document.getElementsByClassName(divopt_ClassArray[i]);
-							for (j = 0; j < classToMakeOpaque.length; j++) {
-								classToMakeOpaque[j].classList.remove('opacityClass');
-							}
-						}
-					}
+				/******************************************************************************************/
+				/*WHAT TO DO IF THE DIVCLASS HAS ALREADY BEEN CREATED**************************************/
+				/******************************************************************************************/
+				else if (divClassAttributeArray.indexOf(dClass) != -1) {
+					//find the option that has this classname as its text and increase its optCounter value
+					var divClassOptions = divClassOptionsDropdown.getElementsByTagName('option');
 
-					/*var classOfDivsToHide = this.value;
-					var allDivsofClassToHide = masterTable.getElementsByClassName(classOfDivsToHide);
-					for (i = 0; i < allDivsofClassToHide.length; i++) {
-						allDivsofClassToHide[i].style.display = "none";
-					}*/
+					for (j = 0; j < divClassOptions.length; j++) {
+						if (divClassOptions[j].text == dClass) {
+							var optCounterValue = Number(divClassOptions[j].getAttribute('optCounter'))
+							divClassOptions[j].setAttribute('optCounter', ++optCounterValue);
+							break;
+						}
+					}
 				}
+
+				/******************************************************************************************/
+				/*WHAT TO DO THE FIRST TIME DIV-NAME IS CREATED********************************************/
+				/******************************************************************************************/
+				//ADD THE NAME TO THE ARRAY (divNameAttributeArray) IF IT DOESN'T ALREADY EXIST IN IT
+				if (divNameAttributeArray.indexOf(dName) == -1) {
+					divNameAttributeArray.push(dName);
+
+					var dNmoption = document.createElement('OPTION');
+					dNmoption.text = dName;
+
+					dNmoption.setAttribute('optCounter', 1);
+					dNmoption.setAttribute('optClassName', dClass);
+					divNameOptionsDropdown.append(dNmoption);
+				}
+				/******************************************************************************************/
+				/*WHAT TO DO IF THE DIVCLASS HAS ALREADY BEEN CREATED**************************************/
+				/******************************************************************************************/
+				else if (divClassAttributeArray.indexOf(dClass) != -1) {
+					//find the option that has this name as its text and increase its optCounter value
+					var divNameOptions = divNameOptionsDropdown.getElementsByTagName('option');
+
+					for (j = 0; j < divNameOptions.length; j++) {
+						if (divNameOptions[j].text == dName) {
+							var optCounterValue = Number(divNameOptions[j].getAttribute('optCounter'));
+							divNameOptions[j].setAttribute('optCounter', ++optCounterValue);
+							break;
+						}
+					}
+
+				}
+
+				makeInputSelectable();
+				divListeners();
+				dragDiv2TD();
+				connectAllDraggableDivsWithSVGLines();
+
+			} else {
+				customAlert('Please select a location to add the <strong>ACTOR</strong> to.');
 			}
-		});
-
-		//APPEND INPUT ELEMENT TO LIST
-		liToHoldLabelListName.appendChild(labelListNameCheckBox);
-
-		//APPEND LIST ELEMENT TO OL
-		labelNavSectionOL.appendChild(liToHoldLabelListName);
-		/****************************************/
-
-
-		/******************************************************************************************/
-		/*CREATING THE OPTIONS FOR THE DIVCLASS SELECT ELEMENTS************************************/
-		/******************************************************************************************/
-		var divClassOption = document.createElement('OPTION');
-		divClassOption.text = dClass;
-
-		divClassOption.setAttribute('optCounter', 1);
-		divClassOptionsDropdown.append(divClassOption);
-	}
-	/******************************************************************************************/
-	/*WHAT TO DO IF THE DIVCLASS HAS ALREADY BEEN CREATED**************************************/
-	/******************************************************************************************/
-	else if (divClassAttributeArray.indexOf(dClass) != -1) {
-		//find the option that has this classname as its text and increase its optCounter value
-		var divClassOptions = divClassOptionsDropdown.getElementsByTagName('option');
-
-		for (j = 0; j < divClassOptions.length; j++) {
-			if (divClassOptions[j].text == dClass) {
-				var optCounterValue = Number(divClassOptions[j].getAttribute('optCounter'))
-				divClassOptions[j].setAttribute('optCounter', ++optCounterValue);
-				break;
-			}
+		} else {
+			customAlert('!!!Main Name cannot start with a <strong>number</strong>!!!')
 		}
+	} else {
+		customAlert('Please, fill the name fields.');
 	}
-
-	/******************************************************************************************/
-	/*WHAT TO DO THE FIRST TIME DIV-NAME IS CREATED********************************************/
-	/******************************************************************************************/
-	//ADD THE NAME TO THE ARRAY (divNameAttributeArray) IF IT DOESN'T ALREADY EXIST IN IT
-	if (divNameAttributeArray.indexOf(dName) == -1) {
-		divNameAttributeArray.push(dName);
-
-		var dNmoption = document.createElement('OPTION');
-		dNmoption.text = dName;
-
-		dNmoption.setAttribute('optCounter', 1);
-		dNmoption.setAttribute('optClassName', dClass);
-		divNameOptionsDropdown.append(dNmoption);
-	}
-	/******************************************************************************************/
-	/*WHAT TO DO IF THE DIVCLASS HAS ALREADY BEEN CREATED**************************************/
-	/******************************************************************************************/
-	else if (divClassAttributeArray.indexOf(dClass) != -1) {
-		//find the option that has this name as its text and increase its optCounter value
-		var divNameOptions = divNameOptionsDropdown.getElementsByTagName('option');
-
-		for (j = 0; j < divNameOptions.length; j++) {
-			if (divNameOptions[j].text == dName) {
-				var optCounterValue = Number(divNameOptions[j].getAttribute('optCounter'));
-				divNameOptions[j].setAttribute('optCounter', ++optCounterValue);
-				break;
-			}
-		}
-
-	}
-
-	makeInputSelectable();
-	divListeners();
-	dragDiv2TD();
-	connectAllDraggableDivsWithSVGLines();
 }
 
 function deleteDIV() {
@@ -1547,15 +1856,10 @@ function deleteDIV() {
 
 }
 /******************************************************/
-/*FOR LABEL CONSOLE************************************/
-
-//var showLabelMenu = document.getElementById('showLabelMenu');
-//var showLabelMenuParent = showLabelMenu.parentNode;
-//minimizeMaximize(showLabelMenu, showLabelMenuParent);
-
-/******************************************************/
+/*FOR ACTOR/LABEL CONSOLE******************************/
 /******************************************************/
 
+/******************************************************/
 /*HIDE OR SOLO DIV ON CHECKBOX CHECK/UNCHECK***********/
 /******************************************************/
 var divsOfCheckedClassHider = document.getElementById('hideDivsOfCheckedClass');
@@ -1582,15 +1886,6 @@ function hideAllOtherExcept4DivsOfClass(x) {
 	x.style.backgroundColor = 'SpringGreen';
 	divsOfCheckedClassHider.style.backgroundColor = 'rgba(254, 255, 251, 0.5)';
 };
-
-function uncheckAll() {
-	var classesToUncheck = document.querySelectorAll('.labelListNameCheckBox');
-	for (i = (classesToUncheck.length - 1); i > -1; i--) {
-		if (classesToUncheck[i].checked) {
-			classesToUncheck[i].click();
-		}
-	}
-}
 
 /******************************************************/
 /******************************************************/
@@ -1633,6 +1928,7 @@ function alternateClose() {
 //		storyLineTableTitleHeader.contentEditable = 'true'
 //	}
 //}
+
 var makeEditableCheckbox = document.getElementById('editableRadio');
 
 function makeTableEditable() {
@@ -1648,9 +1944,27 @@ function makeTableEditable() {
 	if (makeEditableCheckbox.checked == true) {
 		alternateStoryLineEditorButtons.style.display = '';
 		storyLineTableTitleHeader.contentEditable = 'true';
+
+		var allHInTable = storyLineTable.querySelectorAll('h4');
+		var allPInTable = storyLineTable.querySelectorAll('p');
+		allHInTable.forEach(function (itm) {
+			itm.contentEditable = true
+		})
+		allPInTable.forEach(function (itm) {
+			itm.contentEditable = true
+		})
 	} else {
 		storyLineTableTitleHeader.contentEditable = 'false';
 		alternateStoryLineEditorButtons.style.display = 'none';
+
+		var allHInTable = storyLineTable.querySelectorAll('h4');
+		var allPInTable = storyLineTable.querySelectorAll('p');
+		allHInTable.forEach(function (itm) {
+			itm.contentEditable = false
+		})
+		allPInTable.forEach(function (itm) {
+			itm.contentEditable = false
+		})
 	}
 }
 /******************************************************/
@@ -1690,14 +2004,13 @@ function hideAllOtherColXsExcept4AllColXOfCheckedTD(x) {
 	TDsOfCheckedClassHider.style.backgroundColor = 'rgba(254, 255, 251, 0.5)';
 };
 
-function uncheckAlltimePeriodMenu() {
-	var classesToUncheck = document.querySelectorAll('.timeLINameCheckBox');
-	//	for (i = (classesToUncheck.length - 1); i > -1; i--) {
-	for (i = 0; i < classesToUncheck.length; i++) {
-		if (classesToUncheck[i].checked) {
-			classesToUncheck[i].click();
+function uncheckAllBoxes(x) {
+	var classesToUncheck = document.querySelectorAll(x);
+	classesToUncheck.forEach(function (itm) {
+		if (itm.checked) {
+			itm.click();
 		}
-	}
+	})
 }
 
 /******************************************************/
@@ -1864,12 +2177,12 @@ function createTimeMenu(ROWorCOL) {
 												}
 
 												//ELSE IF COLSPAN OF TD OF THE COL-X CLASS IS GREATER THAN 1, THEN DON'T HIDE IT, RATHER JUST REDUCE THE COLSPAN BY 1
-												if(TD.colSpan != 1){
+												if (TD.colSpan != 1) {
 													TD.colSpan = Number(TD.colSpan) - 1;
 												}
-												
+
 												TD.setAttribute('hiddencol_xs_count', hiddenColXCount + 1);
-												
+
 											}
 										}
 									}
@@ -1904,13 +2217,13 @@ function createTimeMenu(ROWorCOL) {
 											var orgColSpan = Number(TD.getAttribute('originalcolspan'));
 											var hiddenColXCount = Number(TD.getAttribute('hiddencol_xs_count'));
 
-												//SHOW TD IF HIDDEN COL-X COUNT IS EQUAL TO THE ORGINAL COLSPAN
-												if ((orgColSpan == hiddenColXCount)) {
+											//SHOW TD IF HIDDEN COL-X COUNT IS EQUAL TO THE ORGINAL COLSPAN
+											if ((orgColSpan == hiddenColXCount)) {
 
-													//SHOW THE TD
-													TD.style.display = '';
+												//SHOW THE TD
+												TD.style.display = '';
 
-												}
+											}
 											//ONLY ACT IF THE TD HAS NOT BEEN HIDDEN (I.E., IF ORIGINAL COLSPAN AND HIDDEN COL COUNT ARE THE SAME)
 
 											if (hiddenColXCount > 0) {
@@ -1948,6 +2261,90 @@ function createTimeMenu(ROWorCOL) {
 	}
 }
 
-//timeMenuArray = 
+/*LOCATIONS MENU ARRAY*********************************/
+/******************************************************/
+function locationsMenuGenerate(LX) {
+	//	locationsArray
+	//get the cell's locationAttribute and append it to the timeMenu
+	//CREATE LIST ELEMENT
+	var lowerCaseLX = LX.toLowerCase();
+	var LI4location = document.createElement('LI');
+	LI4location.setAttribute('id', 'location_' + lowerCaseLX);
+	//CREATE LABEL ELEMENT
+	var locationListName = document.createElement('LABEL');
+	locationListName.innerHTML = LX;
+	locationListName.setAttribute('for', 'location_chkbox_' + lowerCaseLX);
+	//APPEND INPUT (CHECKBOX) ELEMENT TO LIST
+	var locationListNameCheckBox = document.createElement('INPUT');
+	locationListNameCheckBox.setAttribute('type', 'checkbox');
+	locationListNameCheckBox.setAttribute('value', lowerCaseLX);
+	locationListNameCheckBox.setAttribute('id', 'location_chkbox_' + lowerCaseLX);
+	locationListNameCheckBox.setAttribute('targetLocation', lowerCaseLX);
+	locationListNameCheckBox.classList.add('locationsLINameCheckBox');
+
+	/*ADD EVENTLISTNER TO INPUT ELEMENT TO SHOW/HIDE RESPECTIVE COL-X COLUMNS***************/
+	/***************************************************************************************/
+	locationListNameCheckBox.addEventListener('click', function () {
+		var location2searchFor = this.getAttribute('targetLocation');
+		var allTargetedTD = storyLineTable.querySelectorAll(`[location="` + location2searchFor + `"]`);
+		if (this.checked == true) {
+			allTargetedTD.forEach(function (itm) {
+				itm.style.backgroundColor = 'rgba(0, 255, 127, 0.5)';
+			})
+		} else if (this.checked != true) {
+			allTargetedTD.forEach(function (itm) {
+				itm.style.backgroundColor = '';
+				itm.style.border = '';
+			})
+		}
+	});
+
+	LI4location.addEventListener('mouseenter', function () {
+		var location2searchFor = this.id.slice(9);
+		console.log(location2searchFor);
+		var allTargetedTD = storyLineTable.querySelectorAll(`[location="` + location2searchFor + `"]`);
+		allTargetedTD.forEach(function (itm) {
+			itm.style.backgroundColor = 'rgba(255, 231, 0, 0.56)';
+			itm.style.border = '3px solid black';
+		})
+	});
+	LI4location.addEventListener('mouseleave', function () {
+		var locationCheckBox = this.querySelector('input');
+		var location2searchFor = this.id.slice(9);
+		var allTargetedTD = storyLineTable.querySelectorAll(`[location="` + location2searchFor + `"]`);
+		if (!locationCheckBox.checked) {
+			allTargetedTD.forEach(function (itm) {
+				itm.style.backgroundColor = '';
+				itm.style.border = '';
+			})
+		} else if (locationCheckBox.checked) {
+			allTargetedTD.forEach(function (itm) {
+				itm.style.backgroundColor = 'rgba(0, 255, 127, 0.5)';
+			})
+		}
+	});
+
+	//APPEND LABEL ELEMENT TO LIST
+	LI4location.appendChild(locationListName);
+	//APPEND INPUT ELEMENT TO LIST
+	LI4location.appendChild(locationListNameCheckBox);
+	//APPEND LIST ELEMENT TO OL
+	locationsMenuList.appendChild(LI4location);
+
+}
+/******************************************************/
+/******************************************************/
+
+/*CUSTOM ALERT*****************************************/
+/******************************************************/
+function customAlert(x) {
+	customAlertBack.style.display = 'flex';
+	customAlertContent.innerHTML = x;
+
+}
+
+function customAlertClose() {
+	customAlertBack.style.display = 'none';
+}
 /******************************************************/
 /******************************************************/

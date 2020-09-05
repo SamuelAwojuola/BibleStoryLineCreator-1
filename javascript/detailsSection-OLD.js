@@ -24,14 +24,14 @@ function addDetailKeys() {
 	var previouslyShownDetail = document.querySelector('.showDetail');
 	var detailsActors = document.getElementById('detailsActors');
 	var detailsRegions = document.getElementById('detailsRegions');
-//	console.log(storyLineTable.rows[0]);
-//	var cellParentName = storyLineTable.rows[clickedRow].parentNode.nodeName;
+	console.log(storyLineTable.rows[0]);
+	var cellParentName = storyLineTable.rows[clickedRow].parentNode.nodeName;
 	var divsInCellLength = selectedCell.querySelectorAll('div[divclassname]').length;
 	var cellH4 = selectedCell.querySelector('h4').textContent;
-//	console.log(cellH4);
+	console.log(cellH4);
 
 	//if selected cell has label divs
-	if ((selectedCell.querySelectorAll('div[divclassname]').length != 0)||(selectedCell.querySelector('h4').textContent != '')) {
+	if (divsInCellLength != 0) {
 
 		/*TO GET ACTORS/CHARACTERS IN SELECTED CELL*/
 		var actorsInSelectedCell = selectedCell.querySelectorAll('div[divclassname]');
@@ -81,7 +81,7 @@ function addDetailKeys() {
 		var storyLineTableTHead = storyLineTable.querySelector('thead');
 		var timeRegion = storyLineTableTHead.querySelectorAll(col_xClass);
 		for (i = 0; i < timeRegion.length; i++) {
-			if ((timeRegion[i].querySelector(TypeOfHtmlHeader) !== null)&&(timeRegion[i].querySelector(TypeOfHtmlHeader).innerHTML !== '')) {
+			if (timeRegion[i].querySelector(TypeOfHtmlHeader) !== null) {
 				var timeName = timeRegion[i].querySelector(TypeOfHtmlHeader).innerHTML;
 				var cellTime_LI = document.createElement('LI');
 				cellTime_LI.innerHTML = timeName;
@@ -161,9 +161,9 @@ var detailsSection = document.getElementById('detailsSection');
 //to make details editable
 function addDetail() {
 
-	if (selectedCell.innerHTML) {
+	if (selectedCell) {
 
-		if ((selectedCell.querySelectorAll('div[divclassname]').length != 0)||(selectedCell.querySelector('h4').textContent != '')) {
+		if (selectedCell.querySelectorAll('div[divclassname]').length != 0) {
 
 			/*FUNCTION TO CREATE DETAIlS*/
 			if (selectedCell.getAttribute('detailIndex') == null) {

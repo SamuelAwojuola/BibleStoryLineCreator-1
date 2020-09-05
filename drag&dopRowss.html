@@ -1,0 +1,50 @@
+<html>
+<head>
+	<style type="text/css">
+		tr,
+		tr td {
+			border: 1px #999999 solid;
+			border-bottom: 2px #999999 solid;
+			background-color: rgba(255, 255, 255, 0.48);
+			cursor: pointer;
+		}
+
+		tr.underline,
+		tr.underline td {
+			border-bottom: 2px #000000 solid;
+			background-color: #CCCCCC;
+		}
+	</style>
+</head>
+
+<body>
+	<button onclick="makeTrDraggable()">Row Drag</button>
+	<button onclick="makeTdDraggable()">Cell Drag</button>
+	<button onclick="makeNOT()">Cancel Drag</button>
+	<table border="0" cellpadding="2" cellspacing="0">
+		<thead></thead>
+		<tbody>
+			<tr>
+				<td class='td'>Handle</td>
+				<td class='td' id="">Row 0, Cell 1</td>
+				<td class='td'>Row 0, Cell 2</td>
+				<td class='td'>Row 0, Cell 3</td>
+			</tr>
+			<tr id="hello" class="droppable">
+				<td class='td'>Handle</td>
+				<td class='td'>Row 1, Cell 1</td>
+				<td class='td'>Row 1, Cell 2</td>
+				<td class='td'>Row 1, Cell 3</td>
+			</tr>
+			<tr>
+				<td class='td'>Handle</td>
+				<td class='td'>Row 2, Cell 1</td>
+				<td class='td'>Row 2, Cell 2</td>
+				<td class='td'>Row 2, Cell 3</td>
+			</tr>
+		</tbody>
+		<tfoot></tfoot>
+	</table>
+</body>
+
+<script type="text/javascript" src="drag&dropRows-3.js"></script></html>
