@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Table Creator & Modifier - E</title>
+	
+	
+
+	<style id="divColorStyles"></style>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+	<style>
+		* {
+			/*font-family: "Lucida Console", Courier, monospace;*/
+			font-family: 'Abril Fatface', serif;
+			font-family: 'Open Sans', sans-serif;
+			font-family: Arial, Helvetica, sans-serif;
+			font-family: 'Helvetica Neue', sans-serif;
+			font-family: "Times New Roman", Times, serif;
+			font-family: Georgia, serif;
+			word-spacing: 2px;
+			/*font-size: 95%;*/
+		}
+
+		body {
+			margin-left: 0;
+			margin-right: 0;
+			background-color: rgba(131, 128, 98, 0.87);
+			/*Army green sort of*/
+			background-color: rgba(255, 237, 62, 0.87);
+			/*Yellow*/
+			background-color: rgb(253, 255, 238);
+			/*Light Beige*/
+			background-color: lemonchiffon;
+			/*LemonChiffon*/
+			background-color: rgba(255, 255, 255, 0.87);
+			/*White*/
+			background-color: rgba(0, 0, 0, 0.87);
+			/*Black*/
+			background-color: rgba(129, 98, 131, 0.87);
+			/*Purple*/
+			background-color: Beige;
+			/*Beige*/
+			/*			color: white;*/
+		}
+
+		#svg {
+			pointer-events: none;
+			/*THIS MAKES IT POSSIBLE TO CLICK THROUGH THE SVG*/
+			position: absolute;
+			z-index: 1;
+			width: 110%;
+			height: 110%;
+		}
+
+		.svg-connectors {}
+
+		#divTableContainer {
+			float: left;
+			width: 85vw;
+			height: 90vh;
+			overflow: auto;
+			margin-left: 10px;
+			margin-right: 10px;
+
+			border: 0.5px solid #847e7f;
+			border-radius: 2.5px;
+			box-shadow: 0px 3px 6px -3px black;
+			background-color: rgba(255, 253, 232, 0.3);
+		}
+
+		table table {
+			border-top: 0.5px solid #ead9dc;
+			border-bottom: 0.5px solid #ead9dc;
+			border-radius: 2px;
+		}
+
+		table>h1,
+		table>h2,
+		table>h3,
+		table>h4,
+		table>h5,
+		table>h6 {
+			color: blue;
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+
+		#masterTable {
+			position: relative;
+		}
+
+		#masterEditButton {
+			display: flex;
+			align-items: center;
+			padding-right: 0;
+			cursor: pointer;
+			font-style: italic;
+			width: 100%;
+			border: grey;
+			box-shadow: 0px 3px 2px -3px black;
+			background-color: #f4f9ff;
+			border-radius: 2px;
+			border: 1px solid grey;
+		}
+
+		#masterEditButton:hover {
+			background-color: #fcffb6;
+			/*
+			box-shadow: -1.5px -1.5px 2px 2px grey; 
+			background-color: #c8fc8b;
+*/
+		}
+
+		#masterEditButton:active {
+			/*			background-color: #b6ffe6;*/
+		}
+
+		.tableHeadEqualHeights {
+			height: 32px;
+		}
+
+		#masterTable>td {
+			background-color: transparent;
+		}
+
+		#storyLineTable,
+		#legendTable {
+			margin-top: 5px;
+			position: relative;
+			box-shadow: 0px 3px 6px -3px black;
+			z-index: 2;
+		}
+
+		#storyLineTable {
+			margin-left: 30px;
+		}
+
+		#legendTable td,
+		#legendTable th,
+		#storyLineTable td,
+		#storyLineTable th {
+			position: relative;
+			min-width: 100px;
+			height: 55px;
+			border: 0.5px solid rgba(208, 164, 171, 0.48);
+			background-color: rgba(245, 245, 220, 0.5);
+			border-radius: 5px;
+			/*			box-shadow: 0 8px 7.5px -8px black;*/
+			box-shadow: 0 4px 5px -6px black;
+			padding-left: 10px;
+			padding-right: 10px;
+		}
+
+		#legendTable td:hover,
+		#legendTable th:hover,
+		#storyLineTable td:hover,
+		#storyLineTable th:hover {
+			box-shadow: 0 8px 7.5px -8px black;
+		}
+
+		#legendTable th,
+		#legendTable thead td,
+		#storyLineTable th,
+		#storyLineTable thead td {
+			/*			background-color: #ffe7c1;*/
+			background-color: rgba(255, 231, 193, 0.4);
+			border-radius: 2px;
+			box-shadow: 0 4px 5px -6px black;
+		}
+
+		#legendTable th:empty,
+		#legendTable thead td:empty,
+		#storyLineTable th:empty,
+		#storyLineTable td:empty {
+			/*			visibility:hidden;*/
+			background-color: transparent;
+			border: 0;
+			box-shadow: 0 0 transparent;
+		}
+
+		.locationspan {
+			position: absolute;
+			top: 0;
+			right: 0;
+			font-style: italic;
+		}
+
+		#storyLineTable th div:not(:first-child),
+		#storyLineTable td div:not(:first-child) {
+			margin-top: 5px;
+			padding: 5px 0;
+			border: 1px solid #acacac;
+			border-radius: 3px;
+		}
+
+		#storyLineTable th div:first-of-type,
+		#storyLineTable td div:first-of-type {
+			margin-top: 20px;
+		}
+
+		#storyLineTable th div:first-child,
+		#storyLineTable td div:first-child {
+			margin-top: 10px;
+		}
+
+		#storyLineTable th div:last-child,
+		#storyLineTable td div:last-child {
+			margin-bottom: 10px;
+		}
+
+		#legendTable th div,
+		#legendTable thead td div,
+		#storyLineTable th div,
+		#storyLineTable td div {
+			max-width: 200px;
+			padding: 5px 0;
+			border: 1px solid #acacac;
+			border-radius: 3px;
+			font-weight: bold;
+		}
+
+		#storyLineTableTitleHeader {
+			padding-left: 100px;
+		}
+
+		#storyLineTableTitleHeader:empty::before {
+			content: "Insert Title Here"
+		}
+	</style>
+
+	<!--TABLE-BUILDER STYLING--->
+	<style>
+		#tableBuilder {
+			display: none;
+			position: absolute;
+			top: 300px;
+			left: 200px;
+			border-radius: 6px;
+			width: 165px;
+			/*			z-index: 10;*/
+			/*			overflow-y: auto;*/
+			background-color: white;
+			background-color: rgba(255, 244, 244, 0.61);
+			z-index: 3;
+		}
+
+		#tableBuilder * {
+			font-size: 90%;
+		}
+
+		#tableBuilder h3,
+		#tableBuilder h4 {
+			padding-bottom: 0;
+			margin-bottom: 0;
+			padding-top: 0;
+			color: black;
+			border-bottom: 3px solid grey;
+			text-align: center;
+			text-transform: uppercase;
+			text-overflow: ellipsis;
+		}
+
+		#tableBuilder>div:not(#tableBuilderheader) {
+			padding-left: 5px;
+			padding-bottom: 10px;
+			background-color: rgba(255, 255, 255, 0.8);
+			border: 0.5px solid #847e7f;
+			box-shadow: 0 8px 6px -8px black;
+		}
+
+		#tableBuilder>div:not(#tableBuilderheader) {
+			border-bottom-left-radius: 3px;
+			border-bottom-right-radius: 3px;
+		}
+
+		#tableBuilderheader {
+			text-align: center;
+			padding: 2px;
+			height: 25px;
+			width: 160px;
+			color: black;
+			font-weight: bolder;
+			padding-top: 0;
+			padding-bottom: 0;
+			border-top-left-radius: 2px;
+			border-top-right-radius: 2px;
+			border: 0.5px solid #847e7f;
+			background-color: #ffe295;
+		}
+
+		#tableBuilderheader:hover {
+			background-color: #ffd35c;
+		}
+
+		#tableBuilder>div>div h4 {
+			padding-bottom: 0;
+			margin-bottom: 0;
+			margin-top: 7px;
+			text-align: justify-all;
+			color: black;
+			border-bottom: 1px solid grey;
+		}
+
+		#tableBuilder>div>div h4:hover {
+			color: #bf0093;
+		}
+
+		#tableBuilder>div button {
+			width: 100%;
+			display: inline-block;
+			cursor: pointer;
+			/*			font-size: 11px;*/
+			font-weight: 900;
+			padding: 6px 24px;
+			text-decoration: none;
+		}
+
+		#max-min {
+			position: absolute;
+			top: 1px;
+			left: 2px;
+			padding: 1px 1px;
+			width: 20px;
+			font-size: 12px;
+			text-align: center;
+			background-color: #e0ff98;
+			border: 1px solid grey;
+			border-radius: 2px;
+			box-shadow: 2px 3px 2px -1px grey;
+		}
+
+		button.create {
+			box-shadow: inset 0px 1px 0px 0px #ffffff;
+			background-color: #ffefac;
+			border: 1px solid #dcdcdc;
+			color: #4b0000;
+			text-shadow: 0px 1px 0px #ffffff;
+		}
+
+		button.create:hover {
+			background-color: #ffdd4c;
+			padding-left: 0;
+			padding-right: 0;
+			font-style: italic;
+		}
+
+		button.delete {
+			box-shadow: inset 0px 1px 0px 0px #f7c5c0;
+			background-color: #fa8d83;
+			border: 1px solid #d83526;
+			color: black;
+		}
+
+		button.delete:hover {
+			background-color: #ff5d76;
+			color: white;
+			font-style: italic;
+		}
+
+		#tableBuilder button:last-child {
+			border-bottom: 0.5px solid grey;
+		}
+
+		#tableBuilder button:first-child {
+			border-top: 0.5px solid grey;
+		}
+
+		input {
+			display: block;
+			width: 93%;
+		}
+
+		select {
+			display: block;
+			width: 98%;
+		}
+
+		.btnactivecolor {
+			background-color: aquamarine;
+		}
+	</style>
+
+	<!--DIV LABELS STYLING------>
+	<style>
+		td>div {
+			position: relative;
+			padding-top: 2px;
+			/*			margin: 4px;*/
+			/*			min-height: 25px;*/
+			/*			border: 0.5px solid grey;*/
+			background-color: rgba(255, 255, 255, 0.6);
+			border-radius: 2px;
+			text-align: center;
+			box-shadow: 0 4px 5px -6px black;
+			z-index: 1;
+		}
+	</style>
+
+	<!--TABLE EDITOR SCROLLBAR-->
+	<style>
+		/* container properties */
+		.scrollbar {
+			max-height: 400px;
+			overflow-y: auto;
+		}
+
+		/* customize scrollbar css */
+		.scrollbar-custom::-webkit-scrollbar {
+			width: 8px;
+			background-color: #cccccc;
+		}
+
+		.scrollbar-custom::-webkit-scrollbar:horizontal {
+			height: 12px;
+		}
+
+		.scrollbar-custom::-webkit-scrollbar-track {
+			background-color: #e0e0e0;
+			border: 1px #ffffff solid;
+			border-radius: 5px;
+			-webkit-box-shadow: 0 0 6px #c8c8c8 inset;
+		}
+
+		.scrollbar-custom::-webkit-scrollbar-thumb {
+			background-color: #f8f8f8;
+			border: 1px solid #a5a5a5;
+			border-radius: 5px;
+		}
+
+		.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+			background-color: white;
+			border: 1px solid #333333;
+		}
+
+		.scrollbar-custom::-webkit-scrollbar-thumb:active {
+			background-color: white;
+			border: 1px solid #333333;
+		}
+	</style>
+
+	<!--DETAILS SECTIONS-------->
+	<style>
+		#detailsSection {
+			position: absolute;
+			top: 300px;
+			left: 400px;
+			width: 500px;
+			height: 292px;
+/*			padding: 1px 1px 0px;*/
+/*			background-color: ghostwhite;*/
+/*			border: 1px solid grey;*/
+			border-radius: 5px;
+			z-index: 3;
+/*			display: flex;*/
+			flex-direction: column;
+		}
+
+		#detailsSectionheader {
+			margin-top: 0;
+			padding-bottom: 5px;
+			padding-top: 5px;
+			margin-bottom: 0;
+			border: 1px solid grey;
+			border-top-left-radius: 5px;
+			border-top-right-radius: 5px;
+			background-color:#f0de92;
+		}
+
+		#detailsSectionBody {
+			display: flex;
+		}
+
+		#detailsSectionBody h4 {
+			margin-bottom: 0;
+		}
+
+		#detailsSectionBody ul {
+			margin-top: 0;
+			padding-left: 20px;
+		}
+
+		#detailsSummary {
+			height: 260px;
+			width: 350px;
+			border-bottom: 2px solid grey;
+			border-right: 2px solid grey;
+			border-bottom-right-radius: 5px;
+			padding-right: 8px;
+			text-align: justify;
+			overflow-y: scroll;
+			overflow-x: hidden;
+			background-color: white;
+		}
+
+		#detailsSummary>div>p:empty::before {
+			content: "Insert details for selected cell here";
+		}
+
+		#detailsKeyFacts {
+			position: relative;
+			padding-left: 8px;
+			padding-right: 8px;
+			background-color: #f0f0d2;
+			border-left: 2px solid grey;
+			border-right: 2px solid grey;
+			border-bottom: 2px solid grey;
+			border-bottom-left-radius: 5px;
+		}
+
+		#addDetail {
+			height: 23px;
+			float: right;
+			margin-right: 5px;
+			margin-top: ;
+			border-radius: 2px;
+			border: 1px solid grey;
+		}
+
+		#addDetail:hover {
+			background-color: #f8e9e9;
+			font-style: italic;
+		}
+
+		#addDetail:active {
+			font-weight: bold;
+		}
+
+		#detailsSummary>div {}
+
+		#expandDetails {
+			float: left;
+			margin-left: 10px;
+		}
+
+		.hideDetail {
+			display: none;
+		}
+
+		.showDetail {
+			display: block;
+		}
+	</style>
+
+	<!--ULTERNATE STORYLINE TABLE EDITOR BUTTONS-->
+	<style>
+		#alternateStoryLineEditorButtons {
+			font-size: 11px;
+			font-weight: 1000;
+			align-items: flex-end;
+			position: absolute;
+			left: 20vw;
+			top: 35vh;
+			width: 900px;
+			height: 256px;
+			background-color: rgba(245, 245, 220, 0.9);
+			border-radius: 5px;
+			box-shadow: 0px 0px 1px 1px grey;
+			z-index: 10;
+		}
+
+		#alternateStoryLineEditorButtons button {
+			font-size: 12px;
+			width: 70px;
+			min-height: 35px;
+		}
+
+		#alternateStoryLineEditorButtons button:hover {
+			background-color: aquamarine;
+			border: 1px solid grey;
+			border-radius: 3px;
+		}
+
+		#alternateStoryLineEditorButtons button:active {
+			background-color: greenyellow;
+			border: 1px solid grey;
+			border-radius: 3px;
+		}
+
+		[onclick="selectCells(this)"] {
+			background-color: yellow;
+			border: 1px solid grey;
+			border-radius: 3px;
+		}
+
+		#alternateStoryLineEditorButtons button span {
+			font-size: 10px;
+			font-style: normal;
+			padding: 0;
+			margin: 0;
+		}
+
+		#alternateStoryLineEditorButtons>div>span {
+			font-style: italic;
+			font-weight: bold;
+			text-transform: uppercase;
+			margin-right: 10px;
+			width: 50px;
+			padding-right: 5px;
+			padding-top: 10px;
+			/*			padding-bottom: 10px;*/
+			border-radius: 2px;
+			text-align: right;
+		}
+
+		#alternateStoryLineEditorButtons>.vertical {
+			background-color: beige;
+			border: 1px solid #bcbcbc;
+			padding: 0 2px;
+			border-radius: 4px;
+		}
+
+		.vertical {
+			display: inline-flex;
+			padding-left: 6px;
+			margin: 2px;
+		}
+
+		.vertical2:not(:first-of-type):not(:last-of-type) {
+			border-left: 10px solid #b7b7b7;
+			margin-left: 2px;
+			padding-left: 10px;
+		}
+
+		.vertical3 input {
+			border: 0.5px solid #d3d3d3;
+			padding-bottom: 0;
+			font-size: 12.3px;
+		}
+
+		.vertical3 select {
+			border: 5x solid black;
+			padding-bottom: 0;
+			font-size: 12.3px;
+			margin-bottom: -100px;
+		}
+
+		#alternateClose {
+			min-height: 25px !important;
+			position: absolute;
+			width: 30px !important;
+			right: 2px;
+			top: 5px;
+			border: 1px solid grey;
+			border-radius: 3px;
+			cursor: pointer;
+			box-shadow: 2px 2px 2px 0px grey;
+		}
+
+		#alternateStoryLineEditorButtonsheader {
+			width: 100%;
+			height: 35px;
+			background-color: #f0de92;
+/*			box-shadow: 0px 10px 5px -2px #f0de92;*/
+/*			border: 1px solid grey;*/
+/*			border-top: 0px solid grey;*/
+/*			border-left: 0px solid grey;*/
+			border-bottom: 1px solid grey;
+			border-top-left-radius: 5px;
+			border-top-right-radius: 5px;
+		}
+
+		#deleteButtons {
+			/*			background-color: rgba(255, 162, 183, 0.65) !important;*/
+		}
+
+		#mergeAndSplit {
+			/*			background-color: rgba(255, 249, 172, 0.64)!important;*/
+		}
+
+		#realignandreconnect {
+			min-height: 53px;
+			/*			background-color: #ccff86 !important;*/
+		}
+
+		#realignandreconnect button {
+			/*			background-color: #f5edad !important;*/
+			border: 0.5px solid grey;
+			border-radius: 3px;
+		}
+	</style>
+
+	<!--SHOW HIDE DIVS SECTION-->
+	<style>
+		#labelList {
+			padding-left: 20px;
+		}
+
+		.opacityClass {
+			opacity: 0.2;
+		}
+	</style>
+
+	<!--TIME MENU NAV-->
+	<style>
+		#timePeriodMenu {}
+
+		#timeMenuListDiv ol,
+		#timeMenuListDiv ul {}
+	</style>
+
+	<!--MASTER-NAV-->
+	<style>
+		#masterNav {
+			float: left;
+		}
+
+		.titleDiv {
+			display: flex;
+			align-items: baseline;
+		}
+
+		ol {
+			padding-left: 20px;
+			list-style: none;
+			counter-reset: any-name;
+		}
+
+		li {
+			display: flex;
+			list-style-type: none;
+			margin-left: -20px;
+			padding-left: 5px;
+			counter-increment: any-name;
+		}
+
+		li:hover {
+			background-color: #ddddc6;
+			font-style: italic;
+			box-shadow: 0px 0px 2px 0px grey;
+			border-radius: 0px;
+		}
+
+		li::before {
+			content: counter(any-name);
+			margin-right: 0.5rem;
+		}
+
+		li>label {
+			flex-grow: 2;
+		}
+
+		li>input {
+			width: 20px;
+		}
+
+		#moveButtonsMenu,
+		#timePeriodMenu,
+		#navSection4navDivButtonHolder,
+		#locationsMenu {
+			border-bottom: 1px solid black;
+		}
+	</style>
+
+	<!--MOVE ROWS AND CELLS-->
+	<style>
+		#moveButtonsMenu {
+			padding-bottom: 10px;
+		}
+
+		#tdandtrDrag button {
+			display: inline-block;
+			font-size: 2rem;
+		}
+
+		#tdandtrDrag>div:first-child {
+			/*			border-bottom: 1px solid black;*/
+			margin-bottom: 10px;
+		}
+	</style>
+
+	<!--CUSTOM ALERTS-->
+	<style>
+		#customAlertBack {
+			position: fixed;
+			display: none;
+			justify-content: space-evenly;
+			align-items: center;
+			top: 0;
+			left: 0;
+			width: 100vw;
+			height: 100vh;
+			background-color: rgba(128, 128, 128, 0.25);
+			z-index: 99;
+		}
+
+		#customAlert {
+			position: relative;
+			flex-direction: column;
+			display: flex;
+			justify-content: space-evenly;
+			align-items: center;
+			max-width: 40vw;
+			/*			max-height: 40vh;*/
+			margin-left: auto;
+			margin-right: auto;
+			margin-top: 100px;
+			margin-bottom: auto;
+			background-color: white;
+			border-radius: 5px;
+			border: 4px solid darkred;
+		}
+
+		#customAlertContent {
+			word-wrap: break-word;
+			width: 90%;
+			max-height: 80%;
+			text-align: center;
+		}
+
+		#customAlertClose {
+			position: absolute;
+			top: 0;
+			right: 0;
+			background-color: transparent;
+			border: 0;
+		}
+
+		#customAlertClose:hover {
+			color: darkred;
+		}
+	</style>
+
+	<!--FOR JS-->
+	<style>		
+		.yellow {
+			background-color: rgba(255, 231, 0, 0.56);
+			border: 3px solid black;
+		}
+		
+		.light-text {
+			color: #eeeeee;
+		}
+		
+		.dark-text {
+			color: #333333;
+		}
+	</style>
+</head>
+
+<body>
+
+	<!--*ALERTS*********************************************-->
+	<!--****************************************************-->
+	<div id="customAlertBack" onclick="customAlertClose()">
+		<div id="customAlert">
+			<!--			<button id="customAlertClose" onclick="customAlertClose()">X</button>-->
+			<p id="customAlertContent"></p>
+
+		</div>
+	</div>
+	<!--****************************************************-->
+
+	<!--* MENUS ********************************************-->
+	<div id="masterNav">
+		<!--BUTTONS MENU FOR MOVING ROWS AND CELLS*********-->
+		<div id="moveButtonsMenu" class="">
+			<div class="titleDiv">
+				<button id="showMoveButtons" class="" style="" onclick="toggleBtnzFamily(this)" title="Move Events & Sections">&#9776;</button>
+				<h3 id="moveMenuH3" class="titleBarH3" style="">Move</h3>
+			</div>
+			<div id="tdandtrDrag">
+				<div>
+					<button class="fa fa-arrow-circle-up" onclick="moveRowUp()" title="Move Row Up">
+					</button>
+					<button class="fa fa-arrow-circle-down" onclick="moveRowDown()" title="Move Row Down"></button>
+				</div>
+
+				<div>
+					<button class="fa fa-arrow-circle-left" onclick="moveCellLeft()" title="Move Event Backward"></button>
+					<button class="fa fa-arrow-circle-right" onclick="moveCellRight()" title="Move Event Forward"></button></div>
+			</div>
+		</div>
+		<!--***********************************************-->
+		<!--TIME PERIODS MENU******************************-->
+		<div id="timePeriodMenu" lass="">
+			<div class="titleDiv">
+				<button id="showTimeMenu" class="" style="" onclick="toggleBtnzFamily(this)" title="Times Menu">&#9776;</button>
+				<h3 id="timesMenuH3" class="titleBarH3" style="">Times</h3>
+			</div>
+			<div id="timeMenuDivButtonHolder" class="scrollbar scrollbar-custom">
+				<button id='soloAllColXOfCheckedTD' onclick="hideAllOtherColXsExcept4AllColXOfCheckedTD(this)" title="Show only labels belonging to the checked list item">Show&#10004;</button>
+				<button id='hideAllColXOfCheckedTD' onclick="hideAllColXOfCheckedTD(this)" title="Hide just the labels belonging to the checked list items">Hide&#10004;</button>
+				<button id='uncheckAlltimePeriodMenu' onclick="uncheckAllBoxes('.timeLINameCheckBox')">&#10006;</button>
+			</div>
+			<div id="timeMenuListDiv" style="">
+				<ol id="timeMenuList" style="margin-top: auto; padding-left: 20px"></ol>
+			</div>
+		</div>
+		<!--***********************************************-->
+		<!--CONTROLS FOR THE LABELS ***********************-->
+		<div id="navSection4navDivButtonHolder" class="draggableSection">
+			<div class="titleDiv">
+				<button id="showLabelMenu" class="expandMinimizeButton" title="Actors Control" onclick="toggleBtnzFamily(this)">&#9776;</button>
+				<h3 class="titleBarH3">Actors</h3>
+			</div>
+			<div style="">
+				<div id="navDivButtonHolder" class="scrollbar scrollbar-custom">
+					<button id='soloDivsOfCheckedClass' onclick="hideAllOtherExcept4DivsOfClass(this)" title="Show only labels belonging to the checked list item">Show&#10004;</button>
+					<button id='hideDivsOfCheckedClass' onclick="hideDivsOfClass(this)" title="Hide just the labels belonging to the checked list items">Hide&#10004;</button>
+					<button id='uncheckAll' onclick="uncheckAllBoxes('.labelListNameCheckBox')">&#10006;</button>
+				</div>
+				<ol id="labelList"></ol>
+			</div>
+		</div>
+		<!--***********************************************-->
+		<!--TERRITORIES************************************-->
+		<div id="locationsMenu" class="">
+			<div class="titleDiv">
+				<button id="showLocationsMenu" class="" style="" onclick="toggleBtnzFamily(this)" title="Locations Menu">&#9776;</button>
+				<h3 id="locationsMenuH3" class="titleBarH3" style="">Location</h3>
+			</div>
+			<div id="locationsMenuDivButtonHolder" class="scrollbar scrollbar-custom">
+				<button id='soloAllCheckedLocations' onclick="hideAllOtherLocationsExcept4checkedLocations(this)" title="Show only labels belonging to the checked list item">Show&#10004;</button>
+				<button id='hideAllCheckedLocations' onclick="hideAllCheckedLocations(this)" title="Hide just the labels belonging to the checked list items">Hide&#10004;</button>
+				<button id='uncheckAllLocationsMenu' onclick="uncheckAllBoxes('.locationsLINameCheckBox')">&#10006;</button>
+			</div>
+			<div id="locationsMenuListDiv" style="">
+				<ol id="locationsMenuList" style="margin-top: auto; padding-left: 20px"></ol>
+			</div>
+		</div>
+		<!--***********************************************-->
+	</div>
+	<!--***********************************************-->
+	<!--****************************************************-->
+
+	<!--ACTUAL TABLE STORY LINE ************************-->
+	<div id="divTableContainer">
+		<table id="masterTable">
+			<tr>
+				<td valign="top">
+					<button type="checkbox" class="tableHeadEqualHeights" id="masterEditButton" onclick="makeTableEditable()" title="Click to Edit StoryLineTable" for="editableRadio" checked="true">Edit StoryLine
+						<input id="editableRadio" type="checkbox" checked='true' value="editableRadio" style="width: 20px">
+					</button>
+					<svg id="svg"></svg>
+					<!--I POSITION THE SVG HERE SO THAT IT CAN SCROLL WITH THE TABLE WITHOUT HAVING TO BE REDRAWN-->
+					<table id="legendTable">
+						<thead>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</td>
+
+				<td id="legendNstoryLineHolder" valign="top" style="position: relative">
+					<h1 class="tableHeadEqualHeights" id="storyLineTableTitleHeader" style="padding: 0; padding-left: 25px; margin: 0;" contenteditable="true"></h1>
+					<table id="storyLineTable">
+						<thead>
+							<tr rowname='Time'>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+
+				</td>
+			</tr>
+		</table>
+
+	</div>
+	<!--***********************************************-->
+
+	<!--DETAILS SECTION (SHOWS DETAILS FOR THE CELlS) **-->
+	<section id="detailsSection" class="draggableSection">
+		<h3 id="detailsSectionheader" class="titleBarH3">
+			<button id="expandDetails" class="expandMinimizeButton">&#9776;</button>
+			Details
+			<button id="addDetail" class="" title="Add details for the selected cell" onclick="addDetail()">Add/Edit Detail</button>
+		</h3>
+		<div id="detailsSectionBody">
+			<div id="detailsKeyFacts" style="">
+
+				<h4>Characters/Actors</h4>
+				<ul id="detailsActors">
+				</ul>
+
+				<h4 title="Where this/these event/events takes place">Location/Region:</h4>
+				<ul id="detailsRegions">
+				</ul>
+
+				<h4 title="Absolute/Relative time when this/these event/events takes place">Time:</h4>
+				<ul id="detailsTimePeriods">
+				</ul>
+
+			</div>
+			<div id="detailsSummary" class="scrollbar scrollbar-custom">
+			</div>
+		</div>
+	</section>
+	<!--***********************************************-->
+	<!--STRIPPED DOWN STORYLINE TABLE EDITOR *************************-->
+	<div id="tableBuilder">
+		<div id="tableBuilderheader" title="Drag to move">TABLE EDITOR <span id="max-min">&#9776;</span></div>
+		<div class=" scrollbar scrollbar-custom" style=""></div>
+	</div>
+	<!--***********************************************-->
+
+	<!--ALTERNATIVE STORYLINE TABLE EDITOR BUTTONS *****-->
+	<section id="alternateStoryLineEditorButtons">
+		<div id="alternateStoryLineEditorButtonsheader">
+			<button id="alternateClose" onclick="alternateClose()">X</button>
+		</div>
+
+
+
+		<!--Table-->
+		<div id="realignandreconnect" class="vertical">
+			<span>Table:</span>
+			<div class="vertical"><button onclick="btn_buildLegendTable()">Re-Align Tables</button>
+				<button onclick="connectAllDraggableDivsWithSVGLines()">Connect Divs</button>
+			</div>
+		</div>
+		<!--Delete-->
+		<div id="deleteButtons" class="vertical">
+			<span>Delete:</span>
+			<div class="vertical">
+				<button id="divDeleteButton" title="delete label" onclick="deleteDIV()">
+					✘<br />Del<br />Label
+				</button><button title="delete label" onclick="destroyCell()">
+					✘<br />Del<br />Cell
+				</button><button title="delete label" onclick="destroyRow()">
+					✘<br />Del<br />Row
+				</button><button title="delete label" onclick="destroyColumn()">
+					✘<br />Del<br />Row
+				</button>
+			</div>
+		</div>
+		<!--Merge & Split-->
+		<div id="mergeAndSplit" class="vertical">
+			<span>Merge<br>/Split:</span>
+			<div class="vertical">
+				<button title="select cells to be merged or split" onclick="selectCells(this)">
+					&#10010;
+					<br />
+					Select
+					<br />
+					Cells
+				</button><button title="merge selected cells" onclick="mergeCells()">
+					&#124; &#129034;&#129032; &#124;
+					<br />
+					Merge
+					<br />
+					Cells
+				</button><button title="split selected cells" onclick="splitCell()">
+					&#124;&#124;&#129032; &#129034;&#124;&#124;
+					<br />Split
+					<br />
+					Cells
+				</button>
+			</div>
+		</div>
+
+
+
+		<!--Create-->
+		<div class="vertical">
+			<span>Create:</span>
+			<div class="vertical">
+				<div class="vertical">
+					<div class="vertical2">
+						<span style="font-style: italic">Cell Name:</span> <input type="text" id="myText" value="">
+					</div>
+					<button title="create cell to the left" onclick="createCellBefore()">
+						&#129032;
+						<br />
+						new
+						<br />
+						Cell
+					</button><button title="create cell to the right" onclick="createCellAfter()">
+						&#129034;
+						<br />
+						new
+						<br />
+						Cell
+					</button>
+				</div>
+				<div class="vertical">
+					<button title="clone row above" onclick="cloneRowAbove()">
+						&#129033;
+						<br />
+						clone
+						<br />
+						Row
+					</button><button title="clone row below" onclick="cloneRowBelow()">
+						&#129035;
+						<br />
+						clone
+						<br />
+						Row
+					</button><button title="new row above" onclick="createRowAbove()">
+						&#129033;
+						<br />
+						new
+						<br />
+						Row
+					</button><button title="new row below" onclick="createRowBelow()">
+						&#129035;
+						<br />
+						new
+						<br />
+						Row
+					</button>
+				</div>
+				<div class="vertical">
+					<button title="new column to the left" onclick="createColumnBefore()">
+						&#129032;
+						<br />
+						new
+						<br />
+						Col
+					</button><button title="new column to the right" onclick="createColumnAfter()">
+						&#129034;
+						<br />
+						new
+						<br />
+						Col
+					</button></div>
+			</div>
+		</div>
+
+		<!--Edit-->
+		<div class="vertical">
+			<span>Edit:</span>
+			<div class="vertical">
+				<!--			<div class="vertical">-->
+				<div class="vertical">
+					<div class="vertical2">
+						<span style="font-style: italic">Cell Heading:</span> <input type="text" id="cellHeading" value="">
+					</div>
+					<button id="applyHeadingBtn" onclick="insertHeading()">Apply Heading</button>
+					<!--				</div>-->
+
+					<!--				<div class="vertical">-->
+					<div class="vertical2">
+						<!--for the content of the cell-->
+						<span style="font-style: italic">Cell Details:</span> <input type="text" id="cellText" value="">
+					</div>
+					<button id="applyTextBtn" onclick="insertTextIntoTD()">Apply Details</button>
+
+					<div class="vertical2">
+						<span style="font-style: italic">Row Group:</span> <input type="text" id="rowGroup" value="">
+					</div>
+					<div class="vertical2">
+						<span style="font-style: italic">Row Name:</span> <input type="text" id="rowName" value=""></div>
+
+					<button id="applyRowEditBtn" onclick="rowEdit()">Apply Row Edit</button>
+				</div>
+			</div>
+		</div>
+
+		<!--Land/Region-->
+		<div class="vertical">
+			<span>Location /Region:</span>
+			<div class="vertical">
+				<div class="vertical3">
+					<input type="text" id="locationInput" value="" draggable="false">
+					<select id="locationOptionsDropdown">
+					</select>
+				</div>
+				<div class="vertical2">
+					<button onclick="createRegionAttribute()">Append Location</button></div>
+			</div>
+		</div>
+
+		<!--Label/Actors-->
+		<div class="vertical">
+			<span>Actors:</span>
+			<div class="vertical">
+				<span style="font-style: italic">Main Name:</span>
+				<div class="vertical3">
+					<input type="text" id="divClass" value="" draggable="false">
+					<select id="divClassOptionsDropdown">
+					</select><br>
+				</div>
+				<span style="font-style: italic">Alias:</span>
+				<div class="vertical3">
+					<input type="text" id="divName" value="" draggable="false">
+					<select id="divNameOptionsDropdown">
+					</select>
+				</div>
+				<div class="vertical2">
+					<button onclick="createDIV()">Create Div</button></div>
+			</div>
+		</div>
+
+
+
+	</section>
+	<!--***********************************************-->
+</body>
+
+<script type="text/javascript" src="javascript/darkOrlightBG.js"></script>
+<script type="text/javascript" src="javascript/GetElement-XY-Coordinates.js"></script>
+<script type="text/javascript" src="javascript/tableColumnClasses.js"></script>
+
+<script type="text/javascript" src="javascript/draggableHtmlElement.js"></script>
+<script type="text/javascript" src="javascript/dragdCloneDivs.js"></script>
+<script type="text/javascript" src="javascript/svgCurvedLinesConnectors-D.js"></script>
+<script type="text/javascript" src="javascript/cssColorNamesArray.js"></script>
+
+<script type="text/javascript" src="javascript/tableCreator-E.js"></script>
+<script type="text/javascript" src="javascript/detailsSection.js"></script>
+
+<script type="text/javascript" src="javascript/dragDropRows&Cells.js"></script>
+
+</html>

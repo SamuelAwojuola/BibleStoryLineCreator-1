@@ -71,78 +71,101 @@ var connectAllDraggableDivsWithSVGLines = function () {
 		var currentColCellClassListArray = [];
 		var firstDivofClassFound = 0;
 
-		//LOOK FOR DIV WITH THE CURRENT DIVCLASS ATTRIBUTE VALUE IN EACH COLUMN OF THE STORYLINE TABLE
-		for (j = 0; j < arrayOfAllColClasses.length; j++) {
+		//CHECK IF NUMBER OF DIVS IN DIV CLASS IS MORE THAN ONE AND THAT ATLEAST TWO OF THEM ARE NOT IN HIDDEN CELL
+		var allDivsOfCurrentDivClassAttribute = storyLineTable.querySelectorAll('[divClassName=' + divClassAttributeArray[i] + ']');
+		var areConnectableDivsOfClassAttributeMoreThanOne;
+		var connectableDivsCount = 0;
+		//IGNORE DIV-CLASSES THAT HAVE ONLY ONE DIV IN THEM
+		if (allDivsOfCurrentDivClassAttribute.length > 1) {
+			for (j = 0; j < allDivsOfCurrentDivClassAttribute.length; j++) {
+				var divParentCell = allDivsOfCurrentDivClassAttribute[j].parentElement;
+				if(divParentCell.style.display != 'none'){
+					connectableDivsCount = connectableDivsCount + 1;
+				}
+				if(connectableDivsCount > 1){
+					areConnectableDivsOfClassAttributeMoreThanOne = 'yes';
+					break;
+				}
+				areConnectableDivsOfClassAttributeMoreThanOne = 'no';
+			}
+		} else {areConnectableDivsOfClassAttributeMoreThanOne = 'no';}
 
-			if ((currentColCellClassListArray == null) || (currentColCellClassListArray.indexOf(arrayOfAllColClasses[j]) == -1)) {
+		//IGNORE DIV-CLASSES THAT HAVE ONLY ONE CONNECTABLE DIV IN THEM
+		//a connectable div is a div that is in a cell that is not hidden
+		if (areConnectableDivsOfClassAttributeMoreThanOne == 'yes') {
+			//LOOK FOR DIV WITH THE CURRENT DIVCLASS ATTRIBUTE VALUE IN EACH COLUMN OF THE STORYLINE TABLE
+			for (j = 0; j < arrayOfAllColClasses.length; j++) {
 
-				var currentColumn = arrayOfAllColClasses[j];
-				var currentColumnClass = '.' + currentColumn;
-				var currentColumnCells = storyLineTable.querySelectorAll(currentColumnClass);
+				if ((currentColCellClassListArray == null) || (currentColCellClassListArray.indexOf(arrayOfAllColClasses[j]) == -1)) {
 
-				//To store the index of a cell that has already been counted so that it is not counted twice which happens if it is a cell with more than one col-x classes, i.e., if it is a cell spanning more than one cell
-				var countedDivCellIndex = null;
-				var oldCountedDivCellIndex;
-				var skipCell;
+					var currentColumn = arrayOfAllColClasses[j];
+					var currentColumnClass = '.' + currentColumn;
+					var currentColumnCells = storyLineTable.querySelectorAll(currentColumnClass);
 
-				//LOOK FOR DIV WITH THE CURRENT DIVCLASS ATTRIBUTE VALUE IN THE CELLS OF EACH COLUMN 
-				for (k = 0; k < currentColumnCells.length; k++) {
+					//To store the index of a cell that has already been counted so that it is not counted twice which happens if it is a cell with more than one col-x classes, i.e., if it is a cell spanning more than one cell
+					var countedDivCellIndex = null;
+					var oldCountedDivCellIndex;
+					var skipCell;
 
-					var currentColCell = currentColumnCells[k];
+					//LOOK FOR DIV WITH THE CURRENT DIVCLASS ATTRIBUTE VALUE IN THE CELLS OF EACH COLUMN 
+					for (k = 0; k < currentColumnCells.length; k++) {
+
+						var currentColCell = currentColumnCells[k];
 
 
-					//ONLY COUNT DIVS IN CELLS THAT ARE NOT HIDDEN
-					if (currentColCell.style.display != 'none') {
+						//ONLY COUNT DIVS IN CELLS THAT ARE NOT HIDDEN
+						if (currentColCell.style.display != 'none') {
 
-						countedDivCellIndex = currentColCell.cellIndex;
+							countedDivCellIndex = currentColCell.cellIndex;
 
-						var divWithCurrentDivClassNameinColumn = currentColCell.querySelector('[divClassName=' + divClassAttributeArray[i] + ']');
+							var divWithCurrentDivClassNameinColumn = currentColCell.querySelector('[divClassName=' + divClassAttributeArray[i] + ']');
 
-						if ((oldCountedDivCellIndex != countedDivCellIndex) && (divWithCurrentDivClassNameinColumn) && (skipCell != currentColCell)) {
-							if (firstDivofClassFound == 0) {
-								startElement = divWithCurrentDivClassNameinColumn;
-								firstDivofClassFound = 1;
+							if ((oldCountedDivCellIndex != countedDivCellIndex) && (divWithCurrentDivClassNameinColumn) && (skipCell != currentColCell)) {
+								if (firstDivofClassFound == 0) {
+									startElement = divWithCurrentDivClassNameinColumn;
+									firstDivofClassFound = 1;
 
-								oldCountedDivCellIndex = countedDivCellIndex;
+									oldCountedDivCellIndex = countedDivCellIndex;
 
-								if (currentColCell.colSpan > 1) {
-									skipCell = currentColCell;
+									if (currentColCell.colSpan > 1) {
+										skipCell = currentColCell;
 
-									//GET ARRAY OF COL-X CLASSES
-									//and skip them
-									var prefix = 'col-';
-									var prefixLength = prefix.length;
-									var currentColCellClassList = currentColCell.classList;
-									for (l = 0; l < currentColCellClassList.length; l++) {
-										if (currentColCellClassList[l].slice(0, prefixLength) == prefix) {
-											currentColCellClassListArray.push(currentColCellClassList[l]);
+										//GET ARRAY OF COL-X CLASSES
+										//and skip them
+										var prefix = 'col-';
+										var prefixLength = prefix.length;
+										var currentColCellClassList = currentColCell.classList;
+										for (l = 0; l < currentColCellClassList.length; l++) {
+											if (currentColCellClassList[l].slice(0, prefixLength) == prefix) {
+												currentColCellClassListArray.push(currentColCellClassList[l]);
+											}
+										}
+										break;
+									}
+								} else if (firstDivofClassFound == 1) {
+									endElement = divWithCurrentDivClassNameinColumn
+									////////////////////////////////////////
+									drawConnector(startElement, endElement, divClassAttributeArray[i]);
+									////////////////////////////////////////
+									startElement = divWithCurrentDivClassNameinColumn
+									oldCountedDivCellIndex = countedDivCellIndex;
+
+									if (currentColCell.colSpan > 1) {
+										skipCell = currentColCell;
+
+										//GET ARRAY OF COL-X CLASSES
+										//and skip them
+										var prefix = 'col-';
+										var prefixLength = prefix.length;
+										var currentColCellClassList = currentColCell.classList;
+										for (l = 0; l < currentColCellClassList.length; l++) {
+											if (currentColCellClassList[l].slice(0, prefixLength) == prefix) {
+												currentColCellClassListArray.push(currentColCellClassList[l]);
+											}
 										}
 									}
 									break;
 								}
-							} else if (firstDivofClassFound == 1) {
-								endElement = divWithCurrentDivClassNameinColumn
-								////////////////////////////////////////
-								drawConnector(startElement, endElement, divClassAttributeArray[i]);
-								////////////////////////////////////////
-								startElement = divWithCurrentDivClassNameinColumn
-								oldCountedDivCellIndex = countedDivCellIndex;
-
-								if (currentColCell.colSpan > 1) {
-									skipCell = currentColCell;
-
-									//GET ARRAY OF COL-X CLASSES
-									//and skip them
-									var prefix = 'col-';
-									var prefixLength = prefix.length;
-									var currentColCellClassList = currentColCell.classList;
-									for (l = 0; l < currentColCellClassList.length; l++) {
-										if (currentColCellClassList[l].slice(0, prefixLength) == prefix) {
-											currentColCellClassListArray.push(currentColCellClassList[l]);
-										}
-									}
-								}
-								break;
 							}
 						}
 					}

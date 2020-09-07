@@ -27,11 +27,12 @@ function addDetailKeys() {
 //	console.log(storyLineTable.rows[0]);
 //	var cellParentName = storyLineTable.rows[clickedRow].parentNode.nodeName;
 	var divsInCellLength = selectedCell.querySelectorAll('div[divclassname]').length;
-	var cellH4 = selectedCell.querySelector('h4').textContent;
+	var cellH4;
+	if(selectedCell.querySelector('h4')){cellH4 = selectedCell.querySelector('h4').textContent}
 //	console.log(cellH4);
 
 	//if selected cell has label divs
-	if ((selectedCell.querySelectorAll('div[divclassname]').length != 0)||(selectedCell.querySelector('h4').textContent != '')) {
+	if ((selectedCell.innerHTML)&&((selectedCell.querySelectorAll('div[divclassname]').length != 0)||(selectedCell.querySelector('h4').textContent != ''))) {
 
 		/*TO GET ACTORS/CHARACTERS IN SELECTED CELL*/
 		var actorsInSelectedCell = selectedCell.querySelectorAll('div[divclassname]');
@@ -161,7 +162,7 @@ var detailsSection = document.getElementById('detailsSection');
 //to make details editable
 function addDetail() {
 
-	if (selectedCell.innerHTML) {
+	if ((selectedCell)&&(selectedCell.innerHTML)) {
 
 		if ((selectedCell.querySelectorAll('div[divclassname]').length != 0)||(selectedCell.querySelector('h4').textContent != '')) {
 
@@ -197,6 +198,6 @@ function addDetail() {
 			alert('Selected Cell has no actor')
 		}
 	} else {
-		alert('Please, select a cell to add or view its details.')
+		customAlert('Please, select a cell to add or view its details.')
 	}
 }
