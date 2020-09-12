@@ -1,0 +1,37 @@
+.scrollbar {
+	max-height: 400px;
+	overflow-y: auto;
+}
+
+/* customize scrollbar css */
+.scrollbar-custom::-webkit-scrollbar {
+	width: 8px;
+	background-color: #cccccc;
+}
+
+.scrollbar-custom::-webkit-scrollbar:horizontal {
+	height: 12px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+	background-color: #e0e0e0;
+	border: 1px #ffffff solid;
+	border-radius: 5px;
+	-webkit-box-shadow: 0 0 6px #c8c8c8 inset;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+	background-color: #f8f8f8;
+	border: 1px solid #a5a5a5;
+	border-radius: 5px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+	background-color: white;
+	border: 1px solid #333333;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb:active {
+	background-color: white;
+	border: 1px solid #333333;
+}

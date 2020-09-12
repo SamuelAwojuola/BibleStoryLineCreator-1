@@ -1,11 +1,22 @@
+.grid {
+	display: grid;
+	grid-template-columns: auto 1fr;
+}
+
+.grid2 {
+	display: grid;
+	grid-template-columns: auto auto 1fr;
+}
+
+/*MAIN*/
 * {
 	/*font-family: "Lucida Console", Courier, monospace;*/
-	font-family: 'Abril Fatface', serif;
 	font-family: 'Open Sans', sans-serif;
 	font-family: Arial, Helvetica, sans-serif;
 	font-family: 'Helvetica Neue', sans-serif;
-	font-family: "Times New Roman", Times, serif;
 	font-family: Georgia, serif;
+	font-family: "Times New Roman", Times, serif;
+	font-family: 'Abril Fatface', serif;
 	word-spacing: 2px;
 	/*font-size: 95%;*/
 }
@@ -21,14 +32,14 @@ body {
 	/*Light Beige*/
 	background-color: lemonchiffon;
 	/*LemonChiffon*/
-	background-color: rgba(255, 255, 255, 0.87);
-	/*White*/
 	background-color: rgba(0, 0, 0, 0.87);
 	/*Black*/
 	background-color: rgba(129, 98, 131, 0.87);
 	/*Purple*/
 	background-color: Beige;
 	/*Beige*/
+	background-color: rgba(255, 255, 255, 0.87);
+	/*White*/
 	/*			color: white;*/
 }
 
@@ -36,17 +47,12 @@ body {
 	pointer-events: none;
 	/*THIS MAKES IT POSSIBLE TO CLICK THROUGH THE SVG*/
 	position: absolute;
-	z-index: 1;
 	width: 110%;
 	height: 110%;
+	/*			z-index: 1;*/
 }
 
-.svg-connectors {}
-
 #divTableContainer {
-	float: left;
-	width: 85vw;
-	height: 90vh;
 	overflow: auto;
 	margin-left: 10px;
 	margin-right: 10px;
@@ -78,7 +84,8 @@ table > h6 {
 	position: relative;
 }
 
-#masterEditButton {
+.headbuttons {
+	position: relative;
 	display: flex;
 	align-items: center;
 	padding-right: 0;
@@ -92,7 +99,7 @@ table > h6 {
 	border: 1px solid grey;
 }
 
-#masterEditButton:hover {
+.headbuttons:hover {
 	background-color: #fcffb6;
 	/*
 			box-shadow: -1.5px -1.5px 2px 2px grey; 
@@ -100,13 +107,24 @@ table > h6 {
 */
 }
 
-#masterEditButton:active {
+.headbuttons:active {
 	/*			background-color: #b6ffe6;*/
 }
 
-.tableHeadEqualHeights {
+/*
+.headbuttons {
 	height: 32px;
 }
+*/
+
+.headbuttons > input {
+/*	display: none;*/
+	width: 20px;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
 
 #masterTable > td {
 	background-color: transparent;
@@ -174,40 +192,6 @@ table > h6 {
 	font-style: italic;
 }
 
-#storyLineTable th div:not(:first-child),
-#storyLineTable td div:not(:first-child) {
-	margin-top: 5px;
-	padding: 5px 0;
-	border: 1px solid #acacac;
-	border-radius: 3px;
-}
-
-#storyLineTable th div:first-of-type,
-#storyLineTable td div:first-of-type {
-	margin-top: 20px;
-}
-
-#storyLineTable th div:first-child,
-#storyLineTable td div:first-child {
-	margin-top: 10px;
-}
-
-#storyLineTable th div:last-child,
-#storyLineTable td div:last-child {
-	margin-bottom: 10px;
-}
-
-#legendTable th div,
-#legendTable thead td div,
-#storyLineTable th div,
-#storyLineTable td div {
-	max-width: 200px;
-	padding: 5px 0;
-	border: 1px solid #acacac;
-	border-radius: 3px;
-	font-weight: bold;
-}
-
 #storyLineTableTitleHeader {
 	padding-left: 100px;
 }
@@ -216,9 +200,7 @@ table > h6 {
 	content: "Insert Title Here"
 }
 
-
-
-/*	<!--TABLE-BUILDER STYLING--->*/
+/*TABLE-BUILDER STYLING*/
 #tableBuilder {
 	display: none;
 	position: absolute;
@@ -368,15 +350,10 @@ select {
 	background-color: aquamarine;
 }
 
-
-
-/*	<!--DIV LABELS STYLING------>*/
+/*DIV LABELS STYLING*/
 td > div {
 	position: relative;
 	padding-top: 2px;
-	/*			margin: 4px;*/
-	/*			min-height: 25px;*/
-	/*			border: 0.5px solid grey;*/
 	background-color: rgba(255, 255, 255, 0.6);
 	border-radius: 2px;
 	text-align: center;
@@ -384,61 +361,49 @@ td > div {
 	z-index: 1;
 }
 
-
-/*	<!--TABLE EDITOR SCROLLBAR-->*/
-
-
-/* container properties */
-.scrollbar {
-	max-height: 400px;
-	overflow-y: auto;
+#storyLineTable th div:not(:first-child),
+#storyLineTable td div:not(:first-child) {
+	margin-top: 5px;
+	padding: 5px 0;
+	border: 1px solid #acacac;
+	border-radius: 3px;
 }
 
-/* customize scrollbar css */
-.scrollbar-custom::-webkit-scrollbar {
-	width: 8px;
-	background-color: #cccccc;
+#storyLineTable th div:first-of-type,
+#storyLineTable td div:first-of-type {
+	margin-top: 20px;
 }
 
-.scrollbar-custom::-webkit-scrollbar:horizontal {
-	height: 12px;
+#storyLineTable th div:first-child,
+#storyLineTable td div:first-child {
+	margin-top: 10px;
 }
 
-.scrollbar-custom::-webkit-scrollbar-track {
-	background-color: #e0e0e0;
-	border: 1px #ffffff solid;
-	border-radius: 5px;
-	-webkit-box-shadow: 0 0 6px #c8c8c8 inset;
+#storyLineTable th div:last-child,
+#storyLineTable td div:last-child {
+	margin-bottom: 10px;
 }
 
-.scrollbar-custom::-webkit-scrollbar-thumb {
-	background-color: #f8f8f8;
-	border: 1px solid #a5a5a5;
-	border-radius: 5px;
+#legendTable th div,
+#legendTable thead td div,
+#storyLineTable th div,
+#storyLineTable td div {
+	max-width: 200px;
+	padding: 5px 0;
+	border: 1px solid #acacac;
+	border-radius: 3px;
+	font-weight: bold;
 }
 
-.scrollbar-custom::-webkit-scrollbar-thumb:hover {
-	background-color: white;
-	border: 1px solid #333333;
-}
-
-.scrollbar-custom::-webkit-scrollbar-thumb:active {
-	background-color: white;
-	border: 1px solid #333333;
-}
-
-< !--DETAILS SECTIONS-------- > #detailsSection {
+/*DETAILS SECTIONS*/
+#detailsSection {
 	position: absolute;
-	top: 300px;
-	left: 400px;
+	top: 500px;
+	left: 180px;
 	width: 500px;
 	height: 292px;
-	/*			padding: 1px 1px 0px;*/
-	/*			background-color: ghostwhite;*/
-	/*			border: 1px solid grey;*/
 	border-radius: 5px;
 	z-index: 3;
-	/*			display: flex;*/
 	flex-direction: column;
 }
 
@@ -527,18 +492,16 @@ td > div {
 	display: block;
 }
 
+/*ULTERNATE STORYLINE TABLE EDITOR BUTTONS*/
 
-
-/*	<!--ULTERNATE STORYLINE TABLE EDITOR BUTTONS-->*/
 #alternateStoryLineEditorButtons {
 	font-size: 11px;
 	font-weight: 1000;
 	align-items: flex-end;
 	position: absolute;
-	left: 20vw;
-	top: 35vh;
+	top: 230px;
+	left: 180px;
 	width: 900px;
-	height: 256px;
 	background-color: rgba(245, 245, 220, 0.9);
 	border-radius: 5px;
 	box-shadow: 0px 0px 1px 1px grey;
@@ -637,37 +600,30 @@ td > div {
 	width: 100%;
 	height: 35px;
 	background-color: #f0de92;
-	/*			box-shadow: 0px 10px 5px -2px #f0de92;*/
-	/*			border: 1px solid grey;*/
-	/*			border-top: 0px solid grey;*/
-	/*			border-left: 0px solid grey;*/
 	border-bottom: 1px solid grey;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
 }
 
 #deleteButtons {
-	/*			background-color: rgba(255, 162, 183, 0.65) !important;*/
+	background-color: rgba(255, 192, 203, 0.57) !important;
 }
 
 #mergeAndSplit {
-	/*			background-color: rgba(255, 249, 172, 0.64)!important;*/
+	background-color: rgba(255, 249, 172, 0.64) !important;
 }
 
 #realignandreconnect {
 	min-height: 53px;
-	/*			background-color: #ccff86 !important;*/
 }
 
 #realignandreconnect button {
-	/*			background-color: #f5edad !important;*/
+	background-color: #f5edad !important;
 	border: 0.5px solid grey;
 	border-radius: 3px;
 }
 
-
-
-/*	<!--SHOW HIDE DIVS SECTION-->*/
+/*SHOW HIDE DIVS SECTION*/
 #labelList {
 	padding-left: 20px;
 }
@@ -676,17 +632,7 @@ td > div {
 	opacity: 0.2;
 }
 
-
-
-/*	<!--TIME MENU NAV-->*/
-#timePeriodMenu {}
-
-#timeMenuListDiv ol,
-#timeMenuListDiv ul {}
-
-
-
-/*	<!--MASTER-NAV-->*/
+/*MASTER NAV*/
 #masterNav {
 	float: left;
 }
@@ -730,16 +676,27 @@ li > input {
 	width: 20px;
 }
 
-#moveButtonsMenu,
-#timePeriodMenu,
-#navSection4navDivButtonHolder,
-#locationsMenu {
-	border-bottom: 1px solid black;
+#masterNav > div {
+	border-bottom: 3px solid grey;
 }
 
+#locationsMenuList,
+#timeLinesMenuList,
+#timeMenuList,
+#locationsMenuListDiv {
+	margin-top: auto;
+	/*			padding-left: 20px;*/
+}
 
+#showMoveButtons,
+#showTimeLinesMenu,
+#showTimeMenu,
+#showLabelMenu,
+#showLocationsMenu {
+	min-width: 30px;
+}
 
-/*	<!--MOVE ROWS AND CELLS-->*/
+/*MOVE ROWS AND CELLS*/
 #moveButtonsMenu {
 	padding-bottom: 10px;
 }
@@ -754,19 +711,15 @@ li > input {
 	margin-bottom: 10px;
 }
 
-
-
-/*	<!--CUSTOM ALERTS-->*/
+/*CUSTOM ALERTS*/
 #customAlertBack {
 	position: fixed;
 	display: none;
 	justify-content: space-evenly;
 	align-items: center;
-	top: 0;
-	left: 0;
 	width: 100vw;
 	height: 100vh;
-	background-color: rgba(128, 128, 128, 0.25);
+	background-color: rgba(255, 215, 215, 0.25);
 	z-index: 99;
 }
 
@@ -806,12 +759,10 @@ li > input {
 	color: darkred;
 }
 
-
-
-/*	<!--FOR JS-->*/
+/*FOR JAVASCRIPT*/
 .yellow {
 	background-color: rgba(255, 231, 0, 0.56);
-	border: 3px solid black;
+	border: 3px solid grey;
 }
 
 .light-text {
