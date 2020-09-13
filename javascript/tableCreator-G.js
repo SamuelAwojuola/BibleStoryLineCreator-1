@@ -53,21 +53,30 @@ var divClassOptionsDropdown = document.getElementById('divClassOptionsDropdown')
 var addDetailKeys;
 var locationsArray = [];
 
+var expandMinimizeButtons = document.querySelectorAll('.expandMinimizeButton');
+
+function toggleAllMasterNavBtnz() {
+	expandMinimizeButtons.forEach(function (btn) {
+		if (btn.innerHTML != '&#9776;') {
+			btn.click()
+		};
+	})
+}
+
 
 /*HOW TO CONNECT THE DIVS******************************/
 /******************************************************/
-function howShouldDivsBeConnected(x){
-	if(connectByTimelines.checked == true){
+function howShouldDivsBeConnected(x) {
+	if (connectByTimelines.checked == true) {
 		connectAccording2RowNames = 0;
 		connectByTimelines.checked = false;
 		connectAllDraggableDivsWithSVGLines();
-		x.style.backgroundColor = ''; 
-	}
-	else if(connectByTimelines.checked == false){
+		x.style.backgroundColor = '';
+	} else if (connectByTimelines.checked == false) {
 		connectAccording2RowNames = 1;
 		connectByTimelines.checked = true;
 		connectAllDraggableDivsWithSVGLines();
-		x.style.backgroundColor = 'pink'; 
+		x.style.backgroundColor = 'pink';
 	}
 }
 /******************************************************/
@@ -1654,11 +1663,11 @@ function createDIV() {
 				analyzeTable();
 
 				//ARRAYS FOR DIV'S & THEIR CLASSES
-				if(divClassArray.indexOf(dClass) == -1){
+				if (divClassArray.indexOf(dClass) == -1) {
 					divClassArray.push(dClass);
 					buildActorsMenu(dClass);
 				}
-				if(divNameArray.indexOf(dName) == -1){
+				if (divNameArray.indexOf(dName) == -1) {
 					divNameArray.push(dName)
 				}
 
@@ -1976,7 +1985,8 @@ function uncheckAllBoxes(x) {
 /******************************************************************************************/
 /*BUILD LABELS/ACTORS MENU*****************************************************************/
 /******************************************************************************************/
-function createDivMenu(dClass){/*CREATE DIV MANIPULATOR*****************/
+function createDivMenu(dClass) {
+	/*CREATE DIV MANIPULATOR*****************/
 	var labelNavSectionOL = document.querySelector('#labelList');
 	//CREATE LI ELEMENT
 	var liToHoldLabelListName = document.createElement('LI');
@@ -2070,16 +2080,19 @@ function createDivMenu(dClass){/*CREATE DIV MANIPULATOR*****************/
 
 	//APPEND LIST ELEMENT TO OL
 	labelNavSectionOL.appendChild(liToHoldLabelListName);
-	/****************************************/}
-	
+	/****************************************/
+}
+
 function buildActorsMenu(x) {
-//	divClassArray
-//	divNameArray
-	
-	if(x){
+	//	divClassArray
+	//	divNameArray
+
+	if (x) {
 		createDivMenu(x)
 	} else {
-		divClassArray.forEach(function (divClassName) {createDivMenu(divClassName)})
+		divClassArray.forEach(function (divClassName) {
+			createDivMenu(divClassName)
+		})
 	}
 
 }
