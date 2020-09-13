@@ -4,8 +4,19 @@
 }
 
 .grid2 {
+	position: sticky;
 	display: grid;
 	grid-template-columns: auto auto 1fr;
+    place-items: center;
+	margin-bottom: 5px;
+	box-shadow: 0px 3px 2px -3px black;
+}
+.grid2 button {
+	background-color: transparent;
+	border: 1px solid #cccccc;
+	box-shadow: 0px 3px 2px -3px black;
+	box-shadow: 0px 3px 2px -3px black;
+	box-shadow: 0px 3px 2px -3px black;
 }
 
 /*MAIN*/
@@ -53,11 +64,11 @@ body {
 }
 
 #divTableContainer {
-	overflow: auto;
+	max-height: 90vh;
 	margin-left: 10px;
 	margin-right: 10px;
 
-	border: 0.5px solid #847e7f;
+	border: 0.5px solid #cccccc;
 	border-radius: 2.5px;
 	box-shadow: 0px 3px 6px -3px black;
 	background-color: rgba(255, 253, 232, 0.3);
@@ -85,44 +96,41 @@ table > h6 {
 }
 
 .headbuttons {
-	position: relative;
-	display: flex;
+	display: grid;
+	grid-template-columns: 1fr auto;
 	align-items: center;
+	margin-top: 3px;
 	padding-right: 0;
 	cursor: pointer;
-	font-style: italic;
+/*	font-style: italic;*/
+	font-weight: bold;
 	width: 100%;
-	border: grey;
+	min-height: 32px;
 	box-shadow: 0px 3px 2px -3px black;
-	background-color: #f4f9ff;
+	background-color: transparent;
 	border-radius: 2px;
-	border: 1px solid grey;
 }
 
 .headbuttons:hover {
+	font-style: italic;
+	font-weight: bold;
 	background-color: #fcffb6;
-	/*
-			box-shadow: -1.5px -1.5px 2px 2px grey; 
-			background-color: #c8fc8b;
-*/
 }
 
 .headbuttons:active {
 	/*			background-color: #b6ffe6;*/
 }
 
-/*
-.headbuttons {
-	height: 32px;
+.headbuttons > span {
+	font-size: 15px;
+	text-align: right;
+	width: 150px;
 }
-*/
 
 .headbuttons > input {
-/*	display: none;*/
 	width: 20px;
-	position: absolute;
-	right: 0;
-	top: 0;
+	margin: 0;
+	float: left;
 }
 
 
@@ -626,6 +634,7 @@ td > div {
 /*SHOW HIDE DIVS SECTION*/
 #labelList {
 	padding-left: 20px;
+	
 }
 
 .opacityClass {
@@ -634,7 +643,27 @@ td > div {
 
 /*MASTER NAV*/
 #masterNav {
-	float: left;
+/*	float: left;*/
+}
+
+#masterNav button {
+	border: 1px solid #cccccc;
+	box-shadow: 0px 3px 2px -3px black;
+	background-color: transparent;
+	margin-bottom: 2px;
+}
+
+#masterNav button:hover {
+	background-color: palegoldenrod;
+}
+
+#masterNav button:active {
+	background-color: peachpuff;
+}
+
+#masterNav h3 {
+	margin-top: 15px;
+	margin-bottom: 5px;
 }
 
 .titleDiv {
@@ -677,7 +706,7 @@ li > input {
 }
 
 #masterNav > div {
-	border-bottom: 3px solid grey;
+	border-bottom: 3px solid #bcbcbc;
 }
 
 #locationsMenuList,
