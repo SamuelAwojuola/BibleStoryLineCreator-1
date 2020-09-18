@@ -5,8 +5,8 @@
 
 /* customize scrollbar css */
 .scrollbar-custom::-webkit-scrollbar {
-	width: 8px;
-	background-color: #cccccc;
+	width: 12px;
+	background-color: black;
 }
 
 .scrollbar-custom::-webkit-scrollbar:horizontal {
@@ -14,14 +14,14 @@
 }
 
 .scrollbar-custom::-webkit-scrollbar-track {
-	background-color: #e0e0e0;
-	border: 1px #ffffff solid;
+	background-color: pink;
+	border: 1px grey solid;
 	border-radius: 5px;
-	-webkit-box-shadow: 0 0 6px #c8c8c8 inset;
+	-webkit-box-shadow: 0 0 6px black inset;
 }
 
 .scrollbar-custom::-webkit-scrollbar-thumb {
-	background-color: #f8f8f8;
+	background-color: beige;
 	border: 1px solid #a5a5a5;
 	border-radius: 5px;
 }

@@ -15,7 +15,7 @@ var cells = allCells;
 
 var alternateStoryLineEditorButtons = document.getElementById('alternateStoryLineEditorButtons');
 
-var storyLineTableTitleHeader = document.querySelector('#storyLineTableTitleHeader');
+var storyLineTableTitleHeader = document.getElementById('storyLineTableTitleHeader');
 
 var storyLineTableTHead = storyLineTable.querySelector('thead');
 var storyLineTHeadRowz = storyLineTableTHead.getElementsByTagName('tr');
@@ -42,12 +42,12 @@ var tblReady;
 var selectedCell;
 
 var clickedDIV;
+var nameLabelDiv = storyLineTable.getElementsByClassName('nameLabelDiv');
 var divNameArray = [];
 var divClassArray = [];
 var divClassAttributeArray = [];
 var divNameAttributeArray = [];
 var divopt_ClassArray = [];
-var nameLabelDiv = storyLineTable.getElementsByClassName('nameLabelDiv');
 var opacityCounter = 0;
 var divNameOptionsDropdown = document.getElementById('divNameOptionsDropdown');
 var divClassOptionsDropdown = document.getElementById('divClassOptionsDropdown');
@@ -62,6 +62,7 @@ function toggleAllMasterNavBtnz() {
 			btn.click()
 		};
 	})
+	connectAllDraggableDivsWithSVGLines();
 }
 
 
@@ -69,13 +70,13 @@ function toggleAllMasterNavBtnz() {
 /******************************************************/
 function howShouldDivsBeConnected(x) {
 
-	for(i=0; i<rows.length; i++){
-		if(!rows[i].getAttribute('rowname')){
+	for (i = 0; i < rows.length; i++) {
+		if (!rows[i].getAttribute('rowname')) {
 			customAlert('ONLY ACTORS IN TIMLINES WITH ROWNAME WILL BE CONNECTED!')
 			break;
 		}
 	}
-	
+
 	if (connectByTimelines.checked == true) {
 		connectAccording2RowNames = 0;
 		connectByTimelines.checked = false;
@@ -133,6 +134,54 @@ function generateLocationsArrayOnLoad() {
 /****************************************************/
 /****************************************************/
 
+/****************************************************/
+/*GENERATE LABEL/ACTORS ARRAYS ONLOAD****************/
+/****************************************************/
+function generateActorsNodesArrayOnLoad() {
+
+	var divNameOptions = divNameOptionsDropdown.getElementsByTagName('option');
+
+	for (i = 0; i < nameLabelDiv.length; i++) {
+
+		var divzClass = nameLabelDiv[i].getAttribute('divclassname');
+		var divzName = nameLabelDiv[i].innerHTML;
+
+		//ARRAYS FOR DIV'S & THEIR CLASSES
+		if (divClassArray.indexOf(divzClass) == -1) {
+			divClassArray.push(divzClass);
+			buildActorsMenu(divzClass);
+			divopt_ClassArray.push('opt_' + divzClass);
+
+			divNameAttributeArray.push(divzName);
+			var dNmoption = document.createElement('OPTION');
+			dNmoption.text = divzName;
+			dNmoption.setAttribute('optCounter', 1);
+			dNmoption.setAttribute('optClassName', divzClass);
+			divNameOptionsDropdown.append(dNmoption);
+
+		}
+		if (divNameArray.indexOf(divzName) == -1) {
+			divNameArray.push(divzName);
+			for (j = 0; j < divNameOptions.length; j++) {
+				if (divNameOptions[j].text == divzName) {
+					var optCounterValue = Number(divNameOptions[j].getAttribute('optCounter'));
+					divNameOptions[j].setAttribute('optCounter', ++optCounterValue);
+					break;
+				}
+			}
+		}
+	}
+	btn_buildLegendTable();
+	connectAllDraggableDivsWithSVGLines();
+}
+/****************************************************/
+/****************************************************/
+function storyTableTitle() {
+	var title = document.getElementsByTagName('title')[0];
+	if (title) {
+		storyLineTableTitleHeader.innerHTML = title.innerHTML;
+	}
+}
 /******************************************************/
 /******************************************************/
 
@@ -160,7 +209,8 @@ onload = onloadAnalysis();
 
 function onloadAnalysis() {
 
-	//	alternateStoryLineEditorButtons.style.display = 'none';
+	storyTableTitle();
+	toggleAllMasterNavBtnz();
 
 	rowListeners();
 	cellListeners();
@@ -246,6 +296,9 @@ function onloadAnalysis() {
 
 	generateLocationsArrayOnLoad();
 	timeLinesMenu();
+
+	//GENERATE ACTORS NODES ARRAY AND MENU
+	generateActorsNodesArrayOnLoad()
 }
 
 /*BECAUSE COORDINATES CHANGE WHEN BROWSER WINDOW IS RESIZED******************************/
@@ -267,28 +320,28 @@ function analyzeTable() {
 }
 /*CHANGE CONTROL AND DETAILS SECTION Z-INDEX*********************************************/
 
-alternateStoryLineEditorButtons.addEventListener('mousedown', function(e){
+alternateStoryLineEditorButtons.addEventListener('mousedown', function (e) {
 	var a = getComputedStyle(alternateStoryLineEditorButtons, null).getPropertyValue('z-Index');
 	var d = getComputedStyle(detailsSection, null).getPropertyValue('z-Index');
 	var aN = Number(a);
 	var dN = Number(d);
-	
-	if(aN < dN){
+
+	if (aN < dN) {
 		alternateStoryLineEditorButtons.style.zIndex = dN;
 		detailsSection.style.zIndex = aN;
 	}
 })
 
-detailsSection.addEventListener('mousedown', function(e){
+detailsSection.addEventListener('mousedown', function (e) {
 	var a = getComputedStyle(alternateStoryLineEditorButtons, null).getPropertyValue('z-Index');
 	var d = getComputedStyle(detailsSection, null).getPropertyValue('z-Index');
 	var aN = Number(a);
 	var dN = Number(d);
-	
-	if(dN < aN){
+
+	if (dN < aN) {
 		alternateStoryLineEditorButtons.style.zIndex = dN;
 		detailsSection.style.zIndex = aN;
-		}
+	}
 })
 
 /****************************************************************************************/
@@ -2626,6 +2679,31 @@ function timeLinesMenu() {
 
 		/**********************************************/
 	})
+}
+/******************************************************/
+/******************************************************/
+
+/*WEBSITE NAVIGATION***********************************/
+/******************************************************/
+function showHideSiteNav(x) {
+	if (x.style.display == 'none') {
+		x.style.display = '';
+	} else {
+		x.style.display = 'none';
+	}
+}
+
+function navMenu() {
+	
+	window.scrollTo(0, 0);
+	
+	var webSiteNavLinks = websiteNav.querySelectorAll('*:not(a)');
+	
+	for (let i = 1; i <= webSiteNavLinks.length; i++) {
+		setTimeout(() => showHideSiteNav(webSiteNavLinks[i-1]), 5 * i)
+	}
+	
+	connectAllDraggableDivsWithSVGLines;
 }
 /******************************************************/
 /******************************************************/

@@ -1,6 +1,5 @@
 // Make the DIV element draggable:
 //dragElement(document.getElementById("draggable"));
-dragElement(document.getElementById("tableBuilder"));
 dragElement(document.getElementById("navSection4navDivButtonHolder"));
 dragElement(document.getElementById("detailsSection"));
 dragElement(document.getElementById("alternateStoryLineEditorButtons"));

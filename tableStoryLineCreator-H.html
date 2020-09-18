@@ -16,14 +16,33 @@
 	<!--*HEAD***********************************************-->
 	<!--****************************************************-->
 	<nav class="grid2">
+
 		<button id="masterNavButtonsToggle" class="" onclick="toggleAllMasterNavBtnz()" title="Hide Navigation SideBar">&#9776;</button>
 
 		<h1 class="tableHeadEqualHeights" id="storyLineTableTitleHeader" contenteditable="true"></h1>
+		
+		<button id="navMenu" class="" onclick="navMenu()" title="Toggle Navigation Menu">&#9776;</button>
 	</nav>
+
+	<section id="websiteNav">
+		<div style="display: none;" class="bibleTimelines">
+			<h3>Bible Timelines</h3>
+			<ul>
+				{% for page in site.pages %}
+				  {% if page.categories == "Timeline" %}
+
+				    <li><a href="{{page.url}}">{{page.title}}</a></li>
+
+				  {% endif %}
+				  {% endfor %}
+			</ul>
+		</div>
+	</section>
 	<!--****************************************************-->
 
 	<!--*ALERTS*********************************************-->
 	<!--****************************************************-->
+
 	<div id="customAlertBack" onclick="customAlertClose()">
 		<div id="customAlert">
 			<!--			<button id="customAlertClose" onclick="customAlertClose()">X</button>-->
@@ -36,14 +55,22 @@
 	<!--* MENUS & STORYLINE TABLE***************************-->
 	<div class="grid">
 		<!--* MENUS ****************************************-->
-		<div id="masterNav">
-		
+		<div id="masterNav" class="scrollbar-custom">
+
+
+
 			<!--BUTTONS MENU FOR MOVING ROWS AND CELLS******-->
 			<div id="storylineTableEditorButtonsMenu" class="">
+
+					<button id="saveDynamicDataToFile_1" class="" onclick="saveDynamicDataToFile()" title="Save BIBLE STORYLINE">&#128190;</button>
 				<div class="titleDiv">
 					<button id="showMoveButtons" class="expandMinimizeButton" onclick="toggleBtnzFamily(this, 'S')" title="StoryLine Editor and Format">&#9776;</button>
-					<h3 id="storylineTableEditorMenuH3" class="titleBarH3">Editor</h3>
-				</div><button class="headbuttons tableHeadEqualHeights" id="masterEditButton" onclick="makeTableEditable()" title="Click to Edit StoryLineTable" for="editableRadio">
+					<h3 id="storylineTableEditorMenuH3" class="titleBarH3">Editor
+					</h3>
+
+				</div>
+
+				<button class="headbuttons tableHeadEqualHeights" id="masterEditButton" onclick="makeTableEditable()" title="Click to Edit StoryLineTable" for="editableRadio">
 					<span>Edit StoryLine</span>
 					<input id="editableRadio" type="checkbox" checked='true' value="editableRadio">
 				</button>
@@ -58,7 +85,7 @@
 			<div id="moveButtonsMenu" class="">
 				<div class="titleDiv">
 					<button id="showMoveButtons" class="expandMinimizeButton" onclick="toggleBtnzFamily(this, 'M')" title="Move Events & Sections">&#9776;</button>
-					<h3 id="moveMenuH3" class="titleBarH3" >Move</h3>
+					<h3 id="moveMenuH3" class="titleBarH3">Move</h3>
 				</div>
 				<div id="tdandtrDrag">
 					<div>
@@ -243,6 +270,8 @@
 			<span>Table:</span>
 			<div class="vertical"><button onclick="btn_buildLegendTable()">Re-Align Tables</button>
 				<button onclick="connectAllDraggableDivsWithSVGLines()">Connect Divs</button>
+
+				<button id="saveDynamicDataToFile_2" class="" onclick="saveDynamicDataToFile()" title="Save BIBLE STORYLINE"><strong>&#128190;</strong> </button>
 			</div>
 		</div>
 		<!--Delete-->
@@ -429,13 +458,14 @@
 
 <script type="text/javascript" src="javascript/draggableHtmlElement.js"></script>
 <script type="text/javascript" src="javascript/dragdCloneDivs.js"></script>
-<script type="text/javascript" src="javascript/svgCurvedLinesConnectors-G.js"></script>
+<script type="text/javascript" src="javascript/svgCurvedLinesConnectors-H.js"></script>
 <script type="text/javascript" src="javascript/cssColorNamesArray.js"></script>
 
 <script type="text/javascript" src="javascript/tableCreator-G.js"></script>
 <script type="text/javascript" src="javascript/detailsSection.js"></script>
 
 <script type="text/javascript" src="javascript/dragDropRows&Cells.js"></script>
+<script type="text/javascript" src="javascript/fileSaver.js"></script>
 <script type="text/javascript" src="javascript/saveTimelineAndDetails.js"></script>
 
-</html>
+<script type="text/javascript" src="javascript/wysiwyg.js"></script></html>

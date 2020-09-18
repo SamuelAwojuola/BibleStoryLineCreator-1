@@ -1,16 +1,94 @@
+/*HEADER SECTION*/
+#websiteNav {
+	column-count: 5;
+	column-rule-style: solid;
+	column-rule-width: 1px;
+	column-rule-color: lightblue;
+	padding: 0 30px 3px 30px;
+	border-bottom: 3px solid grey;
+	background-color: rgba(252, 233, 255, 0.56);
+}
+
+#websiteNav h3:first-of-type {
+	margin-top: 0;
+	padding-top: 0;
+}
+
+#websiteNav h3 {
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+#websiteNav ul, #websiteNav > ol {
+	margin-top: 0;
+	padding-top: 0;
+	padding-left: 5px;
+	list-style-type: none;
+}
+
+#websiteNav li {
+	display: block;
+	margin-top: 0;
+	padding-bottom: 0;
+}
+
+#websiteNav li > a {
+	text-decoration: none;
+}
+
+#websiteNav li > a:hover {
+	text-decoration:underline;
+	color: red;
+}
+
+.bibleTimelines  li:hover {
+	font-color: red;
+}
+
+#saveDynamicDataToFile_1 {
+	/*
+	position: fixed;
+	bottom: 0;
+	font-size: 23px;
+	left: 0;
+	*/
+	background-color: darkred!important;
+	padding: 0;
+	margin-top: 10px;
+	color: white;
+	font-weight: bold;
+}
+
+.masterNavButtonsToggle {
+	height: auto;
+	min-width: 30px;
+}
+
 .grid {
 	display: grid;
 	grid-template-columns: auto 1fr;
 }
 
 .grid2 {
+	background-color: white !important;
 	position: sticky;
+	z-index: 10;
+	top: 0;
+	left: 0;
 	display: grid;
-	grid-template-columns: auto auto 1fr;
+	grid-template-columns: auto 1fr auto;
     place-items: center;
 	margin-bottom: 5px;
 	box-shadow: 0px 3px 2px -3px black;
+	height: 50px;
 }
+
+nav.gid2 > h1 {
+	padding: 0;
+	margin: 0;
+/*	padding-left: 25px;*/
+}
+
 .grid2 button {
 	background-color: transparent;
 	border: 1px solid #cccccc;
@@ -33,6 +111,8 @@
 }
 
 body {
+	scroll-behavior: smooth;
+	overflow-y: scroll;
 	margin-left: 0;
 	margin-right: 0;
 	background-color: rgba(131, 128, 98, 0.87);
@@ -201,7 +281,7 @@ table > h6 {
 }
 
 #storyLineTableTitleHeader {
-	padding-left: 100px;
+	margin: 0;
 }
 
 #storyLineTableTitleHeader:empty::before {
@@ -405,17 +485,20 @@ td > div {
 
 /*DETAILS SECTIONS*/
 #detailsSection {
-	position: absolute;
+	resize:both;
+	position: fixed;
 	top: 500px;
-	left: 180px;
-	width: 500px;
-	height: 292px;
+	left: 1173px;
+	min-width: 500px;
+	min-height: 500px;
 	border-radius: 5px;
 	z-index: 3;
-	flex-direction: column;
+	padding-bottom: 20px;
+/*	flex-direction: column;*/
 }
 
 #detailsSectionheader {
+	height: 20px;
 	margin-top: 0;
 	padding-bottom: 5px;
 	padding-top: 5px;
@@ -507,13 +590,13 @@ td > div {
 	font-weight: 1000;
 	align-items: flex-end;
 	position: absolute;
-	top: 230px;
-	left: 180px;
-	width: 900px;
+	top: 500px;
+	left: 197px;
+	width: 970px;
 	background-color: rgba(245, 245, 220, 0.9);
 	border-radius: 5px;
 	box-shadow: 0px 0px 1px 1px grey;
-	z-index: 10;
+	z-index: 4;
 }
 
 #alternateStoryLineEditorButtons button {
@@ -606,7 +689,7 @@ td > div {
 
 #alternateStoryLineEditorButtonsheader {
 	width: 100%;
-	height: 35px;
+	height: 30px;
 	background-color: #f0de92;
 	border-bottom: 1px solid grey;
 	border-top-left-radius: 5px;
@@ -626,9 +709,16 @@ td > div {
 }
 
 #realignandreconnect button {
-	background-color: #f5edad !important;
+	background-color: floralwhite;
 	border: 0.5px solid grey;
 	border-radius: 3px;
+}
+
+#realignandreconnect #saveDynamicDataToFile_2 {
+	background-color: #ffff99;
+	font-size: 25px;
+	padding: 0;
+	font-style: italic;
 }
 
 /*SHOW HIDE DIVS SECTION*/
@@ -643,7 +733,8 @@ td > div {
 
 /*MASTER NAV*/
 #masterNav {
-/*	float: left;*/
+	height: 800px;
+	overflow-y: auto;
 }
 
 #masterNav button {
@@ -671,13 +762,13 @@ td > div {
 	align-items: baseline;
 }
 
-ol {
+#masterNav ol {
 	padding-left: 20px;
 	list-style: none;
 	counter-reset: any-name;
 }
 
-li {
+#masterNav li {
 	display: flex;
 	list-style-type: none;
 	margin-left: -20px;
@@ -685,23 +776,23 @@ li {
 	counter-increment: any-name;
 }
 
-li:hover {
+#masterNav li:hover {
 	background-color: #ddddc6;
 	font-style: italic;
 	box-shadow: 0px 0px 2px 0px grey;
 	border-radius: 0px;
 }
 
-li::before {
+#masterNav li::before {
 	content: counter(any-name);
 	margin-right: 0.5rem;
 }
 
-li > label {
+#masterNav li > label {
 	flex-grow: 2;
 }
 
-li > input {
+#masterNav li > input {
 	width: 20px;
 }
 

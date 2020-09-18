@@ -3,13 +3,20 @@
 
 <head>
 	<title>Table Creator & Modifier - F</title>
-	
-	
-
+	<meta name="viewport" content="width=device-width, initial-scale=0.25">
 	<style id="divColorStyles"></style>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
+	<!--GRID-->
+	<style>
+		.grid {
+			display: grid;
+			grid-template-columns: auto 1fr;
+		}
+	</style>
+	
+	<!--MAIN CSS-->
 	<style>
 		* {
 			/*font-family: "Lucida Console", Courier, monospace;*/
@@ -57,9 +64,9 @@
 		.svg-connectors {}
 
 		#divTableContainer {
-			float: left;
-			width: 85vw;
-			height: 90vh;
+/*			float: left;*/
+/*			width: 85vw;*/
+/*			height: 90vh;*/
 			overflow: auto;
 			margin-left: 10px;
 			margin-right: 10px;
@@ -855,6 +862,7 @@
 	</div>
 	<!--****************************************************-->
 
+<div class="grid">
 	<!--* MENUS ********************************************-->
 	<div id="masterNav">
 		<!--BUTTONS MENU FOR MOVING ROWS AND CELLS*********-->
@@ -1001,7 +1009,7 @@
 
 	</div>
 	<!--***********************************************-->
-
+</div>
 	<!--DETAILS SECTION (SHOWS DETAILS FOR THE CELlS) **-->
 	<section id="detailsSection" class="draggableSection">
 		<h3 id="detailsSectionheader" class="titleBarH3">
