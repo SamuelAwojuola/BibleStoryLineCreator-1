@@ -523,9 +523,6 @@ td > div {
 	border-top-right-radius: 5px;
 	background-color: #f0de92;
 }
-#detailsSectionheader h3 {
-	display: inline;
-}
 
 /*WYSIWYG*/
 #wysiwygEditor {
@@ -615,13 +612,8 @@ td > div {
 #detailsSummary > div {}
 
 #expandDetails {
-	float: right;
-	margin-right: 10px;
-}
-
-#closeDetails {
-	float: right;
-	margin-right: 10px;
+	float: left;
+	margin-left: 10px;
 }
 
 .hideDetail {
@@ -952,7 +944,7 @@ img.intLink {
 }
 
 #toolBar1 select {
-/*	font-size: 10px;*/
+	font-size: 10px;
 }
 
 #textBox {

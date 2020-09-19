@@ -21,6 +21,8 @@ categories: Timeline
 		detailsSection.innerHTML +
 		`	</section>`;
 
+	//console.log(saveText);
+
 	var fname = storyLineTableTitleHeader.innerHTML;
 	if (fname == "") {
 		customAlert("!!! PLEASE <h1>ENTER TITLE</h1> FOR THE STORY LINE !!!");

@@ -21,18 +21,21 @@ function getClassesWithPrefix(node, prefix) {
 
 //ADD DETAIL KEY ON SELECTION OF ANY CELL
 function addDetailKeys() {
+
 	var previouslyShownDetail = document.querySelector('.showDetail');
 	var detailsActors = document.getElementById('detailsActors');
 	var detailsRegions = document.getElementById('detailsRegions');
-//	console.log(storyLineTable.rows[0]);
-//	var cellParentName = storyLineTable.rows[clickedRow].parentNode.nodeName;
+	//	console.log(storyLineTable.rows[0]);
+	//	var cellParentName = storyLineTable.rows[clickedRow].parentNode.nodeName;
 	var divsInCellLength = selectedCell.querySelectorAll('div[divclassname]').length;
 	var cellH4;
-	if(selectedCell.querySelector('h4')){cellH4 = selectedCell.querySelector('h4').textContent}
-//	console.log(cellH4);
+	if (selectedCell.querySelector('h4')) {
+		cellH4 = selectedCell.querySelector('h4').textContent
+	}
+	//	console.log(cellH4);
 
 	//if selected cell has label divs
-	if ((selectedCell.innerHTML)&&((selectedCell.querySelectorAll('div[divclassname]').length != 0)||(selectedCell.querySelector('h4').textContent != ''))) {
+	if ((selectedCell.innerHTML) && ((selectedCell.querySelectorAll('div[divclassname]').length != 0) || (selectedCell.querySelector('h4').textContent != ''))) {
 
 		/*TO GET ACTORS/CHARACTERS IN SELECTED CELL*/
 		var actorsInSelectedCell = selectedCell.querySelectorAll('div[divclassname]');
@@ -50,12 +53,12 @@ function addDetailKeys() {
 		}
 
 		/*TO GET LOCATION/REGION OF SELECTED CELL*/
-		var location = selectedCell.getAttribute('location') || '';//the selectedCell may or may not have the location attribute
+		var location = selectedCell.getAttribute('location') || ''; //the selectedCell may or may not have the location attribute
 		var cellLocation_LI = document.createElement('LI');
 		cellLocation_LI.innerHTML = location;
 		removeAllChildNodesOf(detailsRegions);
 		//if it has location attribute, then the <li> will be appended 
-		if(location != ''){
+		if (location != '') {
 			detailsRegions.appendChild(cellLocation_LI);
 		}
 
@@ -82,7 +85,7 @@ function addDetailKeys() {
 		var storyLineTableTHead = storyLineTable.querySelector('thead');
 		var timeRegion = storyLineTableTHead.querySelectorAll(col_xClass);
 		for (i = 0; i < timeRegion.length; i++) {
-			if ((timeRegion[i].querySelector(TypeOfHtmlHeader) !== null)&&(timeRegion[i].querySelector(TypeOfHtmlHeader).innerHTML !== '')) {
+			if ((timeRegion[i].querySelector(TypeOfHtmlHeader) !== null) && (timeRegion[i].querySelector(TypeOfHtmlHeader).innerHTML !== '')) {
 				var timeName = timeRegion[i].querySelector(TypeOfHtmlHeader).innerHTML;
 				var cellTime_LI = document.createElement('LI');
 				cellTime_LI.innerHTML = timeName;
@@ -100,7 +103,8 @@ function addDetailKeys() {
 
 				/*HIDE PREVIOUSLY SHOWN DETAIL IF ANY*/
 				if (document.querySelector('.showDetail')) {
-					/*var*/ previouslyShownDetail = document.querySelector('.showDetail');
+					/*var*/
+					previouslyShownDetail = document.querySelector('.showDetail');
 					previouslyShownDetail.classList.add('hideDetail');
 					previouslyShownDetail.classList.remove('showDetail');
 					previouslyShownDetail.contentEditable = 'false';
@@ -123,7 +127,8 @@ function addDetailKeys() {
 				selectedCell.setAttribute('detailIndex', detailsCount);
 			}
 		} else if (selectedCell.getAttribute('detailIndex') != null) {
-			/*var*/ x = selectedCell.getAttribute('detailIndex');
+			/*var*/
+			x = selectedCell.getAttribute('detailIndex');
 			//			var y = `#detailsSummary>div:not([detailIndex="` + x + `"])`;
 			//			console.log(detailsSection.querySelectorAll(y));
 
@@ -150,8 +155,74 @@ function addDetailKeys() {
 				detailToShow.classList.add('showDetail');
 			}*/
 		}
+
+		//////////////////////////////////////////
+		//MAKE DETAILS TEXT-EDITOR BUTTONS VISIBLE
+		//////////////////////////////////////////
+		var wysiwygEditorButtons = document.querySelectorAll('#wysiwygEditor > div > *');
+		if (wysiwygEditorButtons[0].style.display == 'none') {
+			var toolBar1_Buttons = document.querySelectorAll('#wysiwygEditor > div > *');
+			toolBar1_Buttons.forEach(function (btn) {
+				btn.style.display = 'none';
+			})
+			wysiwygEditor.style.display = "";
+			for (let i = 1; i <= toolBar1_Buttons.length; i++) {
+				setTimeout(() => [toolBar1_Buttons[i - 1].style.display = ''], 7.5 * i);
+			}
+		}
+		//////////////////////////////////////////
+		//////////////////////////////////////////
 	} else if (previouslyShownDetail) {
 		previouslyShownDetail.contentEditable = 'false';
+	}
+}
+
+function detailsEditButtons() {
+	var toolBar1_Buttons = document.querySelectorAll('#wysiwygEditor > div > *');
+
+	//////////////////////////////////////////
+	//MAKE DETAILS TEXT-EDITOR BUTTONS VISIBLE
+	//////////////////////////////////////////
+//	if (document.querySelector('.showDetail')) {
+//		if (toolBar1_Buttons[0].style.display == 'none') {
+//			function showWYSIWYGbtns() {
+//				wysiwygEditor_Buttons[i - 1].style.display = ''
+//			}
+//			toolBar1_Buttons.forEach(function (btn) {
+//				btn.style.display = 'none';
+//			})
+//			wysiwygEditor.style.display = "";
+//			for (let i = 1; i <= toolBar1_Buttons.length; i++) {
+//				setTimeout(() => [toolBar1_Buttons[i - 1].style.display = ''], 5 * i);
+//			}
+//		} else {
+//			for (let i = 1; i <= toolBar1_Buttons.length; i++) {
+//				setTimeout(() => [toolBar1_Buttons[i - 1].style.display = 'none'], 5 * i);
+//			}
+//		}
+//	} else {
+//		customAlert('There is no EVENT to make notes for!')
+//	}
+	//////////////////////////////////////////
+	//////////////////////////////////////////	
+}
+
+///////////////////////////////////////////
+//TOGGLE DETIALS SECTION///////////////////
+var toggleDetailsCheckbox = document.getElementById('detailsRadio');
+
+function toggleDetailsSection() {
+
+	if (toggleDetailsCheckbox.checked == true) {
+		toggleDetailsCheckbox.checked = false;
+	} else {
+		toggleDetailsCheckbox.checked = true;
+	}
+
+	if (toggleDetailsCheckbox.checked == true) {
+		detailsSection.style.display = '';
+	} else {
+		detailsSection.style.display = 'none';
 	}
 }
 
@@ -162,9 +233,9 @@ var detailsSection = document.getElementById('detailsSection');
 //to make details editable
 function addDetail() {
 
-	if ((selectedCell)&&(selectedCell.innerHTML)) {
+	if ((selectedCell) && (selectedCell.innerHTML)) {
 
-		if ((selectedCell.querySelectorAll('div[divclassname]').length != 0)||(selectedCell.querySelector('h4').textContent != '')) {
+		if ((selectedCell.querySelectorAll('div[divclassname]').length != 0) || (selectedCell.querySelector('h4').textContent != '')) {
 
 			/*FUNCTION TO CREATE DETAIlS*/
 			if (selectedCell.getAttribute('detailIndex') == null) {
@@ -175,6 +246,11 @@ function addDetail() {
 
 				var cellDetail_p = document.createElement('P');
 				//				cellDetail_p.innerHTML = 'Insert details for selected cell here';
+
+				//MAKE DETAILS TEXT-EDITOR BUTTONS VISIBLE
+				wysiwygEditor.style.display = "";
+				console.log("wysiwygEditor");
+				//////////////////////////////////////////
 				var cellDetail = document.createElement('DIV');
 				cellDetail.classList.add('showDetail');
 				cellDetail.id = 'detail_' + detailsCount;
@@ -185,6 +261,7 @@ function addDetail() {
 				``
 				//assign the same detail Index to the selected cell to which the detail belongs;
 				selectedCell.setAttribute('detailIndex', detailsCount);
+
 			} else if (selectedCell.getAttribute('detailIndex') != null) {
 				var x = selectedCell.getAttribute('detailIndex');
 

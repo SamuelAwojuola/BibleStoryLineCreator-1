@@ -69,24 +69,29 @@ function toggleAllMasterNavBtnz() {
 /*HOW TO CONNECT THE DIVS******************************/
 /******************************************************/
 function howShouldDivsBeConnected(x) {
-
-	for (i = 0; i < rows.length; i++) {
-		if (!rows[i].getAttribute('rowname')) {
-			customAlert('ONLY ACTORS IN TIMLINES WITH ROWNAME WILL BE CONNECTED!')
-			break;
+	var goAhead = 0;
+	if (storyLineTable.querySelector('div')) {
+		for (i = 0; i < rows.length; i++) {
+			if (!rows[i].getAttribute('rowname')) {
+				customAlert('ONLY ACTORS IN TIMLINES WITH ROWNAME WILL BE CONNECTED!')
+				break;
+			}
+			goAhead = 1;
 		}
-	}
+	} else { customAlert('There are no actors to connect.')}
 
-	if (connectByTimelines.checked == true) {
-		connectAccording2RowNames = 0;
-		connectByTimelines.checked = false;
-		connectAllDraggableDivsWithSVGLines();
-		x.style.backgroundColor = '';
-	} else if (connectByTimelines.checked == false) {
-		connectAccording2RowNames = 1;
-		connectByTimelines.checked = true;
-		connectAllDraggableDivsWithSVGLines();
-		x.style.backgroundColor = 'pink';
+	if (goAhead == 1) {
+		if (connectByTimelines.checked == true) {
+			connectAccording2RowNames = 0;
+			connectByTimelines.checked = false;
+			connectAllDraggableDivsWithSVGLines();
+			x.style.backgroundColor = '';
+		} else if (connectByTimelines.checked == false) {
+			connectAccording2RowNames = 1;
+			connectByTimelines.checked = true;
+			connectAllDraggableDivsWithSVGLines();
+			x.style.backgroundColor = 'pink';
+		}
 	}
 }
 /******************************************************/
@@ -95,7 +100,7 @@ function howShouldDivsBeConnected(x) {
 //CUSTOM ALERT
 function customAlert(x) {
 	customAlertBack.style.display = 'flex';
-	customAlertContent.innerHTML = x;
+	customAlertContent.innerHTML = '<h2>' + x + '</h2>';
 
 }
 
@@ -424,7 +429,6 @@ function cellHighlight(x) {
 			}
 
 			setTimeout(() => [x.style.backgroundColor = '', x.classList.remove('clicked'), shs(), connectAllDraggableDivsWithSVGLines()], 5000);
-			//	setTimeout(() => [], 22000);
 		}
 	}
 }
@@ -2694,15 +2698,15 @@ function showHideSiteNav(x) {
 }
 
 function navMenu() {
-	
+
 	window.scrollTo(0, 0);
-	
+
 	var webSiteNavLinks = websiteNav.querySelectorAll('*:not(a)');
-	
+
 	for (let i = 1; i <= webSiteNavLinks.length; i++) {
-		setTimeout(() => showHideSiteNav(webSiteNavLinks[i-1]), 5 * i)
+		setTimeout(() => showHideSiteNav(webSiteNavLinks[i - 1]), 5 * i)
 	}
-	
+
 	connectAllDraggableDivsWithSVGLines;
 }
 /******************************************************/
