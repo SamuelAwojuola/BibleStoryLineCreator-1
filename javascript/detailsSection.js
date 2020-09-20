@@ -159,7 +159,7 @@ function addDetailKeys() {
 		//////////////////////////////////////////
 		//MAKE DETAILS TEXT-EDITOR BUTTONS VISIBLE
 		//////////////////////////////////////////
-		var wysiwygEditorButtons = document.querySelectorAll('#wysiwygEditor > div > *');
+/*		var wysiwygEditorButtons = document.querySelectorAll('#wysiwygEditor > div > *');
 		if (wysiwygEditorButtons[0].style.display == 'none') {
 			var toolBar1_Buttons = document.querySelectorAll('#wysiwygEditor > div > *');
 			toolBar1_Buttons.forEach(function (btn) {
@@ -169,7 +169,7 @@ function addDetailKeys() {
 			for (let i = 1; i <= toolBar1_Buttons.length; i++) {
 				setTimeout(() => [toolBar1_Buttons[i - 1].style.display = ''], 7.5 * i);
 			}
-		}
+		}*/
 		//////////////////////////////////////////
 		//////////////////////////////////////////
 	} else if (previouslyShownDetail) {
@@ -183,28 +183,33 @@ function detailsEditButtons() {
 	//////////////////////////////////////////
 	//MAKE DETAILS TEXT-EDITOR BUTTONS VISIBLE
 	//////////////////////////////////////////
-//	if (document.querySelector('.showDetail')) {
-//		if (toolBar1_Buttons[0].style.display == 'none') {
-//			function showWYSIWYGbtns() {
-//				wysiwygEditor_Buttons[i - 1].style.display = ''
-//			}
-//			toolBar1_Buttons.forEach(function (btn) {
-//				btn.style.display = 'none';
-//			})
-//			wysiwygEditor.style.display = "";
-//			for (let i = 1; i <= toolBar1_Buttons.length; i++) {
-//				setTimeout(() => [toolBar1_Buttons[i - 1].style.display = ''], 5 * i);
-//			}
-//		} else {
-//			for (let i = 1; i <= toolBar1_Buttons.length; i++) {
-//				setTimeout(() => [toolBar1_Buttons[i - 1].style.display = 'none'], 5 * i);
-//			}
-//		}
-//	} else {
-//		customAlert('There is no EVENT to make notes for!')
-//	}
+	if (document.querySelector('.showDetail')) {
+		if (toolBar1_Buttons[0].style.display == 'none') {
+			function showWYSIWYGbtns() {
+				wysiwygEditor_Buttons[i - 1].style.display = ''
+			}
+			toolBar1_Buttons.forEach(function (btn) {
+				btn.style.display = 'none';
+			})
+			wysiwygEditor.style.display = "";
+			for (let i = 1; i <= toolBar1_Buttons.length; i++) {
+				setTimeout(() => [toolBar1_Buttons[i - 1].style.display = ''], 5 * i);
+			}
+		} else {
+			for (let i = 1; i <= toolBar1_Buttons.length; i++) {
+				setTimeout(() => [toolBar1_Buttons[i - 1].style.display = 'none'], 5 * i);
+			}
+		}
+	} else {
+		customAlert('There is no EVENT to make notes for!')
+	}
 	//////////////////////////////////////////
-	//////////////////////////////////////////	
+	//////////////////////////////////////////
+}
+function makeCurrentDetailEditable(){
+		if(document.querySelector('.showDetail')){
+		document.querySelector('.showDetail').contentEditable = 'true';
+	}else { customAlert('There is No Note To Edit.')}
 }
 
 ///////////////////////////////////////////
@@ -246,11 +251,7 @@ function addDetail() {
 
 				var cellDetail_p = document.createElement('P');
 				//				cellDetail_p.innerHTML = 'Insert details for selected cell here';
-
-				//MAKE DETAILS TEXT-EDITOR BUTTONS VISIBLE
-				wysiwygEditor.style.display = "";
-				console.log("wysiwygEditor");
-				//////////////////////////////////////////
+				
 				var cellDetail = document.createElement('DIV');
 				cellDetail.classList.add('showDetail');
 				cellDetail.id = 'detail_' + detailsCount;

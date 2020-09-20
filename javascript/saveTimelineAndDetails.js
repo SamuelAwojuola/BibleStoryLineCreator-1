@@ -7,19 +7,25 @@ layout: bibleStoryLineTEMPLATE
 title: "` + storyLineTableTitleHeader.innerHTML + `"
 categories: Timeline
 ---
-<style id="divColorStyles">` +
-		divColorStyles.innerHTML +
+<style id="divColorStyles">`
+	+
+		divColorStyles.innerHTML
+	+
 		`</style>
-<table id="storyLineTable">` +
-		storyLineTable.innerHTML +
+{% include BStL-preStorylineTable.html %}
+<table id="storyLineTable">`
+	+
+		storyLineTable.innerHTML
+	+
 		`</table>
+
 {% include BStL-masterTableEND.html %}
+{% include BStL-detailsSection-Buttons.html %}
 
+	<div id="detailsSummary" class="scrollbar-custom">` +
+		detailsSummary.innerHTML;
 
-<!--DETAILS SECTION (SHOWS DETAILS FOR THE CELlS) **-->
-	<section id="detailsSection" class="draggableSection">` +
-		detailsSection.innerHTML +
-		`	</section>`;
+	//console.log(saveText);
 
 	var fname = storyLineTableTitleHeader.innerHTML;
 	if (fname == "") {
